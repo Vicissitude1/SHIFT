@@ -12,6 +12,8 @@ namespace ShootingGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //Ako wus here
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
