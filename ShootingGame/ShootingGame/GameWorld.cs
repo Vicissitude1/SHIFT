@@ -1,18 +1,33 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace ShootingGame
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class GameWorld : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private static GameWorld instance;
+        List<Collider> colliders;
+        public float DeltaTime { get; private set; }
+        internal List<Collider> Colliders
+        {
+            get
+            {
+                return colliders;
+            }
+        }
+        public static GameWorld Instance
+        {
+            get { return instance ?? (instance = new GameWorld()); }
+        }
 
-        public Game1()
+        private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -63,6 +78,8 @@ namespace ShootingGame
                 Exit();
 
             // TODO: Add your update logic here
+
+            DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             base.Update(gameTime);
         }
