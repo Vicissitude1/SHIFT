@@ -14,6 +14,7 @@ namespace ShootingGame
         SpriteBatch spriteBatch;
         Director director;
         List<GameObject> gameObjects;
+        List<GameObject> objectsToRemove;
         private static GameWorld instance;
         List<Collider> colliders;
         public float DeltaTime { get; private set; }
@@ -27,6 +28,19 @@ namespace ShootingGame
         public static GameWorld Instance
         {
             get { return instance ?? (instance = new GameWorld()); }
+        }
+
+        internal List<GameObject> ObjectsToRemove
+        {
+            get
+            {
+                return objectsToRemove;
+            }
+
+            set
+            {
+                objectsToRemove = value;
+            }
         }
 
         private GameWorld()
@@ -47,9 +61,11 @@ namespace ShootingGame
         {
             // TODO: Add your initialization logic here
             gameObjects = new List<GameObject>();
-
+            objectsToRemove = new List<GameObject>();
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(300, 300)));
+            director = new Director(new ExplosionBuilder());
+            gameObjects.Add(director.Construct(new Vector2(100, 100)));
 
             base.Initialize();
         }
@@ -92,10 +108,30 @@ namespace ShootingGame
             // TODO: Add your update logic here
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (objectsToRemove.Count > 0)
+            {
+                foreach (GameObject go in objectsToRemove)
+                {
+                    gameObjects.Remove(go);
+                }
+                objectsToRemove.Clear();
+            }
+
             foreach (GameObject go in gameObjects)
             {
                 go.Update();
             }
+            /*
+            if(objectsToRemove.Count > 0)
+            {
+                foreach (GameObject go in objectsToRemove)
+                {
+                    gameObjects.Remove(go);
+                }
+                objectsToRemove.Clear();
+            }*/
+
             base.Update(gameTime);
         }
 

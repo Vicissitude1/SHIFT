@@ -13,7 +13,6 @@ namespace ShootingGame
     class Aim : Component, IUpdateable
     {
         Vector2 translation;
-        Animator animator;
         KeyboardState keyState;
 
         public Aim(GameObject gameObject) : base(gameObject)

@@ -45,6 +45,8 @@
     <Compile Include="Collider.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Director.cs" />
+    <Compile Include="Explosion.cs" />
+    <Compile Include="ExplosionBuilder.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Builder\IBuilder.cs" />
