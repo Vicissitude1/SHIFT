@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class GameObject
+    class GameObject : Component
     {
         Transform transform;
         List<Component> components;
