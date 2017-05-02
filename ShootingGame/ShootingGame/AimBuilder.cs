@@ -7,17 +7,15 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class PlayerBuilder : IBuilder
+    class AimBuilder : IBuilder
     {
         GameObject gameObject;
 
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject(position);
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "dragon", 0));
-            gameObject.AddComponent(new Animator(gameObject));
-            gameObject.AddComponent(new Player(gameObject));
-            gameObject.AddComponent(new Collider(gameObject));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "crosshair", 0));
+            gameObject.AddComponent(new Aim(gameObject));
         }
 
         public GameObject GetResult()

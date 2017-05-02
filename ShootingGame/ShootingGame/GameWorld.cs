@@ -12,6 +12,8 @@ namespace ShootingGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Director director;
+        List<GameObject> gameObjects;
         private static GameWorld instance;
         List<Collider> colliders;
         public float DeltaTime { get; private set; }
@@ -44,6 +46,10 @@ namespace ShootingGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameObjects = new List<GameObject>();
+
+            director = new Director(new AimBuilder());
+            gameObjects.Add(director.Construct(new Vector2(300, 300)));
 
             base.Initialize();
         }
@@ -58,6 +64,10 @@ namespace ShootingGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            foreach (GameObject go in gameObjects)
+            {
+                go.LoadContent(Content);
+            }
         }
 
         /// <summary>
@@ -82,7 +92,10 @@ namespace ShootingGame
             // TODO: Add your update logic here
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            foreach (GameObject go in gameObjects)
+            {
+                go.Update();
+            }
             base.Update(gameTime);
         }
 
@@ -95,7 +108,12 @@ namespace ShootingGame
             GraphicsDevice.Clear(Color.LightGray);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            foreach (GameObject go in gameObjects)
+            {
+                go.Draw(spriteBatch);
+            }
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

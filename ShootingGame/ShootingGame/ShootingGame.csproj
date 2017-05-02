@@ -38,6 +38,8 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Aim.cs" />
+    <Compile Include="AimBuilder.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Animator.cs" />
     <Compile Include="Collider.cs" />

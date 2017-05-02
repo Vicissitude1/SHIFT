@@ -93,7 +93,7 @@ namespace ShootingGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(sprite, GameObject.Transform.Position, Color.White);
+            spriteBatch.Draw(sprite, GameObject.Transform.Position, Color.White);
             //spriteBatch.Draw(Sprite, GameObject.Transform.Position, rectangle, Color, rotation, Vector2.Zero, 1, SpriteEffects.None, layerDepth);
         }
     }
