@@ -15,6 +15,7 @@ namespace ShootingGame
         Director director;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
+        Texture2D background;
         private static GameWorld instance;
         List<Collider> colliders;
         public float DeltaTime { get; private set; }
@@ -82,6 +83,7 @@ namespace ShootingGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            background = Content.Load<Texture2D>("sand");
             foreach (GameObject go in gameObjects)
             {
                 go.LoadContent(Content);
@@ -147,6 +149,7 @@ namespace ShootingGame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, 1300, 570), Color.White);
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(spriteBatch);
