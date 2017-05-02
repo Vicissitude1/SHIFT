@@ -42,8 +42,10 @@
     <Compile Include="Animator.cs" />
     <Compile Include="Collider.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="Director.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Interfaces\IAnimateable.cs" />
     <Compile Include="Interfaces\ICollisionEnter.cs" />
     <Compile Include="Interfaces\ICollisionExit.cs" />
@@ -51,6 +53,8 @@
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\ILoadable.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Builder\PlayerBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpriteRenderer.cs" />
