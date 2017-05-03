@@ -121,7 +121,10 @@ namespace ShootingGame
             if (mouse.LeftButton == ButtonState.Pressed)
             {
                 effect = Content.Load<SoundEffect>("gunShot");
-                effect.Play();
+                float volume = 0.5f;
+                float pitch = 0.0f;
+                float pan = 0.0f;
+                effect.Play(volume, pitch, pan);
             }
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
