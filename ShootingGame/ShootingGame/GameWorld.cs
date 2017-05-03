@@ -83,7 +83,7 @@ namespace ShootingGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            background = Content.Load<Texture2D>("sand");
+            background = Content.Load<Texture2D>("DesertCity");
             foreach (GameObject go in gameObjects)
             {
                 go.LoadContent(Content);
