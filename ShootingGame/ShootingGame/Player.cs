@@ -38,6 +38,12 @@ namespace ShootingGame
                 animator.PlayAnimation("WalkRight");
             }
             else animator.PlayAnimation("IdleBack");*/
+         
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                animator.PlayAnimation("Shoot");
+            }
+            else animator.PlayAnimation("Idle");
 
             GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X, GameObject.Transform.Position.Y);
 
@@ -72,7 +78,7 @@ namespace ShootingGame
             animator.CreateAnimation("DieFront", new Animation(3, 920, 0, 150, 150, 5, Vector2.Zero));
             animator.PlayAnimation("IdleBack");*/
             animator.CreateAnimation("Idle", new Animation(7, 0, 0, 60, 100, 0, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(3, 0, 4, 60, 100, 5, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(7, 0, 0, 59, 100, 10, Vector2.Zero));
             animator.PlayAnimation("Idle");
 
         }
