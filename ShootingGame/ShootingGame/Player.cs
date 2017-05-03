@@ -77,8 +77,8 @@ namespace ShootingGame
             animator.CreateAnimation("WalkRight", new Animation(5, 65, 5, 53, 60, 10, Vector2.Zero));
             animator.CreateAnimation("DieFront", new Animation(3, 920, 0, 150, 150, 5, Vector2.Zero));
             animator.PlayAnimation("IdleBack");*/
-            animator.CreateAnimation("Idle", new Animation(7, 0, 0, 60, 100, 0, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(7, 0, 0, 59, 100, 10, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(3, 0, 0, 60, 100, 0, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(6, 0, 0, 61, 100, 10, Vector2.Zero));
             animator.PlayAnimation("Idle");
 
         }
