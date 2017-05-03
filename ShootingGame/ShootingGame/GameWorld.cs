@@ -66,7 +66,7 @@ namespace ShootingGame
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(new Vector2(600, 500)));
+            gameObjects.Add(director.Construct(new Vector2(600, 470)));
             //director = new Director(new ExplosionBuilder());
             //gameObjects.Add(director.Construct(new Vector2(100, 100)));
             director = new Director(new EnemyBuilder());
