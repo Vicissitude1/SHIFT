@@ -26,7 +26,7 @@ namespace ShootingGame
         {
             translation = Vector2.Zero;
             keyState = Keyboard.GetState();
-            
+            /*
             if (keyState.IsKeyDown(Keys.A))
             {
                 translation += new Vector2(-1, 0);
@@ -37,7 +37,9 @@ namespace ShootingGame
                 translation += new Vector2(1, 0);
                 animator.PlayAnimation("WalkRight");
             }
-            else animator.PlayAnimation("IdleBack");
+            else animator.PlayAnimation("IdleBack");*/
+
+            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X, GameObject.Transform.Position.Y);
 
             GameObject.Transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
         }
@@ -63,11 +65,16 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
+            /*
             animator.CreateAnimation("IdleBack", new Animation(1, 0, 8, 33, 60, 6, Vector2.Zero));
             animator.CreateAnimation("WalkLeft", new Animation(5, 218, 0, 45, 60, 10, Vector2.Zero));
             animator.CreateAnimation("WalkRight", new Animation(5, 65, 5, 53, 60, 10, Vector2.Zero));
             animator.CreateAnimation("DieFront", new Animation(3, 920, 0, 150, 150, 5, Vector2.Zero));
-            animator.PlayAnimation("IdleBack");
+            animator.PlayAnimation("IdleBack");*/
+            animator.CreateAnimation("Idle", new Animation(7, 0, 0, 60, 100, 0, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(3, 0, 4, 60, 100, 5, Vector2.Zero));
+            animator.PlayAnimation("Idle");
+
         }
 
         public void OnAnimationDone(string animationName)

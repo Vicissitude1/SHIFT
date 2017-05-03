@@ -29,7 +29,7 @@ namespace ShootingGame
         {
             translation = Vector2.Zero;
             keyState = Keyboard.GetState();
-            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X-100, Mouse.GetState().Position.Y-100);
             //position.X = Mouse.GetState().Position.X;
         }
     }
