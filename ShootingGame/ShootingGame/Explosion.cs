@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +11,22 @@ namespace ShootingGame
 {
     class Explosion : Component, IUpdateable, ILoadable, IAnimateable
     {
-        Vector2 translation;
         Animator animator;
-        float timer;
+        public static bool PlayAnimation { get; set; }
 
         public Explosion(GameObject gameObject) : base(gameObject)
         {
-            timer = 1;
+            PlayAnimation = false;
         }
 
         public void Update()
         {
-            //timer -= GameWorld.Instance.DeltaTime;
-            if(timer < 0)
+            if (PlayAnimation)
             {
-                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
+                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X-64, Mouse.GetState().Position.Y-38);
+                animator.PlayAnimation("Explode");
             }
-            animator.PlayAnimation("IdleFront");
+            else animator.PlayAnimation("Idle");
         }
 
         public void LoadContent(ContentManager content)
@@ -37,13 +37,18 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
-            animator.CreateAnimation("IdleFront", new Animation(5, 0, 0, 125, 110, 6, Vector2.Zero));
-            animator.PlayAnimation("IdleFront");
+            //animator.CreateAnimation("Explode", new Animation(7, 20, 0, 74, 40, 10, Vector2.Zero));
+            animator.CreateAnimation("Explode", new Animation(3, 25, 0, 128, 65, 10, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 10, 110, 0, Vector2.Zero));
+            animator.PlayAnimation("Idle");
         }
 
         public void OnAnimationDone(string animationName)
         {
-            
+            if (animationName.Contains("Explode"))
+            {
+                PlayAnimation = false;
+            }
         }
     }
 }
