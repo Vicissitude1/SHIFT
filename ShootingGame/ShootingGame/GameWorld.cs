@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ShootingGame
 {
@@ -16,6 +17,7 @@ namespace ShootingGame
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
         Texture2D background;
+        private SoundEffect effect;
         private static GameWorld instance;
         List<Collider> colliders;
         public float DeltaTime { get; private set; }
@@ -81,6 +83,8 @@ namespace ShootingGame
         /// </summary>
         protected override void LoadContent()
         {
+            
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -113,6 +117,12 @@ namespace ShootingGame
                 Exit();
 
             // TODO: Add your update logic here
+            MouseState mouse = Mouse.GetState();
+            if (mouse.LeftButton == ButtonState.Pressed)
+            {
+                effect = Content.Load<SoundEffect>("gunShot");
+                effect.Play();
+            }
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
