@@ -64,9 +64,11 @@ namespace ShootingGame
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             director = new Director(new AimBuilder());
-            gameObjects.Add(director.Construct(new Vector2(300, 300)));
-            director = new Director(new ExplosionBuilder());
-            gameObjects.Add(director.Construct(new Vector2(100, 100)));
+            gameObjects.Add(director.Construct(new Vector2(200, 200)));
+            director = new Director(new PlayerBuilder());
+            gameObjects.Add(director.Construct(new Vector2(600, 500)));
+            //director = new Director(new ExplosionBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(100, 100)));
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
 

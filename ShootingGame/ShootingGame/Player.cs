@@ -15,38 +15,59 @@ namespace ShootingGame
         Vector2 translation;
         Animator animator;
         KeyboardState keyState;
+        float speed;
 
         public Player(GameObject gameObject) : base(gameObject)
         {
-            
-        }
-
-        public void Update()
-        {
-            Move();
+            speed = 100;
         }
 
         public void Move()
         {
             translation = Vector2.Zero;
             keyState = Keyboard.GetState();
+            
+            if (keyState.IsKeyDown(Keys.A))
+            {
+                translation += new Vector2(-1, 0);
+                animator.PlayAnimation("WalkLeft");
+            }
+            else if (keyState.IsKeyDown(Keys.D))
+            {
+                translation += new Vector2(1, 0);
+                animator.PlayAnimation("WalkRight");
+            }
+            else animator.PlayAnimation("IdleBack");
 
+            GameObject.Transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
         }
 
+        public void Update()
+        {
+            //Makes sure that the player's move function is called
+            Move();
+        }
+
+        /// <summary>
+        /// Loads the player's content
+        /// </summary>
+        /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            this.animator = (Animator)GameObject.GetComponent("Animator");
+            //Sets up a reference to the palyer's animator
+            animator = (Animator)GameObject.GetComponent("Animator");
+
+            //We can make our animations when we have a reference to the player's animator.
             CreateAnimation();
         }
 
         public void CreateAnimation()
         {
-            animator.CreateAnimation("Walk", new Animation(4, 400, 0, 125, 90, 3, Vector2.Zero));
-            animator.CreateAnimation("FlyRight", new Animation(4, 285, 0, 124, 80, 9, Vector2.Zero));
-            animator.CreateAnimation("FlyLeft", new Animation(4, 165, 0, 123, 75, 8, Vector2.Zero));
-            animator.CreateAnimation("Fall", new Animation(4, 5, 1, 120, 115, 0, Vector2.Zero));
-            animator.CreateAnimation("Run", new Animation(4, 400, 0, 125, 90, 8, Vector2.Zero));
-            animator.PlayAnimation("Walk");
+            animator.CreateAnimation("IdleBack", new Animation(1, 0, 8, 33, 60, 6, Vector2.Zero));
+            animator.CreateAnimation("WalkLeft", new Animation(5, 218, 0, 45, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("WalkRight", new Animation(5, 65, 5, 53, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("DieFront", new Animation(3, 920, 0, 150, 150, 5, Vector2.Zero));
+            animator.PlayAnimation("IdleBack");
         }
 
         public void OnAnimationDone(string animationName)
