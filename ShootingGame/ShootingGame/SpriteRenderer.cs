@@ -29,6 +29,12 @@ namespace ShootingGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (GameObject.GetComponent("Enemy") is Enemy)
+                spriteBatch.DrawString(GameWorld.Instance.AFont, ((int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth).ToString(), new Vector2(GameObject.Transform.Position.X + 10, GameObject.Transform.Position.Y - 10), Color.DarkBlue);
+
+            if (GameObject.GetComponent("Enemy") is Enemy)
+                spriteBatch.DrawString(GameWorld.Instance.BFont, "Health: " + Player.Health, new Vector2(100, 600), Color.Black);
+
             spriteBatch.Draw(Sprite, GameObject.Transform.Position + Offset, Rectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, layerDepth);
         }
 

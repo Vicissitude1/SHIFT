@@ -19,6 +19,8 @@ namespace ShootingGame
         private static GameWorld instance;
         List<Collider> colliders;
         public float DeltaTime { get; private set; }
+        public SpriteFont AFont { get; private set; }
+        public SpriteFont BFont { get; private set; }
         internal List<Collider> Colliders
         {
             get
@@ -71,7 +73,7 @@ namespace ShootingGame
             gameObjects.Add(director.Construct(new Vector2(600, 470)));
             
             director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(200, 200)));
+            gameObjects.Add(director.Construct(new Vector2(500, 300)));
 
             base.Initialize();
         }
@@ -86,6 +88,8 @@ namespace ShootingGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            AFont = Content.Load<SpriteFont>("AFont");
+            BFont = Content.Load<SpriteFont>("BFont");
             background = Content.Load<Texture2D>("DesertCity");
             foreach (GameObject go in gameObjects)
             {

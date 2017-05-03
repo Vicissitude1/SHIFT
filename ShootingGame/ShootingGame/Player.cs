@@ -17,10 +17,12 @@ namespace ShootingGame
         KeyboardState keyState;
         float speed;
         bool playAnimation;
+        public static int Health { get; set; }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
             speed = 100;
+            Health = 100;
             playAnimation = false;
         }
 
@@ -111,8 +113,7 @@ namespace ShootingGame
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.DrawString(GameWorld.Instance.AFont, "Score: " + score, new Vector2(10, 100), Color.LightGreen);
-            //spriteBatch.DrawString(GameWorld.Instance.AFont, "Lifes left: " + lifesAmount, new Vector2(10, 130), Color.AliceBlue);
+            spriteBatch.DrawString(GameWorld.Instance.BFont, "Health: " + Health, new Vector2(100, 600), Color.Black);
         }
     }
 }

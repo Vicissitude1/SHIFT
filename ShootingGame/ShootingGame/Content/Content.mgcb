@@ -157,3 +157,15 @@
 /processorParam:TextureFormat=Color
 /build:explosion2.png
 
+#begin AFont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:AFont
+
+#begin BFont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:BFont
+
