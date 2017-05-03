@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Player : Component, IUpdateable, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit, IDrawable
+    class Player : Component, IUpdateable, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
     {
         Vector2 translation;
         Animator animator;
@@ -110,10 +110,6 @@ namespace ShootingGame
         public void OnCollisionExit(Collider other)
         {
             //(other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
-        }
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.DrawString(GameWorld.Instance.BFont, "Health: " + Health, new Vector2(100, 600), Color.Black);
         }
     }
 }

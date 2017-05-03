@@ -38,7 +38,7 @@ namespace ShootingGame
         public void CreateAnimation()
         {
             //animator.CreateAnimation("Explode", new Animation(7, 20, 0, 74, 40, 10, Vector2.Zero));
-            animator.CreateAnimation("Explode", new Animation(3, 25, 0, 128, 65, 10, Vector2.Zero));
+            animator.CreateAnimation("Explode", new Animation(3, 25, 0, 128, 65, 15, Vector2.Zero));
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 10, 110, 0, Vector2.Zero));
             animator.PlayAnimation("Idle");
         }
