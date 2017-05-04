@@ -101,6 +101,11 @@ namespace ShootingGame
             {
                 go.LoadContent(Content);
             }
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.GetComponent("Enemy") is Enemy)
+                    (go.GetComponent("Enemy") as Enemy).T.Start();
+            }
         }
 
         /// <summary>

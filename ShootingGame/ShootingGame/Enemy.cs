@@ -6,29 +6,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Enemy : Component, IUpdateable, ILoadable, IAnimateable
+    class Enemy : Component, ILoadable, IAnimateable
     {
         int speed;
         Vector2 translation;
         Animator animator;
         float timer;
         public int EnemyHealth { get; set; }
+        public Thread T { get; private set; }
 
         public Enemy(GameObject gameObject) : base(gameObject)
         {
             timer = 0;
             speed = 100;
             EnemyHealth = 100;
+            T = new Thread(Update);
+            T.IsBackground = true;
         }
 
         public void Update()
         {
-            UpdateHealth();
-            Move();
+            while (true)
+            {
+                UpdateHealth();
+                Move();
+            }
         }
 
         public void Move()
@@ -76,11 +83,12 @@ namespace ShootingGame
                 //if(Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Width) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height))
                 if(Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + 40) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + 60))
                 {
-                    timer += GameWorld.Instance.DeltaTime;
-                    if (timer > 0.2 && EnemyHealth > 0)
+                    //timer += GameWorld.Instance.DeltaTime;
+                    if (EnemyHealth > 0)
                     {
+                        Thread.Sleep(100);
                         EnemyHealth -= 10;
-                        timer = 0;
+                        //timer = 0;
                     }
                 }
             }
