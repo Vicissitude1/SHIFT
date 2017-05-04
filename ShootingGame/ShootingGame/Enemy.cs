@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Enemy : Component, ILoadable, IAnimateable
+    class Enemy : Component, ILoadable, IAnimateable, IUpdateable
     {
         int speed;
         Vector2 translation;
@@ -25,31 +25,30 @@ namespace ShootingGame
             timer = 0;
             speed = 100;
             EnemyHealth = 100;
-            T = new Thread(Update);
+            T = new Thread(UpdateHealth);
             T.IsBackground = true;
         }
 
         public void Update()
         {
-            while (true)
-            {
-                UpdateHealth();
-                Move();
-            }
+            Move();
         }
 
         public void Move()
         {
-            //A reference to the current keyboard state
-            KeyboardState keyState = Keyboard.GetState();
-
+            /*
+                //A reference to the current keyboard state
+                KeyboardState keyState = Keyboard.GetState();
+                */
             //The current translation of the player
             //We are restting it to make sure that he stops moving if not keys are pressed
             translation = Vector2.Zero;
 
+
             //checks for input and adds it to the translation
             if (EnemyHealth <= 0)
                 animator.PlayAnimation("Die");
+            /*
             else if (keyState.IsKeyDown(Keys.W))
             {
                 translation += new Vector2(0, -1);
@@ -69,28 +68,33 @@ namespace ShootingGame
             {
                 translation += new Vector2(1, 0);
                 animator.PlayAnimation("WalkRight");
-            }
+            }*/
             else animator.PlayAnimation("Shoot");
 
+            //animator.PlayAnimation("Shoot");
             //Move the player's gameobject framerate independent
-            GameObject.Transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
+            //GameObject.Transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
         }
 
         public void UpdateHealth()
         {
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && Mouse.GetState().Position.X >= GameObject.Transform.Position.X && Mouse.GetState().Position.Y >= GameObject.Transform.Position.Y)
+            while(true)
             {
-                //if(Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Width) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height))
-                if(Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + 40) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + 60))
+                if (Mouse.GetState().LeftButton == ButtonState.Pressed && Mouse.GetState().Position.X >= GameObject.Transform.Position.X && Mouse.GetState().Position.Y >= GameObject.Transform.Position.Y)
                 {
-                    //timer += GameWorld.Instance.DeltaTime;
-                    if (EnemyHealth > 0)
+                    //if(Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Width) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height))
+                    if (Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + 40) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + 60))
                     {
-                        Thread.Sleep(100);
-                        EnemyHealth -= 10;
-                        //timer = 0;
+                        //timer += GameWorld.Instance.DeltaTime;
+                        if (EnemyHealth > 0)
+                        {
+                            //Thread.Sleep(100);
+                            EnemyHealth -= 10;
+                            //timer = 0;
+                        }
                     }
                 }
+                Thread.Sleep(100);
             }
         }
 

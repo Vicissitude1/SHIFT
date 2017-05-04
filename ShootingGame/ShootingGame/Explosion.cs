@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Explosion : Component, ILoadable, IAnimateable
+    class Explosion : Component, ILoadable, IAnimateable, IUpdateable
     {
         Animator animator;
         public static bool PlayAnimation { get; set; }
@@ -19,20 +19,25 @@ namespace ShootingGame
         public Explosion(GameObject gameObject) : base(gameObject)
         {
             PlayAnimation = false;
-            T = new Thread(Update);
+            T = new Thread(Move);
             T.IsBackground = true;
         }
 
         public void Update()
         {
+            if (PlayAnimation)
+            {
+                animator.PlayAnimation("Explode");
+            }
+            else animator.PlayAnimation("Idle");
+        }
+
+        public void Move()
+        {
             while (true)
             {
-                if (PlayAnimation)
-                {
-                    GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 64, Mouse.GetState().Position.Y - 38);
-                    animator.PlayAnimation("Explode");
-                }
-                else animator.PlayAnimation("Idle");
+                Thread.Sleep(100);
+                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 64, Mouse.GetState().Position.Y - 38);
             }
         }
 

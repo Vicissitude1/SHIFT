@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using System;
+using Microsoft.Xna.Framework.Media;
 
 namespace ShootingGame
 {
@@ -14,6 +15,11 @@ namespace ShootingGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        /// <summary>
+        /// The object that is going to be locked
+        /// </summary>
+        static object thisLock = new object();
         Director director;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
@@ -21,6 +27,8 @@ namespace ShootingGame
         private SoundEffect effect;
         private static GameWorld instance;
         List<Collider> colliders;
+        bool playSound;
+        Song shootSound;
         public float DeltaTime { get; private set; }
         public SpriteFont AFont { get; private set; }
         public SpriteFont BFont { get; private set; }
@@ -67,16 +75,26 @@ namespace ShootingGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Rnd = new Random();
+            playSound = false;
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
-            director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 300)));
+            //director = new Director(new EnemyBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(500, 300)));
+
+            for (int i = 0; i < 5; i++)
+            {
+                director = new Director(new EnemyBuilder());
+                gameObjects.Add(director.Construct(new Vector2(Rnd.Next(100, 900), Rnd.Next(100, 400))));
+            }
+
             director = new Director(new ExplosionBuilder());
             gameObjects.Add(director.Construct(new Vector2(100, 100)));
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
             gameObjects.Add(director.Construct(new Vector2(600, 470)));
+            MediaPlayer.IsRepeating = false;
 
             base.Initialize();
         }
@@ -93,10 +111,12 @@ namespace ShootingGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            Rnd = new Random();
+            
             AFont = Content.Load<SpriteFont>("AFont");
             BFont = Content.Load<SpriteFont>("BFont");
             background = Content.Load<Texture2D>("DesertCity");
+            //shootSound = Content.Load<Song>("gunShot");
+
             foreach (GameObject go in gameObjects)
             {
                 go.LoadContent(Content);
@@ -135,26 +155,28 @@ namespace ShootingGame
                 Exit();
 
             // TODO: Add your update logic here
-            MouseState mouse = Mouse.GetState();
-            if (mouse.LeftButton == ButtonState.Pressed)
+            
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
                 effect = Content.Load<SoundEffect>("gunShot");
                 float volume = 0.5f;
                 float pitch = 0.0f;
                 float pan = 0.0f;
                 effect.Play(volume, pitch, pan);
+                playSound = false;
             }
+            /*
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
+            {
+                MediaPlayer.Play(shootSound);
+                playSound = false;
+            }
+            if (Mouse.GetState().LeftButton == ButtonState.Released && !playSound)
+            {
+                playSound = true;
+            }*/
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (objectsToRemove.Count > 0)
-            {
-                foreach (GameObject go in objectsToRemove)
-                {
-                    gameObjects.Remove(go);
-                }
-                objectsToRemove.Clear();
-            }
 
             foreach (GameObject go in gameObjects)
             {

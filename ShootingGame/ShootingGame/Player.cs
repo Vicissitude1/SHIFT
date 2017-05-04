@@ -11,62 +11,39 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
+    class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit, IUpdateable
     {
-        Vector2 translation;
         Animator animator;
-        KeyboardState keyState;
-        float speed;
         bool playAnimation;
         public static int Health { get; set; }
         public Thread T { get; private set; }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
-            speed = 100;
             Health = 100;
             playAnimation = false;
-            T = new Thread(Update);
+            T = new Thread(Move);
             T.IsBackground = true;
         }
 
         public void Move()
         {
-            translation = Vector2.Zero;
-            //keyState = Keyboard.GetState();
-            /*
-            if (keyState.IsKeyDown(Keys.A))
+            while (true)
             {
-                translation += new Vector2(-1, 0);
-                animator.PlayAnimation("WalkLeft");
+                Thread.Sleep(50);
+                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
             }
-            else if (keyState.IsKeyDown(Keys.D))
-            {
-                translation += new Vector2(1, 0);
-                animator.PlayAnimation("WalkRight");
-            }
-            else animator.PlayAnimation("IdleBack");*/
-         
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed || playAnimation)
-            {
-                animator.PlayAnimation("Shoot");
-                if(Explosion.PlayAnimation == false)
-                Explosion.PlayAnimation = true;
-            }
-            else animator.PlayAnimation("Idle");
-
-            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
-
-            GameObject.Transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
         }
 
         public void Update()
         {
-            //Makes sure that the player's move function is called
-            while (true)
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed || playAnimation)
             {
-                Move();
+                animator.PlayAnimation("Shoot");
+                if (Explosion.PlayAnimation == false)
+                    Explosion.PlayAnimation = true;
             }
+            else animator.PlayAnimation("Idle");
         }
 
         /// <summary>
