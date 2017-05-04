@@ -5,28 +5,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Explosion : Component, IUpdateable, ILoadable, IAnimateable
+    class Explosion : Component, ILoadable, IAnimateable
     {
         Animator animator;
         public static bool PlayAnimation { get; set; }
+        public Thread T { get; private set; }
 
         public Explosion(GameObject gameObject) : base(gameObject)
         {
             PlayAnimation = false;
+            T = new Thread(Update);
+            T.IsBackground = true;
         }
 
         public void Update()
         {
-            if (PlayAnimation)
+            while (true)
             {
-                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X-64, Mouse.GetState().Position.Y-38);
-                animator.PlayAnimation("Explode");
+                if (PlayAnimation)
+                {
+                    GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 64, Mouse.GetState().Position.Y - 38);
+                    animator.PlayAnimation("Explode");
+                }
+                else animator.PlayAnimation("Idle");
             }
-            else animator.PlayAnimation("Idle");
         }
 
         public void LoadContent(ContentManager content)

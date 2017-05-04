@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Player : Component, IUpdateable, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
+    class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
     {
         Vector2 translation;
         Animator animator;
@@ -18,18 +19,21 @@ namespace ShootingGame
         float speed;
         bool playAnimation;
         public static int Health { get; set; }
+        public Thread T { get; private set; }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
             speed = 100;
             Health = 100;
             playAnimation = false;
+            T = new Thread(Update);
+            T.IsBackground = true;
         }
 
         public void Move()
         {
             translation = Vector2.Zero;
-            keyState = Keyboard.GetState();
+            //keyState = Keyboard.GetState();
             /*
             if (keyState.IsKeyDown(Keys.A))
             {
@@ -51,7 +55,7 @@ namespace ShootingGame
             }
             else animator.PlayAnimation("Idle");
 
-            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X, GameObject.Transform.Position.Y);
+            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
 
             GameObject.Transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
         }
@@ -59,7 +63,10 @@ namespace ShootingGame
         public void Update()
         {
             //Makes sure that the player's move function is called
-            Move();
+            while (true)
+            {
+                Move();
+            }
         }
 
         /// <summary>

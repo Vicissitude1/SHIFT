@@ -105,6 +105,12 @@ namespace ShootingGame
             {
                 if (go.GetComponent("Enemy") is Enemy)
                     (go.GetComponent("Enemy") as Enemy).T.Start();
+                else if (go.GetComponent("Player") is Player)
+                    (go.GetComponent("Player") as Player).T.Start();
+                else if (go.GetComponent("Aim") is Aim)
+                    (go.GetComponent("Aim") as Aim).T.Start();
+                else if (go.GetComponent("Explosion") is Explosion)
+                    (go.GetComponent("Explosion") as Explosion).T.Start();
             }
         }
 

@@ -6,22 +6,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Aim : Component, IUpdateable
+    class Aim : Component
     {
         Vector2 translation;
         KeyboardState keyState;
+        public Thread T { get; private set; }
 
         public Aim(GameObject gameObject) : base(gameObject)
         {
-
+            T = new Thread(Update);
+            T.IsBackground = true;
         }
 
         public void Update()
         {
+            while(true)
             Move();
         }
 
