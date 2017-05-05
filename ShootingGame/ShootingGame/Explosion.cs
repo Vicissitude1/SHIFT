@@ -13,6 +13,7 @@ namespace ShootingGame
     class Explosion : Component, ILoadable, IAnimateable
     {
         Animator animator;
+        Vector2 mouseCurrentPosition;
         public static bool PlayAnimation { get; set; }
         public Thread T { get; private set; }
 
@@ -28,8 +29,13 @@ namespace ShootingGame
             while (true)
             {
                 Thread.Sleep(100);
-                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 64, Mouse.GetState().Position.Y - 38);
-                if (PlayAnimation)
+
+                if(Mouse.GetState().Position.Y <=450)
+                mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+                else mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, 450);
+
+                GameObject.Transform.Position = new Vector2(mouseCurrentPosition.X - 64, mouseCurrentPosition.Y - 38);
+                if (PlayAnimation && mouseCurrentPosition.Y <= 450)
                 {
                     animator.PlayAnimation("Explode");
                 }

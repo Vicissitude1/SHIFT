@@ -84,7 +84,10 @@ namespace ShootingGame
 
         public void UpdateHealth()
         {
-            mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+            if (Mouse.GetState().Position.Y <= 450)
+                mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+            else mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, 450);
+
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && mouseCurrentPosition.X >= GameObject.Transform.Position.X && mouseCurrentPosition.Y >= GameObject.Transform.Position.Y)
             {
                 if (mouseCurrentPosition.X <= (GameObject.Transform.Position.X + 40) && mouseCurrentPosition.Y <= (GameObject.Transform.Position.Y + 60) && EnemyHealth > 0)

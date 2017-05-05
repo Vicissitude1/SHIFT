@@ -115,6 +115,7 @@ namespace ShootingGame
             AFont = Content.Load<SpriteFont>("AFont");
             BFont = Content.Load<SpriteFont>("BFont");
             background = Content.Load<Texture2D>("DesertCity");
+            //background = Content.Load<Texture2D>("sand");
             //shootSound = Content.Load<Song>("gunShot");
 
             foreach (GameObject go in gameObjects)
