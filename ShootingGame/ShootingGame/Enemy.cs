@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Enemy : Component, ILoadable, IAnimateable, IUpdateable
+    class Enemy : Component, ILoadable, IAnimateable
     {
         int speed;
         Vector2 translation;
+        Vector2 mouseCurrentPosition;
         Animator animator;
         float timer;
         public int EnemyHealth { get; set; }
@@ -25,13 +26,18 @@ namespace ShootingGame
             timer = 0;
             speed = 100;
             EnemyHealth = 100;
-            T = new Thread(UpdateHealth);
+            T = new Thread(Update);
             T.IsBackground = true;
         }
 
         public void Update()
         {
-            Move();
+            while(true)
+            {
+                UpdateHealth();
+                Move();
+                Thread.Sleep(100);
+            }
         }
 
         public void Move()
@@ -78,24 +84,13 @@ namespace ShootingGame
 
         public void UpdateHealth()
         {
-            while(true)
+            mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && mouseCurrentPosition.X >= GameObject.Transform.Position.X && mouseCurrentPosition.Y >= GameObject.Transform.Position.Y)
             {
-
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed && Mouse.GetState().Position.X >= GameObject.Transform.Position.X && Mouse.GetState().Position.Y >= GameObject.Transform.Position.Y)
+                if (mouseCurrentPosition.X <= (GameObject.Transform.Position.X + 40) && mouseCurrentPosition.Y <= (GameObject.Transform.Position.Y + 60) && EnemyHealth > 0)
                 {
-                    //if(Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Width) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height))
-                    if (Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + 40) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + 60))
-                    {
-                        //timer += GameWorld.Instance.DeltaTime;
-                        if (EnemyHealth > 0)
-                        {
-                            //Thread.Sleep(100);
-                            EnemyHealth -= 10;
-                            //timer = 0;
-                        }
-                    }
+                    EnemyHealth -= 10;
                 }
-                Thread.Sleep(100);
             }
         }
 

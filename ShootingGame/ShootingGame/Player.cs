@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit, IUpdateable
+    class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
     {
         Animator animator;
         bool playAnimation;
@@ -30,20 +30,16 @@ namespace ShootingGame
         {
             while (true)
             {
-                Thread.Sleep(50);
+                Thread.Sleep(100);
                 GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
+                if (Mouse.GetState().LeftButton == ButtonState.Pressed || playAnimation)
+                {
+                    animator.PlayAnimation("Shoot");
+                    if (Explosion.PlayAnimation == false)
+                        Explosion.PlayAnimation = true;
+                }
+                else animator.PlayAnimation("Idle");
             }
-        }
-
-        public void Update()
-        {
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed || playAnimation)
-            {
-                animator.PlayAnimation("Shoot");
-                if (Explosion.PlayAnimation == false)
-                    Explosion.PlayAnimation = true;
-            }
-            else animator.PlayAnimation("Idle");
         }
 
         /// <summary>
