@@ -80,6 +80,7 @@ namespace ShootingGame
         {
             while(true)
             {
+
                 if (Mouse.GetState().LeftButton == ButtonState.Pressed && Mouse.GetState().Position.X >= GameObject.Transform.Position.X && Mouse.GetState().Position.Y >= GameObject.Transform.Position.Y)
                 {
                     //if(Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Width) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height))
