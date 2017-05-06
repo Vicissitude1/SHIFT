@@ -17,6 +17,7 @@ namespace ShootingGame
         bool playAnimation;
         public static int Health { get; set; }
         public Thread T { get; private set; }
+        public static int Scores { get; set; }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
@@ -24,6 +25,7 @@ namespace ShootingGame
             playAnimation = false;
             T = new Thread(Move);
             T.IsBackground = true;
+            Scores = 0;
         }
 
         public void Move()

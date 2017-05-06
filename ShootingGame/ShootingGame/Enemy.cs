@@ -17,13 +17,13 @@ namespace ShootingGame
         Vector2 translation;
         Vector2 mouseCurrentPosition;
         Animator animator;
-        float timer;
+        bool canInjure;
         public int EnemyHealth { get; set; }
         public Thread T { get; private set; }
 
         public Enemy(GameObject gameObject) : base(gameObject)
         {
-            timer = 0;
+            canInjure = true;
             speed = 4;
             EnemyHealth = 100;
             T = new Thread(Update);
@@ -90,11 +90,14 @@ namespace ShootingGame
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && mouseCurrentPosition.X >= GameObject.Transform.Position.X && mouseCurrentPosition.Y >= GameObject.Transform.Position.Y)
             {
-                if (mouseCurrentPosition.X <= (GameObject.Transform.Position.X + 35) && mouseCurrentPosition.Y <= (GameObject.Transform.Position.Y + 60) && EnemyHealth > 0)
+                if (mouseCurrentPosition.X <= (GameObject.Transform.Position.X + 35) && mouseCurrentPosition.Y <= (GameObject.Transform.Position.Y + 60) && EnemyHealth > 0 && canInjure)
                 {
-                    EnemyHealth -= 10;
+                    EnemyHealth -= 25;
+                    canInjure = false;
                 }
             }
+            if (Mouse.GetState().LeftButton == ButtonState.Released)
+                canInjure = true;
         }
 
         public void LoadContent(ContentManager content)
@@ -105,9 +108,9 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
-            animator.CreateAnimation("WalkBack", new Animation(1, 0, 8, 33, 60, 15, Vector2.Zero));
+            animator.CreateAnimation("WalkBack", new Animation(4, 0, 6, 52, 60, 15, Vector2.Zero));
             animator.CreateAnimation("WalkLeft", new Animation(5, 140, 1, 50, 60, 15, Vector2.Zero));
-            animator.CreateAnimation("WalkRight", new Animation(4, 140, 7, 53, 60, 15, Vector2.Zero));
+            animator.CreateAnimation("WalkRight", new Animation(4, 140, 6, 53, 60, 15, Vector2.Zero));
             animator.CreateAnimation("WalkFront", new Animation(5, 0, 0, 40, 60, 15, Vector2.Zero));
             animator.CreateAnimation("Shoot", new Animation(3, 285, 10, 35, 60, 6, Vector2.Zero));
             animator.CreateAnimation("Die", new Animation(5, 288, 0, 50, 60, 4, Vector2.Zero));
@@ -118,6 +121,8 @@ namespace ShootingGame
         {
             if (animationName.Contains("Die"))
             {
+                GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position));
+                Player.Scores += 5;
                 EnemyHealth = 100;
                 GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 900), GameWorld.Instance.Rnd.Next(100, 400));
             }

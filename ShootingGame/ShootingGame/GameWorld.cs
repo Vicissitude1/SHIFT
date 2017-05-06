@@ -23,6 +23,8 @@ namespace ShootingGame
         Director director;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
+        List<Score> scores;
+        List<Score> scoresToRemove;
         Texture2D background;
         Texture2D sky;
         private SoundEffect effect;
@@ -59,6 +61,32 @@ namespace ShootingGame
             }
         }
 
+        internal List<Score> Scores
+        {
+            get
+            {
+                return scores;
+            }
+
+            set
+            {
+                scores = value;
+            }
+        }
+
+        internal List<Score> ScoresToRemove
+        {
+            get
+            {
+                return scoresToRemove;
+            }
+
+            set
+            {
+                scoresToRemove = value;
+            }
+        }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -81,7 +109,9 @@ namespace ShootingGame
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
-            
+            scores = new List<Score>();
+            scoresToRemove = new List<Score>();
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
             director = new Director(new EnemyBuilder());
@@ -194,15 +224,8 @@ namespace ShootingGame
             {
                 go.Update();
             }
-            /*
-            if(objectsToRemove.Count > 0)
-            {
-                foreach (GameObject go in objectsToRemove)
-                {
-                    gameObjects.Remove(go);
-                }
-                objectsToRemove.Clear();
-            }*/
+
+            ClearLists();
 
             base.Update(gameTime);
         }
@@ -225,8 +248,35 @@ namespace ShootingGame
             {
                 go.Draw(spriteBatch);
             }
+            if (scores.Count > 0)
+            {
+                foreach (Score s in scores)
+                {
+                    s.Draw(spriteBatch);
+                }
+            }
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        public void ClearLists()
+        {
+            if (scoresToRemove.Count > 0)
+            {
+                foreach (Score s in scoresToRemove)
+                {
+                    scores.Remove(s);
+                }
+                scoresToRemove.Clear();
+            }
+            if (objectsToRemove.Count > 0)
+            {
+                foreach (GameObject go in objectsToRemove)
+                {
+                    gameObjects.Remove(go);
+                }
+                objectsToRemove.Clear();
+            }
         }
     }
 }
