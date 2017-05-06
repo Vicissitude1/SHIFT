@@ -24,7 +24,7 @@ namespace ShootingGame
         public Enemy(GameObject gameObject) : base(gameObject)
         {
             timer = 0;
-            speed = 100;
+            speed = 4;
             EnemyHealth = 100;
             T = new Thread(Update);
             T.IsBackground = true;
@@ -36,16 +36,16 @@ namespace ShootingGame
             {
                 UpdateHealth();
                 Move();
-                Thread.Sleep(100);
+                Thread.Sleep(10);
             }
         }
 
         public void Move()
         {
-            /*
-                //A reference to the current keyboard state
-                KeyboardState keyState = Keyboard.GetState();
-                */
+            
+            //A reference to the current keyboard state
+            KeyboardState keyState = Keyboard.GetState();
+                
             //The current translation of the player
             //We are restting it to make sure that he stops moving if not keys are pressed
             translation = Vector2.Zero;
@@ -54,7 +54,7 @@ namespace ShootingGame
             //checks for input and adds it to the translation
             if (EnemyHealth <= 0)
                 animator.PlayAnimation("Die");
-            /*
+            
             else if (keyState.IsKeyDown(Keys.W))
             {
                 translation += new Vector2(0, -1);
@@ -74,12 +74,12 @@ namespace ShootingGame
             {
                 translation += new Vector2(1, 0);
                 animator.PlayAnimation("WalkRight");
-            }*/
+            }
             else animator.PlayAnimation("Shoot");
 
             //animator.PlayAnimation("Shoot");
             //Move the player's gameobject framerate independent
-            //GameObject.Transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
+            GameObject.Transform.Position += translation * speed * (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale;
         }
 
         public void UpdateHealth()
@@ -90,7 +90,7 @@ namespace ShootingGame
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && mouseCurrentPosition.X >= GameObject.Transform.Position.X && mouseCurrentPosition.Y >= GameObject.Transform.Position.Y)
             {
-                if (mouseCurrentPosition.X <= (GameObject.Transform.Position.X + 40) && mouseCurrentPosition.Y <= (GameObject.Transform.Position.Y + 60) && EnemyHealth > 0)
+                if (mouseCurrentPosition.X <= (GameObject.Transform.Position.X + 35) && mouseCurrentPosition.Y <= (GameObject.Transform.Position.Y + 60) && EnemyHealth > 0)
                 {
                     EnemyHealth -= 10;
                 }
@@ -105,10 +105,10 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
-            animator.CreateAnimation("WalkBack", new Animation(1, 0, 8, 33, 60, 6, Vector2.Zero));
-            animator.CreateAnimation("WalkLeft", new Animation(5, 140, 1, 50, 60, 10, Vector2.Zero));
-            animator.CreateAnimation("WalkRight", new Animation(4, 140, 7, 53, 60, 10, Vector2.Zero));
-            animator.CreateAnimation("WalkFront", new Animation(5, 0, 0, 40, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("WalkBack", new Animation(1, 0, 8, 33, 60, 15, Vector2.Zero));
+            animator.CreateAnimation("WalkLeft", new Animation(5, 140, 1, 50, 60, 15, Vector2.Zero));
+            animator.CreateAnimation("WalkRight", new Animation(4, 140, 7, 53, 60, 15, Vector2.Zero));
+            animator.CreateAnimation("WalkFront", new Animation(5, 0, 0, 40, 60, 15, Vector2.Zero));
             animator.CreateAnimation("Shoot", new Animation(3, 285, 10, 35, 60, 6, Vector2.Zero));
             animator.CreateAnimation("Die", new Animation(5, 288, 0, 50, 60, 4, Vector2.Zero));
             animator.PlayAnimation("Shoot");

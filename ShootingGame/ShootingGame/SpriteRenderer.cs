@@ -21,27 +21,61 @@ namespace ShootingGame
 
         private float layerDepth;
 
+        public float Scale { get; private set; }
+
+        Texture2D pixel;
+
         public SpriteRenderer(GameObject gameObject, string spriteName, float layerDepth) : base(gameObject)
         {
             this.spriteName = spriteName;
             this.layerDepth = layerDepth;
+            Scale = 1;
+            pixel = new Texture2D(GameWorld.Instance.GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.White });
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             if (GameObject.GetComponent("Enemy") is Enemy)
-                spriteBatch.DrawString(GameWorld.Instance.AFont, ((int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth).ToString(), new Vector2(GameObject.Transform.Position.X + 10, GameObject.Transform.Position.Y - 10), Color.DarkBlue);
+            {
+                spriteBatch.DrawString(GameWorld.Instance.AFont, ((int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth).ToString(), new Vector2(GameObject.Transform.Position.X + 10, GameObject.Transform.Position.Y - 16), Color.DarkBlue);
+                Scale = 1.5f - 400 / (GameObject.GetComponent("Transform") as Transform).Position.Y / 5;
+                //scale = 1;
+                DrawBorder(spriteBatch, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 5, 50, 5), 1, Color.Black);
+                if ((GameObject.GetComponent("Enemy") as Enemy).EnemyHealth >= 30)
+                    spriteBatch.Draw(pixel, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 4, (int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth / 2, 3), Color.Green);
+                else spriteBatch.Draw(pixel, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 4, (int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth / 2, 3), Color.Red);
+            }
 
-            if (GameObject.GetComponent("Enemy") is Enemy)
+            else if (GameObject.GetComponent("Player") is Player)
+            {
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "Health: " + Player.Health, new Vector2(100, 600), Color.Black);
+                DrawBorder(spriteBatch, new Rectangle(200, 600, 102, 20), 1, Color.Black);
+                if(Player.Health >= 30)
+                    spriteBatch.Draw(pixel, new Rectangle(200, 601, Player.Health,18), Color.Green);
+                else spriteBatch.Draw(pixel, new Rectangle(200, 601, Player.Health, 18), Color.Red);
 
-            spriteBatch.Draw(Sprite, GameObject.Transform.Position + Offset, Rectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, layerDepth);
+            }
+
+            spriteBatch.Draw(Sprite, GameObject.Transform.Position + Offset, Rectangle, Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, layerDepth);
         }
 
         public void LoadContent(ContentManager content)
         {
             Sprite = content.Load<Texture2D>(spriteName);
             this.Rectangle = new Rectangle(0, 0, Sprite.Width, Sprite.Height);
+        }
+
+        public void DrawBorder(SpriteBatch spriteBatch, Rectangle rectangleToDraw, int thicknessOfBorder, Color borderColor)
+        {
+            // Draw top line
+            spriteBatch.Draw(pixel, new Rectangle(rectangleToDraw.X, rectangleToDraw.Y, rectangleToDraw.Width, thicknessOfBorder), borderColor);
+            // Draw left line
+            spriteBatch.Draw(pixel, new Rectangle(rectangleToDraw.X - thicknessOfBorder, rectangleToDraw.Y, thicknessOfBorder, rectangleToDraw.Height), borderColor);
+            // Draw right line
+            spriteBatch.Draw(pixel, new Rectangle((rectangleToDraw.X + rectangleToDraw.Width - thicknessOfBorder), rectangleToDraw.Y, thicknessOfBorder, rectangleToDraw.Height), borderColor);
+            // Draw bottom line
+            spriteBatch.Draw(pixel, new Rectangle(rectangleToDraw.X, rectangleToDraw.Y + rectangleToDraw.Height - thicknessOfBorder, rectangleToDraw.Width, thicknessOfBorder), borderColor);
         }
     }
 }

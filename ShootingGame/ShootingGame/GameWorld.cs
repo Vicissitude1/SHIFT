@@ -24,6 +24,7 @@ namespace ShootingGame
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
         Texture2D background;
+        Texture2D sky;
         private SoundEffect effect;
         private static GameWorld instance;
         List<Collider> colliders;
@@ -79,14 +80,23 @@ namespace ShootingGame
             playSound = false;
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
-            //director = new Director(new EnemyBuilder());
-            //gameObjects.Add(director.Construct(new Vector2(500, 300)));
+            colliders = new List<Collider>();
+            
+            director = new Director(new EnemyBuilder());
+            gameObjects.Add(director.Construct(new Vector2(500, 100)));
+            director = new Director(new EnemyBuilder());
+            gameObjects.Add(director.Construct(new Vector2(500, 200)));
+            director = new Director(new EnemyBuilder());
+            gameObjects.Add(director.Construct(new Vector2(500, 300)));
+            director = new Director(new EnemyBuilder());
+            gameObjects.Add(director.Construct(new Vector2(500, 400)));
 
-            for (int i = 0; i < 5; i++)
+            /*
+            for (int i = 0; i < 2; i++)
             {
                 director = new Director(new EnemyBuilder());
                 gameObjects.Add(director.Construct(new Vector2(Rnd.Next(100, 900), Rnd.Next(100, 400))));
-            }
+            }*/
 
             director = new Director(new ExplosionBuilder());
             gameObjects.Add(director.Construct(new Vector2(100, 100)));
@@ -114,8 +124,9 @@ namespace ShootingGame
             
             AFont = Content.Load<SpriteFont>("AFont");
             BFont = Content.Load<SpriteFont>("BFont");
-            background = Content.Load<Texture2D>("DesertCity");
-            //background = Content.Load<Texture2D>("sand");
+            //background = Content.Load<Texture2D>("DesertCity");
+            background = Content.Load<Texture2D>("sand");
+            sky = Content.Load<Texture2D>("sky");
             //shootSound = Content.Load<Song>("gunShot");
 
             foreach (GameObject go in gameObjects)
@@ -206,7 +217,10 @@ namespace ShootingGame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, 1300, 570), Color.White);
+            
+            spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
+            spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
+
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(spriteBatch);
