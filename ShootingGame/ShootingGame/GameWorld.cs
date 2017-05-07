@@ -27,6 +27,7 @@ namespace ShootingGame
         List<Score> scoresToRemove;
         Texture2D background;
         Texture2D sky;
+        Texture2D grass;
         private SoundEffect effect;
         private static GameWorld instance;
         List<Collider> colliders;
@@ -157,6 +158,7 @@ namespace ShootingGame
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
+            grass = Content.Load<Texture2D>("grass");
             //shootSound = Content.Load<Song>("gunShot");
 
             foreach (GameObject go in gameObjects)
@@ -240,10 +242,21 @@ namespace ShootingGame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            
+
+            //spriteBatch.Draw(sky, new Vector2(0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            /*
+            spriteBatch.Draw(sky, new Vector2 (0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(background, new Vector2(0, 100), new Rectangle(0, 100, 1300, 470), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(grass, new Vector2(0, 65), new Rectangle(0, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1f);
+            spriteBatch.Draw(grass, new Vector2(500, 65), new Rectangle(500, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(grass, new Vector2(1000, 65), new Rectangle(1000, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
+            */
             spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
             spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
-
+            spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
+            spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
+            spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
+            
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(spriteBatch);

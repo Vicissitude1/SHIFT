@@ -14,7 +14,7 @@ namespace ShootingGame
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject(position);
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "expl", 1));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "expl", 0.8f));
             gameObject.AddComponent(new Animator(gameObject));
             gameObject.AddComponent(new Explosion(gameObject));
         }
