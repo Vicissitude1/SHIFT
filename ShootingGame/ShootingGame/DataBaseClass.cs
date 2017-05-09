@@ -14,8 +14,8 @@ namespace ShootingGame
         {
             get { return dataBaseInstance ?? (dataBaseInstance = new DataBaseClass()); }
         }
-        //List<ListRow> activities = new List<ListRow>();
-        string[,] roomNotes = new string[8, 8];
+        List<PlayerListRow> players = new List<PlayerListRow>();
+        int currentPlace;
 
         /// <summary>
         /// private construktor
@@ -44,30 +44,30 @@ namespace ShootingGame
                 command.ExecuteNonQuery();
             }*/
         }
-        /*
-        public List<ListRow> GetList()
+        
+        public List<PlayerListRow> GetPlayersList()
         {
-            if (activities.Count > 0) activities.Clear();
-
+            if (players.Count > 0) players.Clear();
+            currentPlace = 1;
             try
             {
                 using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
                 {
                     dbConn.Open();
-                    SQLiteCommand command = new SQLiteCommand("select * from schooltable", dbConn);
+                    SQLiteCommand command = new SQLiteCommand("select name,score from scoretable order by score desc", dbConn);
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        activities.Add(new ListRow(reader["time"].ToString(), reader["activity"].ToString(), reader["room"].ToString()));
+                        players.Add(new PlayerListRow(currentPlace, reader["name"].ToString(), (int)reader["score"]));
+                        currentPlace++;
                     }
                 }
             }
             catch (SQLiteException ex)
-            {
-                //MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return activities;
-        }*/
+            { }
+
+            return players;
+        }
         /*
         public string[,] GetRoomNotes()
         {

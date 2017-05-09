@@ -25,6 +25,7 @@ namespace ShootingGame
         List<GameObject> objectsToRemove;
         List<Score> scores;
         List<Score> scoresToRemove;
+        List<PlayerListRow> players;
         Texture2D background;
         Texture2D sky;
         Texture2D grass;
@@ -32,6 +33,7 @@ namespace ShootingGame
         private static GameWorld instance;
         List<Collider> colliders;
         bool playSound;
+        bool savePlayer;
         Song shootSound;
         public float DeltaTime { get; private set; }
         public SpriteFont AFont { get; private set; }
@@ -107,11 +109,13 @@ namespace ShootingGame
             // TODO: Add your initialization logic here
             Rnd = new Random();
             playSound = false;
+            savePlayer = true;
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
             scores = new List<Score>();
             scoresToRemove = new List<Score>();
+            players = new List<PlayerListRow>();
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
@@ -176,7 +180,7 @@ namespace ShootingGame
                 else if (go.GetComponent("Explosion") is Explosion)
                     (go.GetComponent("Explosion") as Explosion).T.Start();
             }
-            DataBaseClass.DataBaseInstance.CreateTable();
+            //DataBaseClass.DataBaseInstance.CreateTable();
         }
 
         /// <summary>
@@ -252,21 +256,26 @@ namespace ShootingGame
             spriteBatch.Draw(grass, new Vector2(500, 65), new Rectangle(500, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
             spriteBatch.Draw(grass, new Vector2(1000, 65), new Rectangle(1000, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
             */
-            spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
-            spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
-            spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
-            spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
-            spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
-            
-            foreach (GameObject go in gameObjects)
+            if (savePlayer)
+                ShowScoreTable();
+            else
             {
-                go.Draw(spriteBatch);
-            }
-            if (scores.Count > 0)
-            {
-                foreach (Score s in scores)
+                spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
+                spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
+                spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
+                spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
+                spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
+
+                foreach (GameObject go in gameObjects)
                 {
-                    s.Draw(spriteBatch);
+                    go.Draw(spriteBatch);
+                }
+                if (scores.Count > 0)
+                {
+                    foreach (Score s in scores)
+                    {
+                        s.Draw(spriteBatch);
+                    }
                 }
             }
             spriteBatch.End();
@@ -290,6 +299,20 @@ namespace ShootingGame
                     gameObjects.Remove(go);
                 }
                 objectsToRemove.Clear();
+            }
+        }
+
+        public void ShowScoreTable()
+        {
+            spriteBatch.DrawString(BFont, "Place      Name                           Score ", new Vector2(200, 100), Color.Black);
+            players = DataBaseClass.DataBaseInstance.GetPlayersList();
+            int currentPlace = 1;
+            int yPosition = 200;
+            foreach (var p in players)
+            {
+                spriteBatch.DrawString(BFont, currentPlace.ToString() + "        " + p.Name + "              " + p.Score.ToString(), new Vector2(200, yPosition), Color.Black);
+                currentPlace++;
+                yPosition += 50;
             }
         }
     }
