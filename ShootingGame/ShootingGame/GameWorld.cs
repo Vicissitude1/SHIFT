@@ -176,6 +176,7 @@ namespace ShootingGame
                 else if (go.GetComponent("Explosion") is Explosion)
                     (go.GetComponent("Explosion") as Explosion).T.Start();
             }
+            DataBaseClass.DataBaseInstance.CreateTable();
         }
 
         /// <summary>
