@@ -120,6 +120,8 @@ namespace ShootingGame
             gameObjects.Add(director.Construct(new Vector2(500, 300)));
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 400)));
+            director = new Director(new DiceBuilder());
+            gameObjects.Add(director.Construct(new Vector2(500, 500)));
 
             /*
             for (int i = 0; i < 2; i++)
