@@ -8,13 +8,11 @@ namespace ShootingGame
 {
     class PlayerListRow
     {
-        public int Place { get; private set; }
-        public string Name { get; private set; }
+        public string Name { get; set; }
         public int Score { get; private set; }
 
-        public PlayerListRow(int place, string name, int score)
+        public PlayerListRow(string name, int score)
         {
-            this.Place = place;
             this.Name = name;
             this.Score = score;
         }

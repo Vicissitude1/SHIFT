@@ -48,7 +48,6 @@ namespace ShootingGame
         public List<PlayerListRow> GetPlayersList()
         {
             if (players.Count > 0) players.Clear();
-            currentPlace = 1;
             try
             {
                 using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
@@ -58,8 +57,7 @@ namespace ShootingGame
                     SQLiteDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        players.Add(new PlayerListRow(currentPlace, reader["name"].ToString(), (int)reader["score"]));
-                        currentPlace++;
+                        players.Add(new PlayerListRow(reader["name"].ToString(), (int)reader["score"]));
                     }
                 }
             }

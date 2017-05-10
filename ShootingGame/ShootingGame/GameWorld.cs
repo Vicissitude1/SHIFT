@@ -15,7 +15,6 @@ namespace ShootingGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
         /// <summary>
         /// The object that is going to be locked
         /// </summary>
@@ -25,19 +24,21 @@ namespace ShootingGame
         List<GameObject> objectsToRemove;
         List<Score> scores;
         List<Score> scoresToRemove;
-        List<PlayerListRow> players;
         Texture2D background;
         Texture2D sky;
         Texture2D grass;
+        public Texture2D Pixel { get; private set; }
         private SoundEffect effect;
         private static GameWorld instance;
         List<Collider> colliders;
         bool playSound;
-        bool savePlayer;
+        public bool CanSavePlayer { get; set; }
         Song shootSound;
+        SaveMenu saveMenu;
         public float DeltaTime { get; private set; }
-        public SpriteFont AFont { get; private set; }
-        public SpriteFont BFont { get; private set; }
+        public SpriteFont AFont { get; private set; } // 8
+        public SpriteFont BFont { get; private set; } // 12
+        public SpriteFont CFont { get; private set; } // 16
         public Random Rnd { get; private set; }
         internal List<Collider> Colliders
         {
@@ -109,13 +110,15 @@ namespace ShootingGame
             // TODO: Add your initialization logic here
             Rnd = new Random();
             playSound = false;
-            savePlayer = true;
+            CanSavePlayer = true;
+            saveMenu = new SaveMenu();
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
             scores = new List<Score>();
             scoresToRemove = new List<Score>();
-            players = new List<PlayerListRow>();
+            Pixel = new Texture2D(GraphicsDevice, 1, 1);
+            Pixel.SetData(new[] { Color.White });
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
@@ -159,10 +162,12 @@ namespace ShootingGame
             
             AFont = Content.Load<SpriteFont>("AFont");
             BFont = Content.Load<SpriteFont>("BFont");
+            CFont = Content.Load<SpriteFont>("CFont");
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
+            saveMenu.LoadContent(Content);
             //shootSound = Content.Load<Song>("gunShot");
 
             foreach (GameObject go in gameObjects)
@@ -233,6 +238,8 @@ namespace ShootingGame
             }
 
             ClearLists();
+            saveMenu.UpdateScoreTable();
+            saveMenu.UpdateInputUserName();
 
             base.Update(gameTime);
         }
@@ -256,8 +263,11 @@ namespace ShootingGame
             spriteBatch.Draw(grass, new Vector2(500, 65), new Rectangle(500, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
             spriteBatch.Draw(grass, new Vector2(1000, 65), new Rectangle(1000, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
             */
-            if (savePlayer)
-                ShowScoreTable();
+            if (CanSavePlayer)
+            {
+                saveMenu.ShowScoreTable(spriteBatch);
+                if (!this.IsMouseVisible) this.IsMouseVisible = true;
+            }
             else
             {
                 spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
@@ -299,20 +309,6 @@ namespace ShootingGame
                     gameObjects.Remove(go);
                 }
                 objectsToRemove.Clear();
-            }
-        }
-
-        public void ShowScoreTable()
-        {
-            spriteBatch.DrawString(BFont, "Place      Name                           Score ", new Vector2(200, 100), Color.Black);
-            players = DataBaseClass.DataBaseInstance.GetPlayersList();
-            int currentPlace = 1;
-            int yPosition = 200;
-            foreach (var p in players)
-            {
-                spriteBatch.DrawString(BFont, currentPlace.ToString() + "        " + p.Name + "              " + p.Score.ToString(), new Vector2(200, yPosition), Color.Black);
-                currentPlace++;
-                yPosition += 50;
             }
         }
     }
