@@ -21,6 +21,7 @@ namespace ShootingGame
         /// </summary>
         static object thisLock = new object();
         Director director;
+        private SpriteFont resultFont;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
         List<Score> scores;
@@ -36,6 +37,7 @@ namespace ShootingGame
         public SpriteFont AFont { get; private set; }
         public SpriteFont BFont { get; private set; }
         public Random Rnd { get; private set; }
+        public int Result { get; set; }
         internal List<Collider> Colliders
         {
             get
@@ -121,7 +123,9 @@ namespace ShootingGame
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 400)));
             director = new Director(new DiceBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 500)));
+            gameObjects.Add(director.Construct(new Vector2(650, 600)));
+            gameObjects.Add(director.Construct(new Vector2(750, 600)));
+            gameObjects.Add(director.Construct(new Vector2(850, 600)));
 
             /*
             for (int i = 0; i < 2; i++)
@@ -156,6 +160,7 @@ namespace ShootingGame
             
             AFont = Content.Load<SpriteFont>("AFont");
             BFont = Content.Load<SpriteFont>("BFont");
+            resultFont = Content.Load<SpriteFont>("resultFont");
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
@@ -245,6 +250,7 @@ namespace ShootingGame
             
             spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
             spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
+            spriteBatch.DrawString(resultFont, " = " + Result, new Vector2(875, 600), Color.Black);
 
             foreach (GameObject go in gameObjects)
             {

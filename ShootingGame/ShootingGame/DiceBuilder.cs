@@ -16,6 +16,7 @@ namespace ShootingGame
             gameObject = new GameObject(position);
             gameObject.AddComponent(new SpriteRenderer(gameObject, "dice", 0));
             gameObject.AddComponent(new Dice(gameObject));
+            gameObject.AddComponent(new Animator(gameObject));
         }
 
         public GameObject GetResult()

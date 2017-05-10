@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Threading;
+using Microsoft.Xna.Framework.Input;
 
 namespace ShootingGame
 {
@@ -14,19 +15,77 @@ namespace ShootingGame
     {
         private Animator animator;
         private int dice;
+        
+        public int Ammo { get; set; }
+        private int reserve;
+        private int result = GameWorld.Instance.Result;
         public Thread T { get; set; }
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
-            Roll();
+            result += Roll();
             T = new Thread(Update);
             T.IsBackground = true;
         }
 
         public int Roll()
         {
-            dice = GameWorld.Instance.Rnd.Next(0, 7);
+            dice = GameWorld.Instance.Rnd.Next(1, 7);
             return dice;
+        }
+
+        public int RollDices()
+        {
+            int count = 0;
+            while (count < 3)
+            {
+                result += Roll();
+                count++;
+            }
+
+            return result;
+        }
+
+        public void High()
+        {
+            int current;
+
+            current = result;
+            result = 0;
+            RollDices();
+            if (current > result)
+            {
+                Ammo += current + reserve;
+                if (reserve > 0)
+                {
+                    reserve = 0;
+                }
+            }
+            if (current < result)
+            {
+                reserve += current;
+            }
+        }
+
+        public void Low()
+        {
+            int current;
+
+            current = result;
+            result = 0;
+            RollDices();
+            if (current < result)
+            {
+                Ammo += current + reserve;
+                if (reserve > 0)
+                {
+                    reserve = 0;
+                }
+            }
+            if (current > result)
+            {
+                reserve += current;
+            }
         }
 
         public void LoadContent(ContentManager content)
@@ -37,18 +96,29 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
-            animator.CreateAnimation("ShowOne", new Animation(1, 0, 0, 64, 64, 0, Vector2.Zero));
-            animator.CreateAnimation("ShowTwo", new Animation(1, 0, 64, 64, 64, 0, Vector2.Zero));
-            animator.CreateAnimation("ShowThree", new Animation(1, 0, 128, 64, 64, 0, Vector2.Zero));
-            animator.CreateAnimation("ShowFour", new Animation(1, 0, 192, 64, 64, 0, Vector2.Zero));
-            animator.CreateAnimation("ShowFive", new Animation(1, 0, 254, 64, 64, 0, Vector2.Zero));
-            animator.CreateAnimation("ShowSix", new Animation(1, 0, 318, 64, 64, 0, Vector2.Zero));
-            animator.PlayAnimation("ShowOne");
+            animator.CreateAnimation("ShowOne", new Animation(1, 0, 0, 64, 64, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowTwo", new Animation(1, 0, 1, 64, 64, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowThree", new Animation(1, 0, 2, 64, 64, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowFour", new Animation(1, 0, 3, 64, 64, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowFive", new Animation(1, 0, 4, 64, 64, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowSix", new Animation(1, 0, 5, 64, 64, 1, Vector2.Zero));
+            animator.PlayAnimation("ShowSix");
         }
-        
+
 
         public void Update()
         {
+            KeyboardState k = new KeyboardState();
+
+            if (k.IsKeyDown(Keys.Up))
+            {
+                High();
+            }
+            else if (k.IsKeyDown(Keys.Down))
+            {
+                Low();
+            }
+
             switch (dice)
             {
                 case 1:

@@ -199,3 +199,9 @@
 /processorParam:TextureFormat=Color
 /build:dice.png
 
+#begin resultFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:resultFont.spritefont
+
