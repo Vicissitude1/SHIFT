@@ -25,7 +25,7 @@ namespace ShootingGame
             playAnimation = false;
             T = new Thread(Move);
             T.IsBackground = true;
-            Scores = 700;
+            Scores = 580;
         }
 
         public void Move()

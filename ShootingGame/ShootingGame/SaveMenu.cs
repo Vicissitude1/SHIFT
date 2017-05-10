@@ -27,9 +27,11 @@ namespace ShootingGame
         Color buttonSaveColor;
         Color buttonExitColor;
         Vector2 mousePosition;
+        DataBaseClass dataBase;
 
         public SaveMenu()
         {
+            dataBase = new DataBaseClass();
             hasToLoadFormDB = true;
             canInsertName = false;
             insertIndex = 0;
@@ -52,6 +54,7 @@ namespace ShootingGame
             spriteBatch.DrawString(GameWorld.Instance.CFont, "SAVE ", new Vector2(buttonSaveRectangle.X + 80, buttonSaveRectangle.Y + 15), buttonSaveColor);
             spriteBatch.Draw(buttonSprite, buttonExitRectangle, buttonExitColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "EXIT ", new Vector2(buttonExitRectangle.X + 80, buttonExitRectangle.Y + 15), buttonExitColor);
+
             if (players.Count > 0)
             {
                 int currentPlace = 1;
@@ -61,7 +64,7 @@ namespace ShootingGame
                     spriteBatch.DrawString(GameWorld.Instance.CFont, (i + 1).ToString(), new Vector2(220, yPosition), Color.Black);
                     if (i == insertIndex && canInsertName)
                     {
-                        spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(330, yPosition, 150, 25), Color.DarkGray);
+                        spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(330, yPosition, 200, 25), Color.DarkGray);
                         spriteBatch.DrawString(GameWorld.Instance.CFont, players[i].Name, new Vector2(350, yPosition), Color.White);
                     }
                     else spriteBatch.DrawString(GameWorld.Instance.CFont, players[i].Name, new Vector2(350, yPosition), Color.Black);
@@ -77,7 +80,7 @@ namespace ShootingGame
         {
             if (hasToLoadFormDB)
             {
-                players = DataBaseClass.DataBaseInstance.GetPlayersList();
+                players = dataBase.GetPlayersList();
 
                 if (players.Count > 0)
                 {
@@ -86,21 +89,23 @@ namespace ShootingGame
                     {
                         if (players[i].Score >= Player.Scores)
                         {
-                            insertIndex = i;
-                            canInsertName = true;
+                            insertIndex = i + 1;
                         }
-                        if (i > 8) break;
+                        if (i == 8) break;
                     }
-                    insertIndex++;
                     players.Insert(insertIndex, new PlayerListRow("", Player.Scores));
                 }
                 else players.Add(new PlayerListRow("", Player.Scores));
+
+                canInsertName = true;
                 hasToLoadFormDB = false;
             }
         }
 
         public void UpdateInputUserName()
         {
+            UpdateScoreTable();
+
             if (canInsertName)
             {
                 currentKeyboardState = Keyboard.GetState();
@@ -121,11 +126,11 @@ namespace ShootingGame
 
             if (buttonSaveRectangle.Contains(mousePosition) && canInsertName)
                 buttonSaveColor = Color.White;
-            else buttonSaveColor = Color.Gray;
+            else buttonSaveColor = Color.LightGray;
 
             if (buttonExitRectangle.Contains(mousePosition))
                 buttonExitColor = Color.White;
-            else buttonExitColor = Color.Gray;
+            else buttonExitColor = Color.LightGray;
 
             if (mouseState.LeftButton == ButtonState.Pressed && buttonSaveRectangle.Contains(mousePosition))
                 ButtonSavePressed();
@@ -247,12 +252,17 @@ namespace ShootingGame
         public void ButtonSavePressed()
         {
             if (players[insertIndex].Name != "")
+            {
+                dataBase.SavePlayersList(players);
                 canInsertName = false;
+            }
         }
 
         public void ButtonExitPressed()
         {
             canInsertName = false;
+            hasToLoadFormDB = true;
+            insertIndex = 0;
             GameWorld.Instance.CanSavePlayer = false;
         }
     }

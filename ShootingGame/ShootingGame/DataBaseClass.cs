@@ -9,19 +9,15 @@ namespace ShootingGame
 {
     class DataBaseClass
     {
-        private static DataBaseClass dataBaseInstance;
-        public static DataBaseClass DataBaseInstance
-        {
-            get { return dataBaseInstance ?? (dataBaseInstance = new DataBaseClass()); }
-        }
         List<PlayerListRow> players = new List<PlayerListRow>();
-        int currentPlace;
 
         /// <summary>
-        /// private construktor
+        /// DataBaseClass's constructor
         /// </summary>
-        private DataBaseClass()
-        { }
+        public DataBaseClass()
+        {
+
+        }
 
         /// <summary>
         /// Creates database file and table
@@ -66,88 +62,42 @@ namespace ShootingGame
 
             return players;
         }
-        /*
-        public string[,] GetRoomNotes()
-        {
-            try
-            {
-                using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
-                {
-                    dbConn.Open();
-                    //SQLiteCommand command = new SQLiteCommand("select column1, column2, column3, column4, column5, column6, column7, column8 from roomnotestable where id =" + y, dbConn);
 
-                    for (int y = 0; y < roomNotes.GetLength(1); y++)
-                    {
-                        for (int x = 0; x < roomNotes.GetLength(0); x++)
-                        {
-                            SQLiteCommand command = new SQLiteCommand("select column" + (x + 1).ToString() + " from roomnotestable where id=" + (y + 1).ToString(), dbConn);
-                            SQLiteDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                roomNotes[x, y] = reader["column" + (x + 1).ToString()].ToString();
-                            }
-                            if (roomNotes[x, y] == null) roomNotes[x, y] = "";
-                        }
-                    }
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                //MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return roomNotes;
-        }*/
-        /*
-        public string[,] ReadRoomNotes()
+        public void SavePlayersList(List<PlayerListRow> players)
         {
             try
             {
                 using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
                 {
                     dbConn.Open();
-                    for (int y = 0; y < roomNotes.GetLength(1); y++)
+
+                    SQLiteCommand command = new SQLiteCommand("delete from scoretable", dbConn);
+                    command.ExecuteReader();
+
+                    for (int i = 0; i < players.Count; i++)
                     {
-                        SQLiteCommand command = new SQLiteCommand("select column1, column2, column3, column4, column5, column6, column7, column8 from roomnotestable where id =" + (y + 1).ToString(), dbConn);
-                        SQLiteDataReader reader = command.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            for (int x = 0; x < roomNotes.GetLength(0); x++)
-                            {
-                                roomNotes[x, y] = reader["column" + (x + 1).ToString()].ToString();
-                                if (roomNotes[x, y] == null) roomNotes[x, y] = "";
-                            }
-                        }
+                        command = new SQLiteCommand("insert into scoretable (id, name, score) values (null, '" + players[i].Name + "', " + players[i].Score.ToString() + ")", dbConn);
+                        command.ExecuteReader();
                     }
                 }
             }
             catch (SQLiteException ex)
-            {
-                //MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return roomNotes;
+            {  }
         }
 
-        public void SaveRoomNotes(string[,] roomNotes)
+        public void ClearPlayersList(List<PlayerListRow> players)
         {
             try
             {
                 using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
                 {
                     dbConn.Open();
-                    for (int y = 0; y < roomNotes.GetLength(1); y++)
-                    {
-                        for (int x = 0; x < roomNotes.GetLength(0); x++)
-                        {
-                            SQLiteCommand command = new SQLiteCommand("update roomnotestable set column" + (x + 1).ToString() + " ='" + roomNotes[x, y] + "' where id=" + (y + 1).ToString(), dbConn);
-                            command.ExecuteReader();
-                        }
-                    }
+                    SQLiteCommand command = new SQLiteCommand("delete from scoretable", dbConn);
+                    command.ExecuteReader();
                 }
             }
             catch (SQLiteException ex)
-            {
-                //MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }*/
+            { }
+        }
     }
 }

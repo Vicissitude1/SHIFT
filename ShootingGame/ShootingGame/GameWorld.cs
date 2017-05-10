@@ -232,14 +232,17 @@ namespace ShootingGame
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            foreach (GameObject go in gameObjects)
+            if (CanSavePlayer)
+                saveMenu.UpdateInputUserName();
+            else
             {
-                go.Update();
-            }
+                foreach (GameObject go in gameObjects)
+                {
+                    go.Update();
+                }
 
-            ClearLists();
-            saveMenu.UpdateScoreTable();
-            saveMenu.UpdateInputUserName();
+                ClearLists();
+            }
 
             base.Update(gameTime);
         }
