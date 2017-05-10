@@ -87,27 +87,29 @@ namespace ShootingGame
             {
                 players = dataBase.GetPlayersList();
 
-                if (players.Count > 0)
+                if (Player.Scores > 0)
                 {
-                    insertIndex = 0;
-                    for (int i = 0; i < players.Count; i++)
+                    if (players.Count > 0)
                     {
-                        if (players[i].Score >= Player.Scores)
+                        insertIndex = 0;
+                        for (int i = 0; i < players.Count; i++)
                         {
-                            insertIndex = i + 1;
+                            if (players[i].Score >= Player.Scores)
+                            {
+                                insertIndex = i + 1;
+                            }
+                            if (i == 8) break;
                         }
-                        if (i == 8) break;
+                        players.Insert(insertIndex, new PlayerListRow("", Player.Scores));
                     }
-                    players.Insert(insertIndex, new PlayerListRow("", Player.Scores));
+                    else players.Add(new PlayerListRow("", Player.Scores));
+                    canInsertName = true;
                 }
-                else players.Add(new PlayerListRow("", Player.Scores));
-
-                canInsertName = true;
                 hasToLoadFormDB = false;
             }
         }
 
-        public void UpdateInputUserName()
+        public void UpdateUI()
         {
             UpdateScoreTable();
 
