@@ -85,7 +85,7 @@ namespace ShootingGame
             {  }
         }
 
-        public void ClearPlayersList(List<PlayerListRow> players)
+        public void ClearPlayersList()
         {
             try
             {

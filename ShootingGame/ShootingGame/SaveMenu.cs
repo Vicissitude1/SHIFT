@@ -24,8 +24,10 @@ namespace ShootingGame
         List<PlayerListRow> players;
         Rectangle buttonSaveRectangle;
         Rectangle buttonExitRectangle;
+        Rectangle buttonClearRectangle;
         Color buttonSaveColor;
         Color buttonExitColor;
+        Color buttonClearColor;
         Vector2 mousePosition;
         DataBaseClass dataBase;
 
@@ -37,19 +39,22 @@ namespace ShootingGame
             insertIndex = 0;
             text = "";
             players = new List<PlayerListRow>();
-            buttonSaveColor = buttonExitColor = Color.Gray;
+            buttonSaveColor = buttonExitColor = buttonClearColor = Color.LightGray;
         }
 
         public void LoadContent(ContentManager content)
         {
             buttonSprite = content.Load<Texture2D>("redbutton1");
-            buttonSaveRectangle = new Rectangle(900, 200, buttonSprite.Width, buttonSprite.Height);
-            buttonExitRectangle = new Rectangle(900, 400, buttonSprite.Width, buttonSprite.Height);
+            buttonClearRectangle = new Rectangle(900, 200, buttonSprite.Width, buttonSprite.Height);
+            buttonSaveRectangle = new Rectangle(900, 350, buttonSprite.Width, buttonSprite.Height);
+            buttonExitRectangle = new Rectangle(900, 500, buttonSprite.Width, buttonSprite.Height);
         }
 
         public void ShowScoreTable(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(GameWorld.Instance.CFont, "PLACE              NAME                              SCORE ", new Vector2(200, 100), Color.DarkBlue);
+            spriteBatch.Draw(buttonSprite, buttonClearRectangle, buttonClearColor);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, "CLEAR LIST ", new Vector2(buttonClearRectangle.X + 50, buttonClearRectangle.Y + 15), buttonClearColor);
             spriteBatch.Draw(buttonSprite, buttonSaveRectangle, buttonSaveColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "SAVE ", new Vector2(buttonSaveRectangle.X + 80, buttonSaveRectangle.Y + 15), buttonSaveColor);
             spriteBatch.Draw(buttonSprite, buttonExitRectangle, buttonExitColor);
@@ -121,8 +126,12 @@ namespace ShootingGame
                 }
                 lastKeyboardState = currentKeyboardState;
             }
-            var mouseState = Mouse.GetState();
+            MouseState mouseState = Mouse.GetState();
             mousePosition = new Vector2(mouseState.Position.X, mouseState.Position.Y);
+
+            if (buttonClearRectangle.Contains(mousePosition))
+                buttonClearColor = Color.White;
+            else buttonClearColor = Color.LightGray;
 
             if (buttonSaveRectangle.Contains(mousePosition) && canInsertName)
                 buttonSaveColor = Color.White;
@@ -132,9 +141,11 @@ namespace ShootingGame
                 buttonExitColor = Color.White;
             else buttonExitColor = Color.LightGray;
 
-            if (mouseState.LeftButton == ButtonState.Pressed && buttonSaveRectangle.Contains(mousePosition))
+            if (mouseState.LeftButton == ButtonState.Pressed && buttonClearRectangle.Contains(mousePosition))
+                ButtonClearPressed();
+            else if (mouseState.LeftButton == ButtonState.Pressed && buttonSaveRectangle.Contains(mousePosition))
                 ButtonSavePressed();
-            if (mouseState.LeftButton == ButtonState.Pressed && buttonExitRectangle.Contains(mousePosition))
+            else if (mouseState.LeftButton == ButtonState.Pressed && buttonExitRectangle.Contains(mousePosition))
                 ButtonExitPressed();
         }
 
@@ -249,6 +260,17 @@ namespace ShootingGame
             return lastKeyboardState.IsKeyDown(theKey) && currentKeyboardState.IsKeyUp(theKey);
         }
 
+        public void ButtonClearPressed()
+        {
+            if(players.Count > 0)
+            players.Clear();
+            dataBase.ClearPlayersList();
+            insertIndex = 0;
+            players.Add(new PlayerListRow("", Player.Scores));
+            canInsertName = true;
+            text = "";
+        }
+
         public void ButtonSavePressed()
         {
             if (players[insertIndex].Name != "")
@@ -264,7 +286,6 @@ namespace ShootingGame
         {
             canInsertName = false;
             hasToLoadFormDB = true;
-            insertIndex = 0;
             GameWorld.Instance.CanSavePlayer = false;
         }
     }
