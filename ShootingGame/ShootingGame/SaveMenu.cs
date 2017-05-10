@@ -253,6 +253,8 @@ namespace ShootingGame
         {
             if (players[insertIndex].Name != "")
             {
+                while (players.Count > 10)
+                    players.RemoveAt(10);
                 dataBase.SavePlayersList(players);
                 canInsertName = false;
             }
