@@ -15,32 +15,73 @@ namespace ShootingGame
     {
         Animator animator;
         bool playAnimation;
+        bool canShoot;
+        bool canChangeWeapon;
+        bool isChanged;
+        int currentWeapon;
+        int selectedWeapon;
+        int speed;
+        Weapon[] weapons;
         public static int Health { get; set; }
         public Thread T { get; private set; }
         public static int Scores { get; set; }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
+            weapons = new Weapon[] { new Weapon(WeaponType.Gun, 10, 20, 2),
+                                      new Weapon(WeaponType.Rifle, 15, 50, 3),
+                                      new Weapon(WeaponType.MachineGun, 30, 50, 3)};
             Health = 100;
             playAnimation = false;
             T = new Thread(Move);
             T.IsBackground = true;
             Scores = 0;
+            canShoot = true;
+            canChangeWeapon = true;
+            currentWeapon = 0;
+            speed = 5;
+            isChanged = false;
         }
 
         public void Move()
         {
             while (true)
             {
-                Thread.Sleep(100);
-                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed || playAnimation)
+                Thread.Sleep(20);
+                if (canChangeWeapon)
                 {
-                    animator.PlayAnimation("Shoot");
-                    if (Explosion.PlayAnimation == false)
-                        Explosion.PlayAnimation = true;
+                    if (Keyboard.GetState().IsKeyDown(Keys.D1) && canChangeWeapon)
+                    {
+                        selectedWeapon = 0;
+                        if (currentWeapon != selectedWeapon)
+                            canChangeWeapon = false;
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.D2) && canChangeWeapon)
+                    {
+                        selectedWeapon = 1;
+                        if (currentWeapon != selectedWeapon)
+                            canChangeWeapon = false;
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.D3) && canChangeWeapon)
+                    {
+                        selectedWeapon = 2;
+                        if (currentWeapon != selectedWeapon)
+                            canChangeWeapon = false;
+                    }
+                    else
+                    {
+                        GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
+
+                        if (Mouse.GetState().LeftButton == ButtonState.Pressed || playAnimation)
+                        {
+                            animator.PlayAnimation("Shoot");
+                            if (Explosion.PlayAnimation == false)
+                                Explosion.PlayAnimation = true;
+                        }
+                        else animator.PlayAnimation("Idle");
+                    }
                 }
-                else animator.PlayAnimation("Idle");
+                else ChangeWeapon();
             }
         }
 
@@ -92,6 +133,40 @@ namespace ShootingGame
         public void OnCollisionExit(Collider other)
         {
             //(other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+        }
+
+        public void ChangeWeapon()
+        {
+            if(canShoot) canShoot = false;
+
+            Vector2 translation = Vector2.Zero;
+
+            if (isChanged)
+            {
+                if(GameObject.Transform.Position.Y <= 470)
+                {
+                    isChanged = false;
+                    canChangeWeapon = true;
+                }
+                else
+                {
+                    translation += new Vector2(0, -1);
+                    GameObject.Transform.Position += translation * speed;
+                }
+            }
+            else
+            {
+                if(GameObject.Transform.Position.Y > 600)
+                {
+                    currentWeapon = selectedWeapon;
+                    isChanged = true;
+                }
+                else
+                {
+                    translation += new Vector2(0, 1);
+                    GameObject.Transform.Position += translation * speed;
+                }
+            }
         }
     }
 }

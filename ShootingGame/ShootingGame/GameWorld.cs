@@ -159,7 +159,7 @@ namespace ShootingGame
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
-            //shootSound = Content.Load<Song>("gunShot");
+            shootSound = Content.Load<Song>("gunShot");
 
             foreach (GameObject go in gameObjects)
             {
@@ -199,7 +199,7 @@ namespace ShootingGame
                 Exit();
 
             // TODO: Add your update logic here
-            
+            /*
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
                 effect = Content.Load<SoundEffect>("gunShot");
@@ -208,8 +208,8 @@ namespace ShootingGame
                 float pan = 0.0f;
                 effect.Play(volume, pitch, pan);
                 playSound = false;
-            }
-            /*
+            }*/
+            
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
                 MediaPlayer.Play(shootSound);
@@ -218,7 +218,7 @@ namespace ShootingGame
             if (Mouse.GetState().LeftButton == ButtonState.Released && !playSound)
             {
                 playSound = true;
-            }*/
+            }
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
