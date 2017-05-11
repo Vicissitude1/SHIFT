@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -30,6 +31,8 @@ namespace ShootingGame
         Color buttonClearColor;
         Vector2 mousePosition;
         DataBaseClass dataBase;
+        SoundEffect buttonSound;
+        bool startSound;
 
         public SaveMenu()
         {
@@ -40,6 +43,7 @@ namespace ShootingGame
             text = "";
             players = new List<PlayerListRow>();
             buttonSaveColor = buttonExitColor = buttonClearColor = Color.LightGray;
+            startSound = true;
         }
 
         public void LoadContent(ContentManager content)
@@ -48,6 +52,7 @@ namespace ShootingGame
             buttonClearRectangle = new Rectangle(900, 200, buttonSprite.Width, buttonSprite.Height);
             buttonSaveRectangle = new Rectangle(900, 350, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(900, 500, buttonSprite.Width, buttonSprite.Height);
+            buttonSound = content.Load<SoundEffect>("button-15");
         }
 
         public void ShowScoreTable(SpriteBatch spriteBatch)
@@ -132,8 +137,19 @@ namespace ShootingGame
             mousePosition = new Vector2(mouseState.Position.X, mouseState.Position.Y);
 
             if (buttonClearRectangle.Contains(mousePosition))
+            {
                 buttonClearColor = Color.White;
-            else buttonClearColor = Color.LightGray;
+                if (startSound)
+                {
+                    buttonSound.Play();
+                    startSound = false;
+                }
+            }
+            else
+            {
+                if (!startSound) startSound = true;
+                buttonClearColor = Color.LightGray;
+            }
 
             if (buttonSaveRectangle.Contains(mousePosition) && canInsertName)
                 buttonSaveColor = Color.White;
@@ -268,8 +284,12 @@ namespace ShootingGame
             players.Clear();
             dataBase.ClearPlayersList();
             insertIndex = 0;
-            players.Add(new PlayerListRow("", Player.Scores));
-            canInsertName = true;
+            if (Player.Scores > 0)
+            {
+                players.Add(new PlayerListRow("", Player.Scores));
+                canInsertName = true;
+            }
+            else canInsertName = false;
             text = "";
         }
 

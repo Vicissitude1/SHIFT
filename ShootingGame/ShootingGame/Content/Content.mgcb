@@ -217,3 +217,9 @@
 /processorParam:TextureFormat=Color
 /build:redbutton1.png
 
+#begin button-15.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:button-15.wav
+

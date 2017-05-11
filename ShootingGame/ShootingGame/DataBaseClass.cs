@@ -9,7 +9,6 @@ namespace ShootingGame
 {
     class DataBaseClass
     {
-        List<PlayerListRow> players = new List<PlayerListRow>();
 
         /// <summary>
         /// DataBaseClass's constructor
@@ -43,6 +42,7 @@ namespace ShootingGame
         
         public List<PlayerListRow> GetPlayersList()
         {
+            List<PlayerListRow> players = new List<PlayerListRow>();
             if (players.Count > 0) players.Clear();
             try
             {

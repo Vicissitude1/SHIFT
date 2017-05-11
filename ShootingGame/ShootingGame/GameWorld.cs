@@ -224,11 +224,11 @@ namespace ShootingGame
             {
                 MediaPlayer.Play(shootSound);
                 playSound = false;
-            }
+            }*/
             if (Mouse.GetState().LeftButton == ButtonState.Released && !playSound)
             {
                 playSound = true;
-            }*/
+            }
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
