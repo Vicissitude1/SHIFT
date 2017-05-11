@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,8 @@ namespace ShootingGame
         Color buttonClearColor;
         Vector2 mousePosition;
         DataBaseClass dataBase;
-        SoundEffect buttonSound;
+        //SoundEffect buttonSound;
+        Song buttonSound1;
         bool startSound;
 
         public SaveMenu()
@@ -52,7 +54,9 @@ namespace ShootingGame
             buttonClearRectangle = new Rectangle(900, 200, buttonSprite.Width, buttonSprite.Height);
             buttonSaveRectangle = new Rectangle(900, 350, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(900, 500, buttonSprite.Width, buttonSprite.Height);
-            buttonSound = content.Load<SoundEffect>("button-15");
+            //buttonSound = content.Load<SoundEffect>("buttonmp3");
+            buttonSound1 = content.Load<Song>("buttonmp3");
+
         }
 
         public void ShowScoreTable(SpriteBatch spriteBatch)
@@ -141,7 +145,8 @@ namespace ShootingGame
                 buttonClearColor = Color.White;
                 if (startSound)
                 {
-                    buttonSound.Play();
+                    //buttonSound.Play();
+                    MediaPlayer.Play(buttonSound1);
                     startSound = false;
                 }
             }
@@ -149,9 +154,10 @@ namespace ShootingGame
             {
                 if (!startSound) startSound = true;
                 buttonClearColor = Color.LightGray;
+                MediaPlayer.Stop();
             }
 
-            if (buttonSaveRectangle.Contains(mousePosition) && canInsertName)
+            if (buttonSaveRectangle.Contains(mousePosition) && canInsertName && text != "")
                 buttonSaveColor = Color.White;
             else buttonSaveColor = Color.LightGray;
 
