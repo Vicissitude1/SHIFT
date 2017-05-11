@@ -110,7 +110,7 @@ namespace ShootingGame
             // TODO: Add your initialization logic here
             Rnd = new Random();
             playSound = false;
-            CanSavePlayer = true;
+            CanSavePlayer = false;
             saveMenu = new SaveMenu();
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();

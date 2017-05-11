@@ -314,6 +314,7 @@ namespace ShootingGame
         {
             canInsertName = false;
             hasToLoadFormDB = true;
+            Player.Health = 100;
             GameWorld.Instance.CanSavePlayer = false;
         }
     }

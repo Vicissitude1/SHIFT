@@ -25,7 +25,7 @@ namespace ShootingGame
             playAnimation = false;
             T = new Thread(Move);
             T.IsBackground = true;
-            Scores = 1000;
+            Scores = 0;
         }
 
         public void Move()
@@ -33,6 +33,7 @@ namespace ShootingGame
             while (true)
             {
                 Thread.Sleep(100);
+                if (Health == 0) GameWorld.Instance.CanSavePlayer = true;
                 GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
                 if (Mouse.GetState().LeftButton == ButtonState.Pressed || playAnimation)
                 {
