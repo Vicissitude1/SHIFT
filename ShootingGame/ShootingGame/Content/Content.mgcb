@@ -229,3 +229,9 @@
 /processorParam:Quality=Best
 /build:buttonmp3.mp3
 
+#begin click.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:click.wav
+

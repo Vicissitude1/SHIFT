@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using System;
 using Microsoft.Xna.Framework.Media;
+using IrrKlang;
 
 namespace ShootingGame
 {
@@ -40,6 +41,7 @@ namespace ShootingGame
         public SpriteFont BFont { get; private set; } // 12
         public SpriteFont CFont { get; private set; } // 16
         public Random Rnd { get; private set; }
+        public ISoundEngine Engine { get; private set; }
         internal List<Collider> Colliders
         {
             get
@@ -119,6 +121,7 @@ namespace ShootingGame
             scoresToRemove = new List<Score>();
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
+            Engine = new ISoundEngine();
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
@@ -222,7 +225,7 @@ namespace ShootingGame
             /*
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
-                MediaPlayer.Play(shootSound);
+                Engine.Play2D("Content/click.wav", true);
                 playSound = false;
             }*/
             if (Mouse.GetState().LeftButton == ButtonState.Released && !playSound)
