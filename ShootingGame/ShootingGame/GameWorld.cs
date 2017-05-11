@@ -227,7 +227,7 @@ namespace ShootingGame
             }*/
             if (Mouse.GetState().LeftButton == ButtonState.Released && !playSound)
             {
-                playSound = true;
+                if(!playSound) playSound = true;
             }
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
