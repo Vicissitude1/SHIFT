@@ -199,3 +199,21 @@
 /processorParam:TextureFormat=Color
 /build:grass.png
 
+#begin pistol.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:pistol.wav
+
+#begin sniper.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:sniper.wav
+
+#begin CFont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:CFont
+

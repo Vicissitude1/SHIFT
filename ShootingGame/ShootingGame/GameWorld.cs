@@ -36,6 +36,7 @@ namespace ShootingGame
         public float DeltaTime { get; private set; }
         public SpriteFont AFont { get; private set; }
         public SpriteFont BFont { get; private set; }
+        public SpriteFont CFont { get; private set; }
         public Random Rnd { get; private set; }
         internal List<Collider> Colliders
         {
@@ -155,11 +156,12 @@ namespace ShootingGame
             
             AFont = Content.Load<SpriteFont>("AFont");
             BFont = Content.Load<SpriteFont>("BFont");
+            CFont = Content.Load<SpriteFont>("CFont");
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
-            shootSound = Content.Load<Song>("gunShot");
+            //shootSound = Content.Load<Song>("gunShot");
 
             foreach (GameObject go in gameObjects)
             {
@@ -209,7 +211,7 @@ namespace ShootingGame
                 effect.Play(volume, pitch, pan);
                 playSound = false;
             }*/
-            
+            /*
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
                 MediaPlayer.Play(shootSound);
@@ -218,7 +220,7 @@ namespace ShootingGame
             if (Mouse.GetState().LeftButton == ButtonState.Released && !playSound)
             {
                 playSound = true;
-            }
+            }*/
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 

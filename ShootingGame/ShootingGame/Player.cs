@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,33 +15,54 @@ namespace ShootingGame
     class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
     {
         Animator animator;
-        bool playAnimation;
         bool canShoot;
         bool canChangeWeapon;
         bool isChanged;
-        int currentWeapon;
-        int selectedWeapon;
+        int currentWeaponIndex;
+        int selectedWeaponIndex;
         int speed;
         Weapon[] weapons;
+        public static bool PlayAnimation { get; set; }
+        public static Weapon CurrentWeapon { get; private set; }
         public static int Health { get; set; }
         public Thread T { get; private set; }
         public static int Scores { get; set; }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
-            weapons = new Weapon[] { new Weapon(WeaponType.Gun, 10, 20, 2),
-                                      new Weapon(WeaponType.Rifle, 15, 50, 3),
-                                      new Weapon(WeaponType.MachineGun, 30, 50, 3)};
+            weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1500, ShootType.Gun),
+                                      new Weapon("RIFLE", 15, 50, 2000, ShootType.Rifle),
+                                      new Weapon("MACHINEGUN", 30, 50, 2000, ShootType.MachineGun)};
             Health = 100;
-            playAnimation = false;
+            PlayAnimation = false;
             T = new Thread(Move);
             T.IsBackground = true;
             Scores = 0;
             canShoot = true;
             canChangeWeapon = true;
-            currentWeapon = 0;
+            currentWeaponIndex = 0;
             speed = 5;
             isChanged = false;
+            CurrentWeapon = weapons[currentWeaponIndex];
+        }
+
+
+        /// <summary>
+        /// Loads the player's content
+        /// </summary>
+        /// <param name="content"></param>
+        public void LoadContent(ContentManager content)
+        {
+            foreach (Weapon w in weapons)
+            {
+                w.LoadContent(content);
+            }
+
+            //Sets up a reference to the palyer's animator
+            animator = (Animator)GameObject.GetComponent("Animator");
+
+            //We can make our animations when we have a reference to the player's animator.
+            CreateAnimation();
         }
 
         public void Move()
@@ -52,50 +74,50 @@ namespace ShootingGame
                 {
                     if (Keyboard.GetState().IsKeyDown(Keys.D1) && canChangeWeapon)
                     {
-                        selectedWeapon = 0;
-                        if (currentWeapon != selectedWeapon)
+                        selectedWeaponIndex = 0;
+                        if (currentWeaponIndex != selectedWeaponIndex)
                             canChangeWeapon = false;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.D2) && canChangeWeapon)
                     {
-                        selectedWeapon = 1;
-                        if (currentWeapon != selectedWeapon)
+                        selectedWeaponIndex = 1;
+                        if (currentWeaponIndex != selectedWeaponIndex)
                             canChangeWeapon = false;
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.D3) && canChangeWeapon)
                     {
-                        selectedWeapon = 2;
-                        if (currentWeapon != selectedWeapon)
+                        selectedWeaponIndex = 2;
+                        if (currentWeaponIndex != selectedWeaponIndex)
                             canChangeWeapon = false;
                     }
-                    else
+                    /*
+                    else if (Mouse.GetState().LeftButton == ButtonState.Pressed && canChangeWeapon)
                     {
-                        GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
-
-                        if (Mouse.GetState().LeftButton == ButtonState.Pressed || playAnimation)
+                        if(canShoot && !PlayAnimation)
                         {
-                            animator.PlayAnimation("Shoot");
-                            if (Explosion.PlayAnimation == false)
-                                Explosion.PlayAnimation = true;
+                            CurrentWeapon.Shoot();
                         }
-                        else animator.PlayAnimation("Idle");
+                        if (Explosion.PlayAnimation == false)
+                            Explosion.PlayAnimation = true;
+                        canShoot = false;
                     }
+                    else if (Mouse.GetState().LeftButton == ButtonState.Released)
+                    {
+                        canShoot = true;
+                    }*/
+                    CurrentWeapon.UpdateWeaponStatus();
+                    if (PlayAnimation)
+                    {
+                       animator.PlayAnimation("Shoot");
+                       if (Explosion.PlayAnimation == false)
+                           Explosion.PlayAnimation = true;
+                    }
+                    else animator.PlayAnimation("Idle");
                 }
                 else ChangeWeapon();
+
+                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
             }
-        }
-
-        /// <summary>
-        /// Loads the player's content
-        /// </summary>
-        /// <param name="content"></param>
-        public void LoadContent(ContentManager content)
-        {
-            //Sets up a reference to the palyer's animator
-            animator = (Animator)GameObject.GetComponent("Animator");
-
-            //We can make our animations when we have a reference to the player's animator.
-            CreateAnimation();
         }
 
         public void CreateAnimation()
@@ -116,7 +138,7 @@ namespace ShootingGame
         {
             if (animationName.Contains("Shoot"))
             {
-                playAnimation = false;
+                PlayAnimation = false;
             }
         }
 
@@ -147,6 +169,7 @@ namespace ShootingGame
                 {
                     isChanged = false;
                     canChangeWeapon = true;
+                    canShoot = true;
                 }
                 else
                 {
@@ -158,7 +181,8 @@ namespace ShootingGame
             {
                 if(GameObject.Transform.Position.Y > 600)
                 {
-                    currentWeapon = selectedWeapon;
+                    currentWeaponIndex = selectedWeaponIndex;
+                    CurrentWeapon = weapons[currentWeaponIndex];
                     isChanged = true;
                 }
                 else
