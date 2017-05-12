@@ -122,10 +122,17 @@ namespace ShootingGame
             gameObjects.Add(director.Construct(new Vector2(500, 300)));
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 400)));
+
             director = new Director(new DiceBuilder());
-            gameObjects.Add(director.Construct(new Vector2(650, 600)));
-            gameObjects.Add(director.Construct(new Vector2(750, 600)));
-            gameObjects.Add(director.Construct(new Vector2(850, 600)));
+            GameObject d1 = director.Construct(new Vector2(650, 600));
+            Dice dice1 = (Dice)d1.GetComponent("Dice");
+            gameObjects.Add(d1);
+            GameObject d2 = director.Construct(new Vector2(750, 600));
+            Dice dice2 = (Dice)d1.GetComponent("Dice");
+            gameObjects.Add(d2);
+            GameObject d3 = director.Construct(new Vector2(850, 600));
+            Dice dice3 = (Dice)d1.GetComponent("Dice");
+            gameObjects.Add(d3);
 
             /*
             for (int i = 0; i < 2; i++)

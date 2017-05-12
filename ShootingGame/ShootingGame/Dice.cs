@@ -15,7 +15,10 @@ namespace ShootingGame
     {
         private Animator animator;
         private int dice;
-        
+        private bool isPressed = false;
+        private KeyboardState upPressed;
+        private KeyboardState downPressed;
+
         public int Ammo { get; set; }
         private int reserve;
         private int result = GameWorld.Instance.Result;
@@ -23,37 +26,29 @@ namespace ShootingGame
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
-            result += Roll();
+            upPressed = Keyboard.GetState();
+            result += RollDices();
             T = new Thread(Update);
             T.IsBackground = true;
         }
 
-        public int Roll()
-        {
-            dice = GameWorld.Instance.Rnd.Next(1, 7);
-            return dice;
-        }
 
         public int RollDices()
         {
-            int count = 0;
-            while (count < 3)
-            {
-                result += Roll();
-                count++;
-            }
 
-            return result;
+            dice = GameWorld.Instance.Rnd.Next(1, 7);
+            result += dice;
+
+            return dice;
         }
 
         public void High()
         {
             int current;
 
-            current = result;
-            result = 0;
+            current = dice;
             RollDices();
-            if (current > result)
+            if (current > dice)
             {
                 Ammo += current + reserve;
                 if (reserve > 0)
@@ -61,7 +56,7 @@ namespace ShootingGame
                     reserve = 0;
                 }
             }
-            if (current < result)
+            if (current < dice)
             {
                 reserve += current;
             }
@@ -71,10 +66,9 @@ namespace ShootingGame
         {
             int current;
 
-            current = result;
-            result = 0;
+            current = dice;
             RollDices();
-            if (current < result)
+            if (current < dice)
             {
                 Ammo += current + reserve;
                 if (reserve > 0)
@@ -82,7 +76,7 @@ namespace ShootingGame
                     reserve = 0;
                 }
             }
-            if (current > result)
+            if (current > dice)
             {
                 reserve += current;
             }
@@ -108,16 +102,34 @@ namespace ShootingGame
 
         public void Update()
         {
-            KeyboardState k = new KeyboardState();
-
+            KeyboardState k = Keyboard.GetState();
             if (k.IsKeyDown(Keys.Up))
             {
-                High();
+                if (!upPressed.IsKeyDown(Keys.Up))
+                {
+                    High();
+                }
+
             }
-            else if (k.IsKeyDown(Keys.Down))
+            else if (upPressed.IsKeyDown(Keys.Up))
             {
-                Low();
+
             }
+            upPressed = k;
+
+            if (k.IsKeyDown(Keys.Down))
+            {
+                if (!downPressed.IsKeyDown(Keys.Down))
+                {
+                    Low();
+                }
+
+            }
+            else if (downPressed.IsKeyDown(Keys.Down))
+            {
+
+            }
+            downPressed = k;
 
             switch (dice)
             {
