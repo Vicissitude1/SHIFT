@@ -52,8 +52,17 @@ namespace ShootingGame
             else if (GameObject.GetComponent("Player") is Player)
             {
                 spriteBatch.Draw(pixel, new Rectangle(0, 570, 1300, 150), Color.LightGray);
+                if(Player.CurrentWeapon.Name== "GUN")
+                    spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(170, 590, 50, 30), Color.White);
+                else if (Player.CurrentWeapon.Name == "RIFLE")
+                    spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(150, 590, 120, 40), Color.White);
+                else if (Player.CurrentWeapon.Name == "MACHINEGUN")
+                    spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(150, 565, 130, 100), Color.White);
 
-                spriteBatch.DrawString(GameWorld.Instance.BFont, "WEAPON: " + Player.CurrentWeapon.Name, new Vector2(50, 600), Color.Black);
+                //spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(100, 600, Player.CurrentWeapon.Sprite.Width, Player.CurrentWeapon.Sprite.Height), Color.White);
+
+                spriteBatch.DrawString(GameWorld.Instance.BFont, "WEAPON: ", new Vector2(50, 600), Color.Black);
+
                 if (Player.CurrentWeapon.IsReloading)
                 {
                     spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: RELOADING", new Vector2(50, 640), Color.Red);

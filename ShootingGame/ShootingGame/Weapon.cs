@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
@@ -24,6 +25,7 @@ namespace ShootingGame
         public string Name { get; private set; }
         public int Ammo { get; private set; }
         int damageLevel;
+        public Texture2D Sprite;
         public int CurrentReloadTime { get; private set; }
         public bool IsReloading;
         
@@ -46,11 +48,20 @@ namespace ShootingGame
         public void LoadContent(ContentManager content)
         {
             if (shootType == ShootType.Gun)
+            {
                 sound = content.Load<Song>("pistol");
+                Sprite = content.Load<Texture2D>("pistolsprite");
+            }
             else if (shootType == ShootType.Rifle)
+            {
                 sound = content.Load<Song>("sniper");
+                Sprite = content.Load<Texture2D>("riflesprite");
+            }
             else if (shootType == ShootType.MachineGun)
+            {
                 sound = content.Load<Song>("sniper");
+                Sprite = content.Load<Texture2D>("machinegunsprite");
+            }
         }
 
         public void UpdateWeaponStatus()
