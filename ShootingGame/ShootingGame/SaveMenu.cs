@@ -32,9 +32,8 @@ namespace ShootingGame
         Color buttonClearColor;
         Vector2 mousePosition;
         DataBaseClass dataBase;
-        //SoundEffect buttonSound;
         Song buttonSound1;
-        bool startSound;
+        bool canPlaySound;
 
         public SaveMenu()
         {
@@ -45,7 +44,7 @@ namespace ShootingGame
             text = "";
             players = new List<PlayerListRow>();
             buttonSaveColor = buttonExitColor = buttonClearColor = Color.LightGray;
-            startSound = true;
+            canPlaySound = true;
         }
 
         public void LoadContent(ContentManager content)
@@ -54,8 +53,7 @@ namespace ShootingGame
             buttonClearRectangle = new Rectangle(900, 200, buttonSprite.Width, buttonSprite.Height);
             buttonSaveRectangle = new Rectangle(900, 350, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(900, 500, buttonSprite.Width, buttonSprite.Height);
-            //buttonSound = content.Load<SoundEffect>("buttonmp3");
-            buttonSound1 = content.Load<Song>("buttonmp3");
+            buttonSound1 = content.Load<Song>("buttonClick");
 
         }
 
@@ -141,21 +139,8 @@ namespace ShootingGame
             mousePosition = new Vector2(mouseState.Position.X, mouseState.Position.Y);
 
             if (buttonClearRectangle.Contains(mousePosition))
-            {
-                buttonClearColor = Color.White;
-                if (startSound)
-                {
-                    //buttonSound.Play();
-                    MediaPlayer.Play(buttonSound1);
-                    startSound = false;
-                }
-            }
-            else
-            {
-                if (!startSound) startSound = true;
-                buttonClearColor = Color.LightGray;
-                MediaPlayer.Stop();
-            }
+                buttonClearColor = Color.White;  
+            else buttonClearColor = Color.LightGray;
 
             if (buttonSaveRectangle.Contains(mousePosition) && canInsertName && text != "")
                 buttonSaveColor = Color.White;
@@ -171,6 +156,8 @@ namespace ShootingGame
                 ButtonSavePressed();
             else if (mouseState.LeftButton == ButtonState.Pressed && buttonExitRectangle.Contains(mousePosition))
                 ButtonExitPressed();
+            else if (mouseState.LeftButton == ButtonState.Released && !canPlaySound)
+                canPlaySound = true;
         }
 
         /// <summary>
@@ -297,16 +284,26 @@ namespace ShootingGame
             }
             else canInsertName = false;
             text = "";
+            if (canPlaySound)
+            {
+                MediaPlayer.Play(buttonSound1);
+                canPlaySound = false;
+            }
         }
 
         public void ButtonSavePressed()
         {
-            if (players[insertIndex].Name != "")
+            if (players[insertIndex].Name != "" && canInsertName)
             {
                 while (players.Count > 10)
                     players.RemoveAt(10);
                 dataBase.SavePlayersList(players);
                 canInsertName = false;
+                if (canPlaySound)
+                {
+                    MediaPlayer.Play(buttonSound1);
+                    canPlaySound = false;
+                }
             }
         }
 
@@ -316,6 +313,11 @@ namespace ShootingGame
             hasToLoadFormDB = true;
             Player.Health = 100;
             GameWorld.Instance.CanSavePlayer = false;
+            if(canPlaySound)
+            {
+                MediaPlayer.Play(buttonSound1);
+                canPlaySound = false;
+            }
         }
     }
 }
