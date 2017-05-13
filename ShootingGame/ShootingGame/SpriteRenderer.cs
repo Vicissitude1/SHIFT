@@ -40,10 +40,10 @@ namespace ShootingGame
 
             if (GameObject.GetComponent("Enemy") is Enemy)
             {
-                spriteBatch.DrawString(GameWorld.Instance.AFont, ((int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth).ToString(), new Vector2(GameObject.Transform.Position.X + 10, GameObject.Transform.Position.Y - 16), Color.DarkBlue);
+                spriteBatch.DrawString(GameWorld.Instance.AFont, ((int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth).ToString(), new Vector2(GameObject.Transform.Position.X + 10, GameObject.Transform.Position.Y - 16), Color.Black);
                 Scale = 1.5f - 400 / (GameObject.GetComponent("Transform") as Transform).Position.Y / 5;
                 //scale = 1;
-                DrawBorder(spriteBatch, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 5, 50, 5), 1, Color.Black);
+                DrawBorder(spriteBatch, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 5, 50, 5), 1, Color.Gray);
                 if ((GameObject.GetComponent("Enemy") as Enemy).EnemyHealth >= 30)
                     spriteBatch.Draw(pixel, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 4, (int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth / 2, 3), Color.Green);
                 else spriteBatch.Draw(pixel, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 4, (int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth / 2, 3), Color.Red);
@@ -52,7 +52,6 @@ namespace ShootingGame
             if (GameObject.GetComponent("PlayerBullet") is PlayerBullet)
             {
                 Scale = 1.2f - 400 / (GameObject.GetComponent("Transform") as Transform).Position.Y/3;
-                //scale = 1;
             }
 
             else if (GameObject.GetComponent("Player") is Player)

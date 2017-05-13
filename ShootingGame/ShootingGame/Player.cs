@@ -32,7 +32,7 @@ namespace ShootingGame
         {
             weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1500, ShootType.Gun),
                                       new Weapon("RIFLE", 15, 50, 2000, ShootType.Rifle),
-                                      new Weapon("MACHINEGUN", 30, 50, 2000, ShootType.MachineGun)};
+                                      new Weapon("MACHINEGUN", 30, 35, 2000, ShootType.MachineGun)};
             Health = 100;
             PlayAnimation = false;
             T = new Thread(Move);

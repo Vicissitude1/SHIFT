@@ -23,6 +23,8 @@ namespace ShootingGame
         Director director;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
+        List<Collider> colliders;
+        List<Collider> collidersToRemove;
         List<Score> scores;
         List<Score> scoresToRemove;
         Texture2D background;
@@ -30,7 +32,6 @@ namespace ShootingGame
         Texture2D grass;
         private SoundEffect effect;
         private static GameWorld instance;
-        List<Collider> colliders;
         bool playSound;
         public bool CanAddPlayerBollet { get; set; }
         public float DeltaTime { get; private set; }
@@ -113,6 +114,7 @@ namespace ShootingGame
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
+            collidersToRemove = new List<Collider>();
             scores = new List<Score>();
             scoresToRemove = new List<Score>();
             ObjectsToAdd = new List<GameObject>();
@@ -280,6 +282,11 @@ namespace ShootingGame
 
         public void ClearLists()
         {
+            foreach (GameObject go in objectsToRemove)
+            {
+                collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+            }
+
             if (scoresToRemove.Count > 0)
             {
                 foreach (Score s in scoresToRemove)
@@ -296,6 +303,15 @@ namespace ShootingGame
                     gameObjects.Remove(go);
                 }
                 objectsToRemove.Clear();
+            }
+
+            if (collidersToRemove.Count > 0)
+            {
+                foreach (Collider c in collidersToRemove)
+                {
+                    colliders.Remove(c);
+                }
+                collidersToRemove.Clear();
             }
         }
 

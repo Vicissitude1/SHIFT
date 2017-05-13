@@ -48,7 +48,7 @@ namespace ShootingGame
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Instance.BFont, bonus, position, Color.White);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, bonus, position, Color.White);
         }
     }
 }
