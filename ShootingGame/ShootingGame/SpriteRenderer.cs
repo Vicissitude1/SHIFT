@@ -55,7 +55,7 @@ namespace ShootingGame
                 if(Player.CurrentWeapon.Name== "GUN")
                     spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(170, 590, 50, 30), Color.White);
                 else if (Player.CurrentWeapon.Name == "RIFLE")
-                    spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(150, 590, 120, 40), Color.White);
+                    spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(150, 590, 140, 40), Color.White);
                 else if (Player.CurrentWeapon.Name == "MACHINEGUN")
                     spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(150, 565, 130, 100), Color.White);
 
@@ -78,7 +78,7 @@ namespace ShootingGame
                         ammo += "!";
                         i++;
                     }
-                    spriteBatch.DrawString(GameWorld.Instance.CFont, ammo, new Vector2(50, 660), Color.DarkGreen);
+                    spriteBatch.DrawString(GameWorld.Instance.CFont, ammo, new Vector2(50, 660), Color.DarkOrange);
                 }
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "Health: " + Player.Health, new Vector2(400, 600), Color.Black);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "Score: " + Player.Scores, new Vector2(400, 640), Color.Black);

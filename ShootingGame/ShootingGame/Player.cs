@@ -160,6 +160,7 @@ namespace ShootingGame
         public void ChangeWeapon()
         {
             if(canShoot) canShoot = false;
+            if (PlayAnimation) PlayAnimation = false;
 
             Vector2 translation = Vector2.Zero;
 

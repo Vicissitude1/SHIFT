@@ -24,7 +24,7 @@ namespace ShootingGame
         int reloadTime;
         public string Name { get; private set; }
         public int Ammo { get; private set; }
-        int damageLevel;
+        public int DamageLevel { get; private set; }
         public Texture2D Sprite;
         public int CurrentReloadTime { get; private set; }
         public bool IsReloading;
@@ -33,7 +33,7 @@ namespace ShootingGame
         {
             this.Name = name;
             this.maxAmmo = this.Ammo = maxAmmo;
-            this.damageLevel = damageLevel;
+            this.DamageLevel = damageLevel;
             this.reloadTime = this.CurrentReloadTime = reloadTime;
             this.shootType = shootType;
             canPlaySound = true;
@@ -81,6 +81,7 @@ namespace ShootingGame
                 {
                     Player.PlayAnimation = true;
                     Ammo--;
+                    GameWorld.Instance.CanAddPlayerBollet = true;
                     MediaPlayer.Play(sound);
                     canShoot = false;
                 }
@@ -91,6 +92,7 @@ namespace ShootingGame
                     {
                         Player.PlayAnimation = true;
                         Ammo--;
+                        GameWorld.Instance.CanAddPlayerBollet = true;
                         MediaPlayer.Play(sound);
                         autoShootTimer = 0;
                     }

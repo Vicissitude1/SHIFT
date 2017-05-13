@@ -32,12 +32,13 @@ namespace ShootingGame
         private static GameWorld instance;
         List<Collider> colliders;
         bool playSound;
-        Song shootSound;
+        public bool CanAddPlayerBollet { get; set; }
         public float DeltaTime { get; private set; }
         public SpriteFont AFont { get; private set; }
         public SpriteFont BFont { get; private set; }
         public SpriteFont CFont { get; private set; }
         public Random Rnd { get; private set; }
+        internal List<GameObject> ObjectsToAdd { get; set; }
         internal List<Collider> Colliders
         {
             get
@@ -108,11 +109,13 @@ namespace ShootingGame
             // TODO: Add your initialization logic here
             Rnd = new Random();
             playSound = false;
+            CanAddPlayerBollet = false;
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
             scores = new List<Score>();
             scoresToRemove = new List<Score>();
+            ObjectsToAdd = new List<GameObject>();
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
@@ -228,7 +231,7 @@ namespace ShootingGame
             {
                 go.Update();
             }
-
+            UpdatePlayerShoot();
             ClearLists();
 
             base.Update(gameTime);
@@ -284,6 +287,7 @@ namespace ShootingGame
                 }
                 scoresToRemove.Clear();
             }
+
             if (objectsToRemove.Count > 0)
             {
                 foreach (GameObject go in objectsToRemove)
@@ -291,6 +295,18 @@ namespace ShootingGame
                     gameObjects.Remove(go);
                 }
                 objectsToRemove.Clear();
+            }
+        }
+
+        public void UpdatePlayerShoot()
+        {
+            if(CanAddPlayerBollet)
+            {
+                director = new Director(new PlayerBulletBuilder());
+                GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X, 470));
+                go.LoadContent(Content);
+                gameObjects.Add(go);
+                CanAddPlayerBollet = false;
             }
         }
     }
