@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using System;
 using Microsoft.Xna.Framework.Media;
-using IrrKlang;
 
 namespace ShootingGame
 {
@@ -41,7 +40,6 @@ namespace ShootingGame
         public SpriteFont BFont { get; private set; } // 12
         public SpriteFont CFont { get; private set; } // 16
         public Random Rnd { get; private set; }
-        public ISoundEngine Engine { get; private set; }
         internal List<Collider> Colliders
         {
             get
@@ -112,7 +110,7 @@ namespace ShootingGame
             // TODO: Add your initialization logic here
             Rnd = new Random();
             playSound = false;
-            CanSavePlayer = true;
+            CanSavePlayer = false;
             saveMenu = new SaveMenu();
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
@@ -121,7 +119,6 @@ namespace ShootingGame
             scoresToRemove = new List<Score>();
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
-            Engine = new ISoundEngine();
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
@@ -171,7 +168,7 @@ namespace ShootingGame
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
             saveMenu.LoadContent(Content);
-            //shootSound = Content.Load<Song>("gunShot");
+            shootSound = Content.Load<Song>("gunShot");
 
             foreach (GameObject go in gameObjects)
             {
@@ -212,7 +209,7 @@ namespace ShootingGame
                 Exit();
 
             // TODO: Add your update logic here
-            
+            /*
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
                 effect = Content.Load<SoundEffect>("gunShot");
@@ -221,17 +218,17 @@ namespace ShootingGame
                 float pan = 0.0f;
                 effect.Play(volume, pitch, pan);
                 playSound = false;
-            }
+            }*/
             /*
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
-                Engine.Play2D("Content/click.wav", true);
+                MediaPlayer.Play(shootSound);
                 playSound = false;
-            }*/
+            }
             if (Mouse.GetState().LeftButton == ButtonState.Released && !playSound)
             {
-                if(!playSound) playSound = true;
-            }
+                playSound = true;
+            }*/
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
