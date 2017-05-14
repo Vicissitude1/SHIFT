@@ -121,7 +121,6 @@ namespace ShootingGame
                 CurrentReloadTime = reloadTime;
                 IsReloading = false;
                 canPlayGunCockingSound = true;
-                MediaPlayer.Stop();
             }
             else CurrentReloadTime -= 20;
             
