@@ -129,8 +129,9 @@ namespace ShootingGame
             }
             else if (animationName.Contains("Shoot"))
             {
-                if(Player.Health > 0)
-                Player.Health -= 1;
+                //if(Player.Health > 0)
+                //Player.Health -= 1;
+                GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }
         }
 
@@ -150,7 +151,6 @@ namespace ShootingGame
                     (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
                 }
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
-                
             }
         }
 

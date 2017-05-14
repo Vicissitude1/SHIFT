@@ -159,7 +159,11 @@ namespace ShootingGame
 
         public void OnCollisionEnter(Collider other)
         {
-
+            if (other.GameObject.GetComponent("EnemyBullet") is EnemyBullet)
+            {
+                Health--;
+                (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
+            }
         }
 
         public void OnCollisionExit(Collider other)

@@ -57,6 +57,8 @@
     <Compile Include="AimBuilder.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Animator.cs" />
+    <Compile Include="EnemyBullet.cs" />
+    <Compile Include="EnemyBulletBuilder.cs" />
     <Compile Include="PlayerBullet.cs" />
     <Compile Include="PlayerBulletBuilder.cs" />
     <Compile Include="EnemyBuilder.cs" />

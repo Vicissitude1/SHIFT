@@ -49,7 +49,7 @@ namespace ShootingGame
                 else spriteBatch.Draw(pixel, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 4, (int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth / 2, 3), Color.Red);
             }
 
-            if (GameObject.GetComponent("PlayerBullet") is PlayerBullet)
+            if (GameObject.GetComponent("PlayerBullet") is PlayerBullet || GameObject.GetComponent("EnemyBullet") is EnemyBullet)
             {
                 Scale = 1.2f - 400 / (GameObject.GetComponent("Transform") as Transform).Position.Y/3;
             }

@@ -40,6 +40,7 @@ namespace ShootingGame
         public SpriteFont CFont { get; private set; }
         public Random Rnd { get; private set; }
         internal List<GameObject> ObjectsToAdd { get; set; }
+        internal List<Vector2> EnemyBulletsPositions { get; set; }
         internal List<Collider> Colliders
         {
             get
@@ -118,16 +119,18 @@ namespace ShootingGame
             scores = new List<Score>();
             scoresToRemove = new List<Score>();
             ObjectsToAdd = new List<GameObject>();
+            EnemyBulletsPositions = new List<Vector2>();
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
+            /*
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 200)));
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 300)));
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 400)));
-
+            */
             /*
             for (int i = 0; i < 2; i++)
             {
@@ -135,8 +138,8 @@ namespace ShootingGame
                 gameObjects.Add(director.Construct(new Vector2(Rnd.Next(100, 900), Rnd.Next(100, 400))));
             }*/
 
-            director = new Director(new ExplosionBuilder());
-            gameObjects.Add(director.Construct(new Vector2(100, 100)));
+            //director = new Director(new ExplosionBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(100, 100)));
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
@@ -234,7 +237,9 @@ namespace ShootingGame
             {
                 go.Update();
             }
+
             UpdatePlayerShoot();
+            UpdateEnemyShoot();
             ClearLists();
 
             base.Update(gameTime);
@@ -282,11 +287,6 @@ namespace ShootingGame
 
         public void ClearLists()
         {
-            foreach (GameObject go in objectsToRemove)
-            {
-                collidersToRemove.Add(go.GetComponent("Collider") as Collider);
-            }
-
             if (scoresToRemove.Count > 0)
             {
                 foreach (Score s in scoresToRemove)
@@ -294,10 +294,15 @@ namespace ShootingGame
                     scores.Remove(s);
                 }
                 scoresToRemove.Clear();
-            }
+            } 
 
             if (objectsToRemove.Count > 0)
             {
+                foreach (GameObject go in objectsToRemove)
+                {
+                    collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+                }
+
                 foreach (GameObject go in objectsToRemove)
                 {
                     gameObjects.Remove(go);
@@ -324,6 +329,21 @@ namespace ShootingGame
                 go.LoadContent(Content);
                 gameObjects.Add(go);
                 CanAddPlayerBollet = false;
+            }
+        }
+
+        public void UpdateEnemyShoot()
+        {
+            if (EnemyBulletsPositions.Count > 0)
+            {
+                foreach (Vector2 position in EnemyBulletsPositions)
+                {
+                    director = new Director(new EnemyBulletBuilder());
+                    GameObject go = director.Construct(position);
+                    go.LoadContent(Content);
+                    gameObjects.Add(go);
+                }
+                EnemyBulletsPositions.Clear();
             }
         }
     }
