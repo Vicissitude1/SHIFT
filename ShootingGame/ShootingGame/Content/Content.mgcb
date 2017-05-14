@@ -253,3 +253,15 @@
 /processorParam:TextureFormat=Color
 /build:machinegunsprite.png
 
+#begin gun-cocking-03.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:gun-cocking-03.wav
+
+#begin gun-cocking-02.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:gun-cocking-02.wav
+

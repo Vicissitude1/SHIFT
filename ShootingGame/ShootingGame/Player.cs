@@ -21,6 +21,7 @@ namespace ShootingGame
         int currentWeaponIndex;
         int selectedWeaponIndex;
         int speed;
+        Song gunCocking;
         Weapon[] weapons;
         public static bool PlayAnimation { get; set; }
         public static Weapon CurrentWeapon { get; private set; }
@@ -57,7 +58,7 @@ namespace ShootingGame
             {
                 w.LoadContent(content);
             }
-
+            gunCocking = content.Load<Song>("gun-cocking-02");
             //Sets up a reference to the palyer's animator
             animator = (Animator)GameObject.GetComponent("Animator");
 
@@ -76,19 +77,28 @@ namespace ShootingGame
                     {
                         selectedWeaponIndex = 0;
                         if (currentWeaponIndex != selectedWeaponIndex)
+                        {
                             canChangeWeapon = false;
+                            MediaPlayer.Play(gunCocking);
+                        }
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.D2) && canChangeWeapon)
                     {
                         selectedWeaponIndex = 1;
                         if (currentWeaponIndex != selectedWeaponIndex)
+                        {
                             canChangeWeapon = false;
+                            MediaPlayer.Play(gunCocking);
+                        }
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.D3) && canChangeWeapon)
                     {
                         selectedWeaponIndex = 2;
                         if (currentWeaponIndex != selectedWeaponIndex)
+                        {
                             canChangeWeapon = false;
+                            MediaPlayer.Play(gunCocking);
+                        }
                     }
                     /*
                     else if (Mouse.GetState().LeftButton == ButtonState.Pressed && canChangeWeapon)

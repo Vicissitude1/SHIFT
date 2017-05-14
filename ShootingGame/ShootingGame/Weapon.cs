@@ -22,6 +22,8 @@ namespace ShootingGame
         MouseState mouseState;
         Song sound;
         int reloadTime;
+        Song gunCocking;
+        bool canPlayGunCockingSound;
         public string Name { get; private set; }
         public int Ammo { get; private set; }
         public int DamageLevel { get; private set; }
@@ -38,7 +40,8 @@ namespace ShootingGame
             this.shootType = shootType;
             canPlaySound = true;
             IsReloading = false;
-            autoShootTimer = 0;  
+            autoShootTimer = 0;
+            canPlayGunCockingSound = true;
         }
 
         /// <summary>
@@ -62,6 +65,7 @@ namespace ShootingGame
                 sound = content.Load<Song>("sniper");
                 Sprite = content.Load<Texture2D>("machinegunsprite");
             }
+            gunCocking = content.Load<Song>("gun-cocking-03");
         }
 
         public void UpdateWeaponStatus()
@@ -106,11 +110,18 @@ namespace ShootingGame
 
         public void Reload()
         {
+            if(CurrentReloadTime < reloadTime/10)
+            {
+                MediaPlayer.Play(gunCocking);
+                canPlayGunCockingSound = false;
+            }
             if (CurrentReloadTime <= 0)
             {
                 Ammo = maxAmmo;
                 CurrentReloadTime = reloadTime;
                 IsReloading = false;
+                canPlayGunCockingSound = true;
+                MediaPlayer.Stop();
             }
             else CurrentReloadTime -= 20;
             
