@@ -20,10 +20,11 @@ namespace ShootingGame
 
         public EnemyBullet(GameObject gameObject) : base(gameObject)
         {
-            speed = 10;
+            speed = 5;
             IsRealesed = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, 560);
-            //direction = aimPosition - GameObject.Transform.Position;
+            translation = aimPosition - GameObject.Transform.Position;
+            translation.Normalize();
             T = new Thread(Update);
             T.IsBackground = true;
             T.Start();
@@ -38,10 +39,6 @@ namespace ShootingGame
         public void Move()
         {
             Thread.Sleep(20);
-            translation = Vector2.Zero;
-            //translation += direction;
-            translation += new Vector2(0, 1);
-            //translation = aimPosition - GameObject.Transform.Position;
             GameObject.Transform.Position += translation * speed;
 
             if (GameObject.Transform.Position.Y > 550)

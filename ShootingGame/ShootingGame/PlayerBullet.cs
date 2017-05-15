@@ -25,7 +25,6 @@ namespace ShootingGame
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
-            //direction = aimPosition - GameObject.Transform.Position;
             T = new Thread(Update);
             T.IsBackground = true;
             T.Start();
@@ -41,9 +40,7 @@ namespace ShootingGame
         {
             Thread.Sleep(20);
             translation = Vector2.Zero;
-            //translation += direction;
             translation += new Vector2(0, -1);
-            //translation = aimPosition - GameObject.Transform.Position;
             GameObject.Transform.Position += translation * speed;
             
             if (GameObject.Transform.Position.Y < 85 || GameObject.Transform.Position.Y < aimPosition.Y)
