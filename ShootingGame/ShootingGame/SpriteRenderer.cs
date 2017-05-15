@@ -87,6 +87,7 @@ namespace ShootingGame
                 }
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "Health: " + Player.Health, new Vector2(400, 600), Color.Black);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "Score: " + Player.Scores, new Vector2(400, 640), Color.Black);
+                spriteBatch.DrawString(GameWorld.Instance.ResultFont, " = " + GameWorld.Instance.Result, new Vector2(925, 625), Color.Black);
                 DrawBorder(spriteBatch, new Rectangle(500, 600, 102, 20), 1, Color.Black);
                 if (Player.Health >= 30)
                     spriteBatch.Draw(pixel, new Rectangle(500, 601, Player.Health, 18), Color.Green);

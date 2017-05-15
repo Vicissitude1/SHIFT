@@ -36,7 +36,7 @@ namespace ShootingGame
 
         public Dictionary<string, Animation> animations;
 
-        private string animationName;
+        public string animationName;
 
         public Animator(GameObject gameObject) : base(gameObject)
         {

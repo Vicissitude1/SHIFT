@@ -61,7 +61,6 @@
     <Compile Include="EnemyBulletBuilder.cs" />
     <Compile Include="PlayerBullet.cs" />
     <Compile Include="PlayerBulletBuilder.cs" />
-    <Compile Include="Bullet.cs" />
     <Compile Include="Dice.cs" />
     <Compile Include="DiceBuilder.cs" />
     <Compile Include="EnemyBuilder.cs" />

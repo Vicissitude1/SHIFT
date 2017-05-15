@@ -21,13 +21,19 @@ namespace ShootingGame
         /// </summary>
         static object thisLock = new object();
         Director director;
-        private SpriteFont resultFont;
+        public int DiceResult { get; set; }
+        private int reserve;
+        public KeyboardState UpPressed { get; set; }
+        private KeyboardState downPressed;
+        public int Ammo { get; set; }
+        public SpriteFont ResultFont { get; set; }
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
         List<Collider> colliders;
         List<Collider> collidersToRemove;
         List<Score> scores;
         List<Score> scoresToRemove;
+        internal List<Dice> Dies { get; set; }
         Texture2D background;
         Texture2D sky;
         Texture2D grass;
@@ -94,6 +100,8 @@ namespace ShootingGame
             }
         }
 
+        public int CurrentDice { get; private set; }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -119,13 +127,14 @@ namespace ShootingGame
             colliders = new List<Collider>();
             collidersToRemove = new List<Collider>();
             scores = new List<Score>();
+            Dies = new List<Dice>();
             scoresToRemove = new List<Score>();
             ObjectsToAdd = new List<GameObject>();
             EnemyBulletsPositions = new List<Vector2>();
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
-            /*
+            
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 200)));
             director = new Director(new EnemyBuilder());
@@ -133,20 +142,10 @@ namespace ShootingGame
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 400)));
 
-            director = new Director(new DiceBuilder());
-            GameObject d1 = director.Construct(new Vector2(650, 600));
-            Dice dice1 = (Dice)d1.GetComponent("Dice");
-            gameObjects.Add(d1);
-            GameObject d2 = director.Construct(new Vector2(750, 600));
-            Dice dice2 = (Dice)d1.GetComponent("Dice");
-            gameObjects.Add(d2);
-            GameObject d3 = director.Construct(new Vector2(850, 600));
-            Dice dice3 = (Dice)d1.GetComponent("Dice");
-            gameObjects.Add(d3);
-
-            */
-            /*
-            for (int i = 0; i < 2; i++)
+            
+            
+            
+            /*for (int i = 0; i < 2; i++)
             {
                 director = new Director(new EnemyBuilder());
                 gameObjects.Add(director.Construct(new Vector2(Rnd.Next(100, 900), Rnd.Next(100, 400))));
@@ -158,8 +157,20 @@ namespace ShootingGame
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
             gameObjects.Add(director.Construct(new Vector2(600, 470)));
-            
-            
+
+            director = new Director(new DiceBuilder());
+            GameObject d1 = director.Construct(new Vector2(650, 600));
+            Dice dice1 = (Dice)d1.GetComponent("Dice");
+            gameObjects.Add(d1);
+            GameObject d2 = director.Construct(new Vector2(750, 600));
+            Dice dice2 = (Dice)d2.GetComponent("Dice");
+            gameObjects.Add(d2);
+            GameObject d3 = director.Construct(new Vector2(850, 600));
+            Dice dice3 = (Dice)d3.GetComponent("Dice");
+            gameObjects.Add(d3);
+            Dies.Add(dice1);
+            Dies.Add(dice2);
+            Dies.Add(dice3);
 
             base.Initialize();
         }
@@ -180,7 +191,7 @@ namespace ShootingGame
             AFont = Content.Load<SpriteFont>("AFont");
             BFont = Content.Load<SpriteFont>("BFont");
             CFont = Content.Load<SpriteFont>("CFont");
-            resultFont = Content.Load<SpriteFont>("resultFont");
+            ResultFont = Content.Load<SpriteFont>("resultFont");
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
@@ -245,6 +256,34 @@ namespace ShootingGame
             {
                 playSound = true;
             }*/
+            KeyboardState k = Keyboard.GetState();
+            if (k.IsKeyDown(Keys.Up))
+            {
+                if (!UpPressed.IsKeyDown(Keys.Up))
+                {
+                    High();
+                }
+
+            }
+            else if (UpPressed.IsKeyDown(Keys.Up))
+            {
+
+            }
+            UpPressed = k;
+
+            if (k.IsKeyDown(Keys.Down))
+            {
+                if (!downPressed.IsKeyDown(Keys.Down))
+                {
+                    Low();
+                }
+
+            }
+            else if (downPressed.IsKeyDown(Keys.Down))
+            {
+
+            }
+            downPressed = k;
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -285,7 +324,7 @@ namespace ShootingGame
             spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
             spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
             
-            spriteBatch.DrawString(resultFont, " = " + Result, new Vector2(875, 600), Color.Black);
+            
 
             foreach (GameObject go in gameObjects)
             {
@@ -361,6 +400,67 @@ namespace ShootingGame
                     gameObjects.Add(go);
                 }
                 EnemyBulletsPositions.Clear();
+            }
+        }
+
+        public int RollDices()
+        {
+            
+            DiceResult = Rnd.Next(1, 7);
+            Result += DiceResult;
+
+            return DiceResult;
+        }
+
+        public void High()
+        {
+            int current;
+
+            current = Result;
+            Result = 0;
+            foreach(Dice dice in Dies)
+            {
+                CurrentDice = RollDices();
+                dice.UpdateDice(CurrentDice);
+            }
+            
+            if (current > Result)
+            {
+                Ammo += current + reserve;
+                if (reserve > 0)
+                {
+                    reserve = 0;
+                }
+            }
+            if (current < Result)
+            {
+                reserve += current;
+            }
+        }
+
+        public void Low()
+        {
+            int current;
+
+            current = Result;
+            Result = 0;
+            foreach (Dice dice in Dies)
+            {
+                CurrentDice = RollDices();
+                dice.UpdateDice(CurrentDice);
+            }
+
+            if (current < Result)
+            {
+                Ammo += current + reserve;
+                if (reserve > 0)
+                {
+                    reserve = 0;
+                }
+            }
+            if (current > Result)
+            {
+                reserve += current;
             }
         }
     }

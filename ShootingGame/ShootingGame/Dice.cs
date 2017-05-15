@@ -14,72 +14,18 @@ namespace ShootingGame
     class Dice : Component, ILoadable, IUpdateable
     {
         private Animator animator;
-        private int dice;
-        private bool isPressed = false;
-        private KeyboardState upPressed;
-        private KeyboardState downPressed;
+        
 
         public int Ammo { get; set; }
-        private int reserve;
         private int result = GameWorld.Instance.Result;
         public Thread T { get; set; }
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
-            upPressed = Keyboard.GetState();
-            result += RollDices();
+            GameWorld.Instance.UpPressed = Keyboard.GetState();
+            GameWorld.Instance.Result += GameWorld.Instance.RollDices();
             T = new Thread(Update);
             T.IsBackground = true;
-        }
-
-
-        public int RollDices()
-        {
-
-            dice = GameWorld.Instance.Rnd.Next(1, 7);
-            result += dice;
-
-            return dice;
-        }
-
-        public void High()
-        {
-            int current;
-
-            current = dice;
-            RollDices();
-            if (current > dice)
-            {
-                Ammo += current + reserve;
-                if (reserve > 0)
-                {
-                    reserve = 0;
-                }
-            }
-            if (current < dice)
-            {
-                reserve += current;
-            }
-        }
-
-        public void Low()
-        {
-            int current;
-
-            current = dice;
-            RollDices();
-            if (current < dice)
-            {
-                Ammo += current + reserve;
-                if (reserve > 0)
-                {
-                    reserve = 0;
-                }
-            }
-            if (current > dice)
-            {
-                reserve += current;
-            }
         }
 
         public void LoadContent(ContentManager content)
@@ -99,39 +45,9 @@ namespace ShootingGame
             animator.PlayAnimation("ShowSix");
         }
 
-
-        public void Update()
+        public void UpdateDice(int d)
         {
-            KeyboardState k = Keyboard.GetState();
-            if (k.IsKeyDown(Keys.Up))
-            {
-                if (!upPressed.IsKeyDown(Keys.Up))
-                {
-                    High();
-                }
-
-            }
-            else if (upPressed.IsKeyDown(Keys.Up))
-            {
-
-            }
-            upPressed = k;
-
-            if (k.IsKeyDown(Keys.Down))
-            {
-                if (!downPressed.IsKeyDown(Keys.Down))
-                {
-                    Low();
-                }
-
-            }
-            else if (downPressed.IsKeyDown(Keys.Down))
-            {
-
-            }
-            downPressed = k;
-
-            switch (dice)
+            switch (d)
             {
                 case 1:
                     animator.PlayAnimation("ShowOne");
@@ -152,6 +68,13 @@ namespace ShootingGame
                     animator.PlayAnimation("ShowSix");
                     break;
             }
+        }
+
+
+        public void Update()
+        {
+            
+            
         }
     }
 }
