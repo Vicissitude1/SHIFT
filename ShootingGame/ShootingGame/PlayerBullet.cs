@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class PlayerBullet : Component
+    class PlayerBullet : Component, ILoadable, IAnimateable
     {
-        Vector2 direction;
         int speed;
         Vector2 translation;
         Vector2 aimPosition;
+        Animator animator;
         public int DamageLevel { get; private set; }
         public Thread T { get; set; }
         public bool IsRealesed { get; set; }
@@ -32,8 +33,8 @@ namespace ShootingGame
 
         public void Update()
         {
-            while(true)
-            Move();
+            while (true)
+                Move();
         }
 
         public void Move()
@@ -42,16 +43,39 @@ namespace ShootingGame
             translation = Vector2.Zero;
             translation += new Vector2(0, -1);
             GameObject.Transform.Position += translation * speed;
-            
+
             if (GameObject.Transform.Position.Y < 85 || GameObject.Transform.Position.Y < aimPosition.Y)
+            {
                 IsRealesed = true;
+            }             
 
             if (IsRealesed)
             {
-                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
-                T.Abort(); 
+                speed = 1;
+                animator.PlayAnimation("Expl");
             }
-                
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            animator = (Animator)GameObject.GetComponent("Animator");
+            CreateAnimation();
+        }
+
+        public void CreateAnimation()
+        {
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 15, 15, 1, Vector2.Zero));
+            animator.CreateAnimation("Expl", new Animation(3, 19, 0, 16, 20, 15, Vector2.Zero));
+            animator.PlayAnimation("Idle");
+        }
+
+        public void OnAnimationDone(string animationName)
+        {
+            if (animationName.Contains("Expl"))
+            {
+                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
+                T.Abort();
+            }
         }
     }
 }
