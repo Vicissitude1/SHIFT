@@ -123,14 +123,16 @@ namespace ShootingGame
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
-            /*
+            
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 200)));
+            
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 300)));
+            
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 400)));
-            */
+            
             /*
             for (int i = 0; i < 2; i++)
             {
@@ -294,21 +296,24 @@ namespace ShootingGame
                     scores.Remove(s);
                 }
                 scoresToRemove.Clear();
-            } 
-
-            if (objectsToRemove.Count > 0)
-            {
-                foreach (GameObject go in objectsToRemove)
-                {
-                    collidersToRemove.Add(go.GetComponent("Collider") as Collider);
-                }
-
-                foreach (GameObject go in objectsToRemove)
-                {
-                    gameObjects.Remove(go);
-                }
-                objectsToRemove.Clear();
             }
+            lock (ObjectsToRemove)
+            {
+                if (objectsToRemove.Count > 0)
+                {
+                    foreach (GameObject go in objectsToRemove)
+                    {
+                        collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+                    }
+
+                    foreach (GameObject go in objectsToRemove)
+                    {
+                        gameObjects.Remove(go);
+                    }
+                    objectsToRemove.Clear();
+                }
+            }
+          
 
             if (collidersToRemove.Count > 0)
             {

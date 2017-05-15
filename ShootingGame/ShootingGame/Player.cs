@@ -162,6 +162,7 @@ namespace ShootingGame
             if (other.GameObject.GetComponent("EnemyBullet") is EnemyBullet)
             {
                 Health--;
+                if (Health < 0) Health = 0;
                 (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
             }
         }
