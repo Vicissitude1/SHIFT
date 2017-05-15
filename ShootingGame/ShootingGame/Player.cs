@@ -21,6 +21,7 @@ namespace ShootingGame
         int currentWeaponIndex;
         int selectedWeaponIndex;
         int speed;
+        object thisLock = new object();
         Song gunCocking;
         Weapon[] weapons;
         public static bool PlayAnimation { get; set; }
@@ -116,13 +117,12 @@ namespace ShootingGame
                         canShoot = true;
                     }*/
                     CurrentWeapon.UpdateWeaponStatus();
-                    if (PlayAnimation)
-                    {
-                       animator.PlayAnimation("Shoot");
-                       if (Explosion.PlayAnimation == false)
-                           Explosion.PlayAnimation = true;
-                    }
-                    else animator.PlayAnimation("Idle");
+                    if (PlayAnimation && currentWeaponIndex==0) animator.PlayAnimation("GunShoot");
+                    else if (PlayAnimation && currentWeaponIndex == 1) animator.PlayAnimation("RifleShoot");
+                    else if (PlayAnimation && currentWeaponIndex == 2) animator.PlayAnimation("MachineGunShoot");
+                    else if(currentWeaponIndex==0) animator.PlayAnimation("GunIdle");
+                    else if (currentWeaponIndex == 1) animator.PlayAnimation("RifleIdle");
+                    else if (currentWeaponIndex == 2) animator.PlayAnimation("MachineGunIdle");
                 }
                 else ChangeWeapon();
 
@@ -132,21 +132,19 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
-            /*
-            animator.CreateAnimation("IdleBack", new Animation(1, 0, 8, 33, 60, 6, Vector2.Zero));
-            animator.CreateAnimation("WalkLeft", new Animation(5, 218, 0, 45, 60, 10, Vector2.Zero));
-            animator.CreateAnimation("WalkRight", new Animation(5, 65, 5, 53, 60, 10, Vector2.Zero));
-            animator.CreateAnimation("DieFront", new Animation(3, 920, 0, 150, 150, 5, Vector2.Zero));
-            animator.PlayAnimation("IdleBack");*/
-            animator.CreateAnimation("Idle", new Animation(3, 0, 0, 60, 100, 0, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(6, 0, 0, 61, 100, 20, Vector2.Zero));
-            animator.PlayAnimation("Idle");
+            animator.CreateAnimation("GunIdle", new Animation(1, 20, 0, 60, 90, 1, Vector2.Zero));
+            animator.CreateAnimation("GunShoot", new Animation(6, 20, 1, 62, 90, 20, Vector2.Zero));
+            animator.CreateAnimation("RifleIdle", new Animation(1, 135, 0, 80, 70, 1, Vector2.Zero));
+            animator.CreateAnimation("RifleShoot", new Animation(3, 135, 0, 80, 70, 20, Vector2.Zero));
+            animator.CreateAnimation("MachineGunIdle", new Animation(1, 225, 0, 90, 110, 1, Vector2.Zero));
+            animator.CreateAnimation("MachineGunShoot", new Animation(3, 225, 1, 96, 110, 20, Vector2.Zero));
+            animator.PlayAnimation("GunIdle");
 
         }
 
         public void OnAnimationDone(string animationName)
         {
-            if (animationName.Contains("Shoot"))
+            if (animationName.Contains("GunShoot") || animationName.Contains("RifleShoot"))
             {
                 PlayAnimation = false;
             }
@@ -161,8 +159,11 @@ namespace ShootingGame
         {
             if (other.GameObject.GetComponent("EnemyBullet") is EnemyBullet)
             {
-                Health--;
-                if (Health < 0) Health = 0;
+                lock (thisLock)
+                {
+                    Health--;
+                    if (Health < 0) Health = 0;
+                }
                 (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
             }
         }
@@ -181,7 +182,7 @@ namespace ShootingGame
 
             if (isChanged)
             {
-                if(GameObject.Transform.Position.Y <= 470)
+                if(GameObject.Transform.Position.Y <= 500)
                 {
                     isChanged = false;
                     canChangeWeapon = true;
@@ -200,6 +201,9 @@ namespace ShootingGame
                     currentWeaponIndex = selectedWeaponIndex;
                     CurrentWeapon = weapons[currentWeaponIndex];
                     isChanged = true;
+                    if (currentWeaponIndex == 0) animator.PlayAnimation("GunIdle");
+                    else if (currentWeaponIndex == 1) animator.PlayAnimation("RifleIdle");
+                    else if (currentWeaponIndex == 2) animator.PlayAnimation("MachineGunIdle");
                 }
                 else
                 {

@@ -73,8 +73,8 @@ namespace ShootingGame
         {
             if (animationName.Contains("Expl"))
             {
-                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
                 T.Abort();
+                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
             }
         }
     }
