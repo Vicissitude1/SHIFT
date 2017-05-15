@@ -14,7 +14,7 @@ namespace ShootingGame
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject(position);
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "SHIFT Crosshair", 0));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "SHIFT Crosshair", 0.9f));
             gameObject.AddComponent(new Aim(gameObject));
         }
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Enemy : Component, ILoadable, IAnimateable
+    class Enemy : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
     {
         int speed;
         Vector2 translation;
@@ -34,7 +34,7 @@ namespace ShootingGame
         {
             while(true)
             {
-                UpdateHealth();
+                //UpdateHealth();
                 Move();
                 Thread.Sleep(10);
             }
@@ -125,12 +125,38 @@ namespace ShootingGame
                 Player.Scores += 5;
                 EnemyHealth = 100;
                 GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 900), GameWorld.Instance.Rnd.Next(100, 400));
+                (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
             }
             else if (animationName.Contains("Shoot"))
             {
-                if(Player.Health > 0)
-                Player.Health -= 1;
+                //if(Player.Health > 0)
+                //Player.Health -= 1;
+                GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }
+        }
+
+        public void OnCollisionStay(Collider other)
+        {
+            // (other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
+        }
+
+        public void OnCollisionEnter(Collider other)
+        {
+            if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
+            {
+                EnemyHealth -= (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).DamageLevel;
+                if (EnemyHealth < 0)
+                {
+                    EnemyHealth = 0;
+                    (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
+                }
+                (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
+            }
+        }
+
+        public void OnCollisionExit(Collider other)
+        {
+            //(other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
         }
     }
 }

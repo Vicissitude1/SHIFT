@@ -6,29 +6,14 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{892B46FC-F973-44E2-825E-23FAA5DD6337}</ProjectGuid>
+    <ProjectGuid>{98F9159B-3E1A-4F52-B3BA-EE3E65AE5B00}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ShootingGame</RootNamespace>
-    <AssemblyName>ShootingGame</AssemblyName>
+    <RootNamespace>GameTrySound</RootNamespace>
+    <AssemblyName>GameTrySound</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -53,42 +38,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Aim.cs" />
-    <Compile Include="AimBuilder.cs" />
-    <Compile Include="Animation.cs" />
-    <Compile Include="Animator.cs" />
-    <Compile Include="EnemyBullet.cs" />
-    <Compile Include="EnemyBulletBuilder.cs" />
-    <Compile Include="PlayerBullet.cs" />
-    <Compile Include="PlayerBulletBuilder.cs" />
-    <Compile Include="Bullet.cs" />
-    <Compile Include="Dice.cs" />
-    <Compile Include="DiceBuilder.cs" />
-    <Compile Include="EnemyBuilder.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="Collider.cs" />
-    <Compile Include="Component.cs" />
-    <Compile Include="Director.cs" />
-    <Compile Include="Explosion.cs" />
-    <Compile Include="ExplosionBuilder.cs" />
-    <Compile Include="GameObject.cs" />
-    <Compile Include="GameWorld.cs" />
-    <Compile Include="Builder\IBuilder.cs" />
-    <Compile Include="Interfaces\IAnimateable.cs" />
-    <Compile Include="Interfaces\ICollisionEnter.cs" />
-    <Compile Include="Interfaces\ICollisionExit.cs" />
-    <Compile Include="Interfaces\ICollisionStay.cs" />
-    <Compile Include="Interfaces\IDrawable.cs" />
-    <Compile Include="Interfaces\ILoadable.cs" />
-    <Compile Include="Interfaces\IUpdateable.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Builder\PlayerBuilder.cs" />
+    <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Score.cs" />
-    <Compile Include="SpriteRenderer.cs" />
-    <Compile Include="Transform.cs" />
-    <Compile Include="Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -102,18 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

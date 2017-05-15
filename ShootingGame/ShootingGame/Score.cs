@@ -22,7 +22,7 @@ namespace ShootingGame
         {
             this.bonus = bonus;
             this.position = position;
-            lifeTimer = 2000;
+            lifeTimer = 2500;
             speed = 100;
             t = new Thread(Move);
             t.IsBackground = true;
@@ -48,7 +48,7 @@ namespace ShootingGame
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Instance.BFont, bonus, position, Color.Yellow);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, bonus, position, Color.White);
         }
     }
 }

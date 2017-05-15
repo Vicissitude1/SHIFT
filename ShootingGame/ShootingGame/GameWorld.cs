@@ -24,19 +24,24 @@ namespace ShootingGame
         private SpriteFont resultFont;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
+        List<Collider> colliders;
+        List<Collider> collidersToRemove;
         List<Score> scores;
         List<Score> scoresToRemove;
         Texture2D background;
         Texture2D sky;
+        Texture2D grass;
         private SoundEffect effect;
         private static GameWorld instance;
-        List<Collider> colliders;
         bool playSound;
-        Song shootSound;
+        public bool CanAddPlayerBollet { get; set; }
         public float DeltaTime { get; private set; }
         public SpriteFont AFont { get; private set; }
         public SpriteFont BFont { get; private set; }
+        public SpriteFont CFont { get; private set; }
         public Random Rnd { get; private set; }
+        internal List<GameObject> ObjectsToAdd { get; set; }
+        internal List<Vector2> EnemyBulletsPositions { get; set; }
         public int Result { get; set; }
         internal List<Collider> Colliders
         {
@@ -108,14 +113,19 @@ namespace ShootingGame
             // TODO: Add your initialization logic here
             Rnd = new Random();
             playSound = false;
+            CanAddPlayerBollet = false;
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
+            collidersToRemove = new List<Collider>();
             scores = new List<Score>();
             scoresToRemove = new List<Score>();
+            ObjectsToAdd = new List<GameObject>();
+            EnemyBulletsPositions = new List<Vector2>();
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
+            /*
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 200)));
             director = new Director(new EnemyBuilder());
@@ -134,6 +144,7 @@ namespace ShootingGame
             Dice dice3 = (Dice)d1.GetComponent("Dice");
             gameObjects.Add(d3);
 
+            */
             /*
             for (int i = 0; i < 2; i++)
             {
@@ -141,13 +152,14 @@ namespace ShootingGame
                 gameObjects.Add(director.Construct(new Vector2(Rnd.Next(100, 900), Rnd.Next(100, 400))));
             }*/
 
-            director = new Director(new ExplosionBuilder());
-            gameObjects.Add(director.Construct(new Vector2(100, 100)));
+            //director = new Director(new ExplosionBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(100, 100)));
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
             gameObjects.Add(director.Construct(new Vector2(600, 470)));
-            MediaPlayer.IsRepeating = false;
+            
+            
 
             base.Initialize();
         }
@@ -167,10 +179,12 @@ namespace ShootingGame
             
             AFont = Content.Load<SpriteFont>("AFont");
             BFont = Content.Load<SpriteFont>("BFont");
+            CFont = Content.Load<SpriteFont>("CFont");
             resultFont = Content.Load<SpriteFont>("resultFont");
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
+            grass = Content.Load<Texture2D>("grass");
             //shootSound = Content.Load<Song>("gunShot");
 
             foreach (GameObject go in gameObjects)
@@ -211,7 +225,7 @@ namespace ShootingGame
                 Exit();
 
             // TODO: Add your update logic here
-            
+            /*
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
                 effect = Content.Load<SoundEffect>("gunShot");
@@ -220,7 +234,7 @@ namespace ShootingGame
                 float pan = 0.0f;
                 effect.Play(volume, pitch, pan);
                 playSound = false;
-            }
+            }*/
             /*
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
             {
@@ -239,6 +253,8 @@ namespace ShootingGame
                 go.Update();
             }
 
+            UpdatePlayerShoot();
+            UpdateEnemyShoot();
             ClearLists();
 
             base.Update(gameTime);
@@ -254,9 +270,21 @@ namespace ShootingGame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            
+
+            //spriteBatch.Draw(sky, new Vector2(0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            /*
+            spriteBatch.Draw(sky, new Vector2 (0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(background, new Vector2(0, 100), new Rectangle(0, 100, 1300, 470), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(grass, new Vector2(0, 65), new Rectangle(0, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1f);
+            spriteBatch.Draw(grass, new Vector2(500, 65), new Rectangle(500, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(grass, new Vector2(1000, 65), new Rectangle(1000, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
+            */
             spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
             spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
+            spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
+            spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
+            spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
+            
             spriteBatch.DrawString(resultFont, " = " + Result, new Vector2(875, 600), Color.Black);
 
             foreach (GameObject go in gameObjects)
@@ -283,14 +311,56 @@ namespace ShootingGame
                     scores.Remove(s);
                 }
                 scoresToRemove.Clear();
-            }
+            } 
+
             if (objectsToRemove.Count > 0)
             {
+                foreach (GameObject go in objectsToRemove)
+                {
+                    collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+                }
+
                 foreach (GameObject go in objectsToRemove)
                 {
                     gameObjects.Remove(go);
                 }
                 objectsToRemove.Clear();
+            }
+
+            if (collidersToRemove.Count > 0)
+            {
+                foreach (Collider c in collidersToRemove)
+                {
+                    colliders.Remove(c);
+                }
+                collidersToRemove.Clear();
+            }
+        }
+
+        public void UpdatePlayerShoot()
+        {
+            if(CanAddPlayerBollet)
+            {
+                director = new Director(new PlayerBulletBuilder());
+                GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X, 470));
+                go.LoadContent(Content);
+                gameObjects.Add(go);
+                CanAddPlayerBollet = false;
+            }
+        }
+
+        public void UpdateEnemyShoot()
+        {
+            if (EnemyBulletsPositions.Count > 0)
+            {
+                foreach (Vector2 position in EnemyBulletsPositions)
+                {
+                    director = new Director(new EnemyBulletBuilder());
+                    GameObject go = director.Construct(position);
+                    go.LoadContent(Content);
+                    gameObjects.Add(go);
+                }
+                EnemyBulletsPositions.Clear();
             }
         }
     }

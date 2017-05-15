@@ -17,7 +17,7 @@ namespace ShootingGame
             gameObject.AddComponent(new SpriteRenderer(gameObject, "gun4", 1));
             gameObject.AddComponent(new Animator(gameObject));
             gameObject.AddComponent(new Player(gameObject));
-            //gameObject.AddComponent(new Collider(gameObject));
+            gameObject.AddComponent(new Collider(gameObject));
         }
 
         public GameObject GetResult()
