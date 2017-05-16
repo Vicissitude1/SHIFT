@@ -35,7 +35,7 @@ namespace ShootingGame
             T = new Thread(Update);
             T.IsBackground = true;
             canMove = true;
-            moveTimer = 100;
+            moveTimer = GameWorld.Instance.Rnd.Next(100, 300);
             shootsAmount = 2;
             if (GameObject.Transform.Position.X < 90)
                 currentDirection = Direction.Right;
@@ -106,7 +106,7 @@ namespace ShootingGame
                 if (moveTimer == 0)
                 {
                     canMove = false;
-                    shootsAmount = GameWorld.Instance.Rnd.Next(2,4);
+                    shootsAmount = GameWorld.Instance.Rnd.Next(1,4);
                 }        
             }
             else
@@ -163,24 +163,6 @@ namespace ShootingGame
         {
             currentDirection = (Direction)GameWorld.Instance.Rnd.Next(5);
         }
-        /*
-        public void UpdateHealth()
-        {
-            if (Mouse.GetState().Position.Y <= 450)
-                mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
-            else mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, 450);
-
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && mouseCurrentPosition.X >= GameObject.Transform.Position.X && mouseCurrentPosition.Y >= GameObject.Transform.Position.Y)
-            {
-                if (mouseCurrentPosition.X <= (GameObject.Transform.Position.X + 35) && mouseCurrentPosition.Y <= (GameObject.Transform.Position.Y + 60) && EnemyHealth > 0 && canInjure)
-                {
-                    EnemyHealth -= 25;
-                    canInjure = false;
-                }
-            }
-            if (Mouse.GetState().LeftButton == ButtonState.Released)
-                canInjure = true;
-        }*/
 
         public void LoadContent(ContentManager content)
         {
@@ -250,6 +232,14 @@ namespace ShootingGame
                     (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
                 }
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
+            }
+            else if (other.GameObject.GetComponent("Enemy") is Enemy)
+            {
+                if(canMove)
+                {
+                    canMove = false;
+                    shootsAmount = GameWorld.Instance.Rnd.Next(1, 4);
+                }
             }
         }
 
