@@ -74,55 +74,52 @@ namespace ShootingGame
                 Thread.Sleep(20);
                 if (canChangeWeapon)
                 {
-                    if (Keyboard.GetState().IsKeyDown(Keys.D1) && canChangeWeapon)
+                    if (Keyboard.GetState().IsKeyDown(Keys.D1))
                     {
                         selectedWeaponIndex = 0;
                         if (currentWeaponIndex != selectedWeaponIndex)
                         {
                             canChangeWeapon = false;
                             MediaPlayer.Play(gunCocking);
+                            PlayAnimation = false;
                         }
                     }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D2) && canChangeWeapon)
+                    else if (Keyboard.GetState().IsKeyDown(Keys.D2))
                     {
                         selectedWeaponIndex = 1;
                         if (currentWeaponIndex != selectedWeaponIndex)
                         {
                             canChangeWeapon = false;
                             MediaPlayer.Play(gunCocking);
+                            PlayAnimation = false;
                         }
                     }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D3) && canChangeWeapon)
+                    else if (Keyboard.GetState().IsKeyDown(Keys.D3))
                     {
                         selectedWeaponIndex = 2;
                         if (currentWeaponIndex != selectedWeaponIndex)
                         {
                             canChangeWeapon = false;
                             MediaPlayer.Play(gunCocking);
+                            PlayAnimation=false;
                         }
                     }
-                    /*
-                    else if (Mouse.GetState().LeftButton == ButtonState.Pressed && canChangeWeapon)
-                    {
-                        if(canShoot && !PlayAnimation)
-                        {
-                            CurrentWeapon.Shoot();
-                        }
-                        if (Explosion.PlayAnimation == false)
-                            Explosion.PlayAnimation = true;
-                        canShoot = false;
-                    }
-                    else if (Mouse.GetState().LeftButton == ButtonState.Released)
-                    {
-                        canShoot = true;
-                    }*/
                     CurrentWeapon.UpdateWeaponStatus();
-                    if (PlayAnimation && currentWeaponIndex==0) animator.PlayAnimation("GunShoot");
-                    else if (PlayAnimation && currentWeaponIndex == 1) animator.PlayAnimation("RifleShoot");
-                    else if (PlayAnimation && currentWeaponIndex == 2) animator.PlayAnimation("MachineGunShoot");
-                    else if(currentWeaponIndex==0) animator.PlayAnimation("GunIdle");
-                    else if (currentWeaponIndex == 1) animator.PlayAnimation("RifleIdle");
-                    else if (currentWeaponIndex == 2) animator.PlayAnimation("MachineGunIdle");
+                    if (currentWeaponIndex == 0)
+                    {
+                        if(PlayAnimation) animator.PlayAnimation("GunShoot");
+                        else animator.PlayAnimation("GunIdle");
+                    }
+                    else if (currentWeaponIndex == 1)
+                    {
+                        if (PlayAnimation) animator.PlayAnimation("RifleShoot");
+                        else animator.PlayAnimation("RifleIdle");
+                    }
+                    else if (currentWeaponIndex == 2)
+                    {
+                        if (PlayAnimation) animator.PlayAnimation("MachineGunShoot");
+                        else animator.PlayAnimation("MachineGunIdle");
+                    }
                 }
                 else ChangeWeapon();
 
@@ -133,7 +130,7 @@ namespace ShootingGame
         public void CreateAnimation()
         {
             animator.CreateAnimation("GunIdle", new Animation(1, 20, 0, 60, 90, 1, Vector2.Zero));
-            animator.CreateAnimation("GunShoot", new Animation(6, 20, 1, 62, 90, 20, Vector2.Zero));
+            animator.CreateAnimation("GunShoot", new Animation(6, 20, 1, 62, 90, 30, Vector2.Zero));
             animator.CreateAnimation("RifleIdle", new Animation(1, 135, 0, 80, 70, 1, Vector2.Zero));
             animator.CreateAnimation("RifleShoot", new Animation(3, 135, 0, 80, 70, 20, Vector2.Zero));
             animator.CreateAnimation("MachineGunIdle", new Animation(1, 225, 0, 90, 110, 1, Vector2.Zero));
