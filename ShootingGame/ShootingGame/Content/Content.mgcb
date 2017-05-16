@@ -265,18 +265,6 @@
 /processorParam:Quality=Best
 /build:gun-cocking-02.wav
 
-#begin weapons.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:weapons.png
-
 #begin bulletexpl.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -288,4 +276,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:bulletexpl.png
+
+#begin weapons.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:weapons.png
 

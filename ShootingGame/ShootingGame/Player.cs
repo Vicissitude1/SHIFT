@@ -131,8 +131,8 @@ namespace ShootingGame
         {
             animator.CreateAnimation("GunIdle", new Animation(1, 20, 0, 60, 90, 1, Vector2.Zero));
             animator.CreateAnimation("GunShoot", new Animation(6, 20, 1, 62, 90, 30, Vector2.Zero));
-            animator.CreateAnimation("RifleIdle", new Animation(1, 135, 0, 80, 70, 1, Vector2.Zero));
-            animator.CreateAnimation("RifleShoot", new Animation(3, 135, 0, 80, 70, 20, Vector2.Zero));
+            animator.CreateAnimation("RifleIdle", new Animation(1, 132, 0, 67, 70, 1, Vector2.Zero));
+            animator.CreateAnimation("RifleShoot", new Animation(3, 132, 0, 67, 70, 20, Vector2.Zero));
             animator.CreateAnimation("MachineGunIdle", new Animation(1, 225, 0, 90, 110, 1, Vector2.Zero));
             animator.CreateAnimation("MachineGunShoot", new Animation(3, 225, 1, 96, 110, 20, Vector2.Zero));
             animator.PlayAnimation("GunIdle");
