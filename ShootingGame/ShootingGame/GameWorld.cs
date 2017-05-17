@@ -128,11 +128,11 @@ namespace ShootingGame
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 200)));
             
-            director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(-50, 300)));
+            //director = new Director(new EnemyBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(-50, 300)));
             
-            director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(1350, 400)));
+            //director = new Director(new EnemyBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(1350, 400)));
             
             /*
             for (int i = 0; i < 2; i++)
