@@ -9,15 +9,6 @@ namespace ShootingGame
 {
     class DataBaseClass
     {
-
-        /// <summary>
-        /// DataBaseClass's constructor
-        /// </summary>
-        public DataBaseClass()
-        {
-
-        }
-
         /// <summary>
         /// Creates database file and table
         /// </summary>

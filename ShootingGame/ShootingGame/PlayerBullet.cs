@@ -22,7 +22,7 @@ namespace ShootingGame
 
         public PlayerBullet(GameObject gameObject) : base(gameObject)
         {
-            speed = 10;
+            speed = 8;
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
@@ -39,19 +39,20 @@ namespace ShootingGame
 
         public void Move()
         {
-            Thread.Sleep(20);
+            Thread.Sleep(30);
             translation = Vector2.Zero;
             translation += new Vector2(0, -1);
             GameObject.Transform.Position += translation * speed;
 
-            if (GameObject.Transform.Position.Y < 85 || GameObject.Transform.Position.Y < aimPosition.Y)
+            if (GameObject.Transform.Position.Y < 100 || GameObject.Transform.Position.Y < aimPosition.Y || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
             {
                 IsRealesed = true;
             }             
 
             if (IsRealesed)
             {
-                speed = 1;
+                if (GameObject.Transform.Position.Y < 100 || GameWorld.Instance.StopGame) speed = 0;
+                else speed = 1;
                 animator.PlayAnimation("Expl");
             }
         }

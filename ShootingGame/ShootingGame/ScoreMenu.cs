@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class SaveMenu
+    class ScoreMenu
     {
         Keys[] keysToCheck = new Keys[] { Keys.A, Keys.B, Keys.C, Keys.D, Keys.E, Keys.F, Keys.G, Keys.H, Keys.I, Keys.J, Keys.K, Keys.L, Keys.M, Keys.N, Keys.O,
                                           Keys.P, Keys.Q, Keys.R, Keys.S, Keys.T, Keys.U, Keys.V, Keys.W, Keys.X, Keys.Y, Keys.Z, Keys.Back, Keys.Space };
@@ -35,7 +35,7 @@ namespace ShootingGame
         Song buttonSound1;
         bool canPlaySound;
 
-        public SaveMenu()
+        public ScoreMenu()
         {
             dataBase = new DataBaseClass();
             hasToLoadFormDB = true;
@@ -50,11 +50,10 @@ namespace ShootingGame
         public void LoadContent(ContentManager content)
         {
             buttonSprite = content.Load<Texture2D>("redbutton1");
-            buttonClearRectangle = new Rectangle(900, 200, buttonSprite.Width, buttonSprite.Height);
-            buttonSaveRectangle = new Rectangle(900, 350, buttonSprite.Width, buttonSprite.Height);
-            buttonExitRectangle = new Rectangle(900, 500, buttonSprite.Width, buttonSprite.Height);
+            buttonClearRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
+            buttonSaveRectangle = new Rectangle(1000, 350, buttonSprite.Width, buttonSprite.Height);
+            buttonExitRectangle = new Rectangle(1000, 500, buttonSprite.Width, buttonSprite.Height);
             buttonSound1 = content.Load<Song>("buttonClick");
-
         }
 
         public void ShowScoreTable(SpriteBatch spriteBatch)
@@ -65,7 +64,7 @@ namespace ShootingGame
             spriteBatch.Draw(buttonSprite, buttonSaveRectangle, buttonSaveColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "SAVE ", new Vector2(buttonSaveRectangle.X + 80, buttonSaveRectangle.Y + 15), buttonSaveColor);
             spriteBatch.Draw(buttonSprite, buttonExitRectangle, buttonExitColor);
-            spriteBatch.DrawString(GameWorld.Instance.CFont, "EXIT ", new Vector2(buttonExitRectangle.X + 80, buttonExitRectangle.Y + 15), buttonExitColor);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, "MAIN MENU", new Vector2(buttonExitRectangle.X + 50, buttonExitRectangle.Y + 15), buttonExitColor);
 
             if (players.Count > 0)
             {
@@ -310,14 +309,13 @@ namespace ShootingGame
         public void ButtonExitPressed()
         {
             canInsertName = false;
-            hasToLoadFormDB = true;
-            Player.Health = 100;
-            GameWorld.Instance.CanSavePlayer = false;
+            hasToLoadFormDB = true;  
             if(canPlaySound)
             {
                 MediaPlayer.Play(buttonSound1);
                 canPlaySound = false;
             }
+            GameWorld.Instance.ShowScoreMenu = false;
         }
     }
 }

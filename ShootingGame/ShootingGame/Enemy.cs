@@ -30,7 +30,7 @@ namespace ShootingGame
         public Enemy(GameObject gameObject) : base(gameObject)
         {
             isSpawned = true;
-            speed = 1;
+            speed = 2;
             EnemyHealth = 100;
             T = new Thread(Update);
             T.IsBackground = true;
@@ -46,9 +46,30 @@ namespace ShootingGame
         {
             while(true)
             {
-                //UpdateHealth();
+                Thread.Sleep(20);
+                if (GameWorld.Instance.PlayGame && !GameWorld.Instance.StopGame)
                 Move();
-                Thread.Sleep(10);
+            }
+        }
+
+        public void Replace()
+        {
+            isSpawned = true;
+            EnemyHealth = 100;
+            moveTimer = GameWorld.Instance.Rnd.Next(80, 200);
+            canMove = true;
+            if (GameWorld.Instance.Rnd.Next(2) == 0)
+            {
+                GameObject.Transform.Position = new Vector2(-50, GameWorld.Instance.Rnd.Next(100, 400));
+                currentDirection = Direction.Right;
+                animator.PlayAnimation("WalkRight");
+                
+            }
+            else
+            {
+                GameObject.Transform.Position = new Vector2(1350, GameWorld.Instance.Rnd.Next(100, 400));
+                currentDirection = Direction.Right;
+                animator.PlayAnimation("WalkLeft");
             }
         }
 
@@ -187,23 +208,7 @@ namespace ShootingGame
             {
                 GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position));
                 Player.Scores += 5;
-                EnemyHealth = 100;
-                if(GameWorld.Instance.Rnd.Next(2) == 0)
-                {
-                    GameObject.Transform.Position = new Vector2(-50, GameWorld.Instance.Rnd.Next(100, 400));
-                    currentDirection = Direction.Right;
-                    animator.PlayAnimation("WalkRight");
-                    moveTimer = GameWorld.Instance.Rnd.Next(80, 200);
-                    canMove = true;
-                }     
-                else
-                {
-                    GameObject.Transform.Position = new Vector2(1350, GameWorld.Instance.Rnd.Next(100, 400));
-                    currentDirection = Direction.Right;
-                    animator.PlayAnimation("WalkLeft");
-                    moveTimer = GameWorld.Instance.Rnd.Next(80, 200);
-                    canMove = true;
-                }
+                Replace();
                 //GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 900), GameWorld.Instance.Rnd.Next(100, 400));
                 (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
             }

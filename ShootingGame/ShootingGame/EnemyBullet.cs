@@ -20,7 +20,7 @@ namespace ShootingGame
 
         public EnemyBullet(GameObject gameObject) : base(gameObject)
         {
-            speed = 5;
+            speed = 8;
             IsRealesed = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, 560);
             translation = aimPosition - GameObject.Transform.Position;
@@ -38,10 +38,10 @@ namespace ShootingGame
 
         public void Move()
         {
-            Thread.Sleep(20);
+            Thread.Sleep(30);
             GameObject.Transform.Position += translation * speed;
 
-            if (GameObject.Transform.Position.Y > 550)
+            if (GameObject.Transform.Position.Y > 550 || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
                 IsRealesed = true;
 
             if (IsRealesed)

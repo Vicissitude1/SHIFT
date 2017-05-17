@@ -37,7 +37,7 @@ namespace ShootingGame
                                       new Weapon("MACHINEGUN", 30, 35, 2000, ShootType.MachineGun)};
             Health = 100;
             PlayAnimation = false;
-            T = new Thread(Move);
+            T = new Thread(Update);
             T.IsBackground = true;
             Scores = 0;
             canShoot = true;
@@ -47,7 +47,6 @@ namespace ShootingGame
             isChanged = false;
             CurrentWeapon = weapons[currentWeaponIndex];
         }
-
 
         /// <summary>
         /// Loads the player's content
@@ -67,64 +66,83 @@ namespace ShootingGame
             CreateAnimation();
         }
 
-        public void Move()
+        public void Update()
         {
-            while (true)
+            while(true)
             {
                 Thread.Sleep(20);
-                if (canChangeWeapon)
+                if (GameWorld.Instance.PlayGame && !GameWorld.Instance.StopGame)
+                    Move();
+            }
+        }
+
+        public void Move()
+        {
+            if (canChangeWeapon)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.D1))
                 {
-                    if (Keyboard.GetState().IsKeyDown(Keys.D1))
+                    selectedWeaponIndex = 0;
+                    if (currentWeaponIndex != selectedWeaponIndex)
                     {
-                        selectedWeaponIndex = 0;
-                        if (currentWeaponIndex != selectedWeaponIndex)
-                        {
-                            canChangeWeapon = false;
-                            MediaPlayer.Play(gunCocking);
-                            PlayAnimation = false;
-                        }
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D2))
-                    {
-                        selectedWeaponIndex = 1;
-                        if (currentWeaponIndex != selectedWeaponIndex)
-                        {
-                            canChangeWeapon = false;
-                            MediaPlayer.Play(gunCocking);
-                            PlayAnimation = false;
-                        }
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D3))
-                    {
-                        selectedWeaponIndex = 2;
-                        if (currentWeaponIndex != selectedWeaponIndex)
-                        {
-                            canChangeWeapon = false;
-                            MediaPlayer.Play(gunCocking);
-                            PlayAnimation=false;
-                        }
-                    }
-                    CurrentWeapon.UpdateWeaponStatus();
-                    if (currentWeaponIndex == 0)
-                    {
-                        if(PlayAnimation) animator.PlayAnimation("GunShoot");
-                        else animator.PlayAnimation("GunIdle");
-                    }
-                    else if (currentWeaponIndex == 1)
-                    {
-                        if (PlayAnimation) animator.PlayAnimation("RifleShoot");
-                        else animator.PlayAnimation("RifleIdle");
-                    }
-                    else if (currentWeaponIndex == 2)
-                    {
-                        if (PlayAnimation) animator.PlayAnimation("MachineGunShoot");
-                        else animator.PlayAnimation("MachineGunIdle");
+                        canChangeWeapon = false;
+                        MediaPlayer.Play(gunCocking);
+                        PlayAnimation = false;
                     }
                 }
-                else ChangeWeapon();
-
-                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
+                else if (Keyboard.GetState().IsKeyDown(Keys.D2))
+                {
+                    selectedWeaponIndex = 1;
+                    if (currentWeaponIndex != selectedWeaponIndex)
+                    {
+                        canChangeWeapon = false;
+                        MediaPlayer.Play(gunCocking);
+                        PlayAnimation = false;
+                    }
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.D3))
+                {
+                    selectedWeaponIndex = 2;
+                    if (currentWeaponIndex != selectedWeaponIndex)
+                    {
+                        canChangeWeapon = false;
+                        MediaPlayer.Play(gunCocking);
+                        PlayAnimation = false;
+                    }
+                }
+                CurrentWeapon.UpdateWeaponStatus();
+                if (currentWeaponIndex == 0)
+                {
+                    if (PlayAnimation) animator.PlayAnimation("GunShoot");
+                    else animator.PlayAnimation("GunIdle");
+                }
+                else if (currentWeaponIndex == 1)
+                {
+                    if (PlayAnimation) animator.PlayAnimation("RifleShoot");
+                    else animator.PlayAnimation("RifleIdle");
+                }
+                else if (currentWeaponIndex == 2)
+                {
+                    if (PlayAnimation) animator.PlayAnimation("MachineGunShoot");
+                    else animator.PlayAnimation("MachineGunIdle");
+                }
             }
+            else ChangeWeapon();
+
+            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
+        }
+
+        public void Replace()
+        {
+            Health = 100;
+            PlayAnimation = false;
+            Scores = 0;
+            canShoot = true;
+            canChangeWeapon = true;
+            currentWeaponIndex = 0;
+            speed = 5;
+            isChanged = false;
+            CurrentWeapon = weapons[currentWeaponIndex];
         }
 
         public void CreateAnimation()
@@ -159,7 +177,11 @@ namespace ShootingGame
                 lock (thisLock)
                 {
                     Health--;
-                    if (Health < 0) Health = 0;
+                    if (Health < 0)
+                    {
+                        Health = 0;
+                        GameWorld.Instance.StopGame = true;
+                    } 
                 }
                 (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
             }
