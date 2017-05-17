@@ -82,7 +82,6 @@
     <Compile Include="EnemyBulletBuilder.cs" />
     <Compile Include="PlayerBullet.cs" />
     <Compile Include="PlayerBulletBuilder.cs" />
-    <Compile Include="Bullet.cs" />
     <Compile Include="DataBaseClass.cs" />
     <Compile Include="EnemyBuilder.cs" />
     <Compile Include="Enemy.cs" />

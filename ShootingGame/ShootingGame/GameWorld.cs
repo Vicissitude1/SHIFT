@@ -20,7 +20,6 @@ namespace ShootingGame
         /// The object that is going to be locked
         /// </summary>
         static object thisLock = new object();
-        static object thisLock1 = new object();
         Director director;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
@@ -31,9 +30,11 @@ namespace ShootingGame
         Texture2D background;
         Texture2D sky;
         Texture2D grass;
+        public Texture2D Pixel { get; private set; }
         private SoundEffect effect;
         private static GameWorld instance;
         bool playSound;
+        public bool CanSavePlayer;
         public bool CanAddPlayerBollet { get; set; }
         public float DeltaTime { get; private set; }
         public SpriteFont AFont { get; private set; }
@@ -112,6 +113,7 @@ namespace ShootingGame
             // TODO: Add your initialization logic here
             Rnd = new Random();
             playSound = false;
+            CanSavePlayer = false;
             CanAddPlayerBollet = false;
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
@@ -121,6 +123,8 @@ namespace ShootingGame
             scoresToRemove = new List<Score>();
             ObjectsToAdd = new List<GameObject>();
             EnemyBulletsPositions = new List<Vector2>();
+            Pixel = new Texture2D(GraphicsDevice, 1, 1);
+            Pixel.SetData(new[] { Color.White });
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
