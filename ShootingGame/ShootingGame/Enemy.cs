@@ -30,7 +30,7 @@ namespace ShootingGame
         public Enemy(GameObject gameObject) : base(gameObject)
         {
             isSpawned = true;
-            speed = 2;
+            speed = 1;
             EnemyHealth = 100;
             T = new Thread(Update);
             T.IsBackground = true;
@@ -66,7 +66,7 @@ namespace ShootingGame
                 {
                     if (GameObject.Transform.Position.X > 100 && currentDirection == Direction.Right)
                         isSpawned = false;
-                    else if (GameObject.Transform.Position.X < 1200 && currentDirection == Direction.Left)
+                    else if (GameObject.Transform.Position.X < 1100 && currentDirection == Direction.Left)
                         isSpawned = false;
                 }
 
@@ -106,7 +106,7 @@ namespace ShootingGame
                 if (moveTimer == 0)
                 {
                     canMove = false;
-                    shootsAmount = GameWorld.Instance.Rnd.Next(1,4);
+                    shootsAmount = GameWorld.Instance.Rnd.Next(1,3);
                 }        
             }
             else
@@ -172,11 +172,11 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
-            animator.CreateAnimation("WalkBack", new Animation(4, 0, 6, 52, 60, 15, Vector2.Zero));
-            animator.CreateAnimation("WalkLeft", new Animation(5, 140, 1, 50, 60, 15, Vector2.Zero));
-            animator.CreateAnimation("WalkRight", new Animation(4, 140, 6, 53, 60, 15, Vector2.Zero));
-            animator.CreateAnimation("WalkFront", new Animation(5, 0, 0, 40, 60, 15, Vector2.Zero));
-            animator.CreateAnimation("Shoot", new Animation(3, 285, 10, 35, 60, 6, Vector2.Zero));
+            animator.CreateAnimation("WalkBack", new Animation(4, 0, 6, 52, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("WalkLeft", new Animation(5, 140, 1, 50, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("WalkRight", new Animation(4, 140, 6, 53, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("WalkFront", new Animation(5, 0, 0, 40, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("Shoot", new Animation(3, 285, 10, 35, 60, 5, Vector2.Zero));
             animator.CreateAnimation("Die", new Animation(5, 288, 0, 50, 60, 4, Vector2.Zero));
             animator.PlayAnimation("Shoot");
         }
@@ -238,7 +238,7 @@ namespace ShootingGame
                 if(canMove)
                 {
                     canMove = false;
-                    shootsAmount = GameWorld.Instance.Rnd.Next(1, 4);
+                    shootsAmount = GameWorld.Instance.Rnd.Next(1, 3);
                 }
             }
         }

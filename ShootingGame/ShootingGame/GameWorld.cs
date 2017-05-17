@@ -20,6 +20,7 @@ namespace ShootingGame
         /// The object that is going to be locked
         /// </summary>
         static object thisLock = new object();
+        static object thisLock1 = new object();
         Director director;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
@@ -297,7 +298,8 @@ namespace ShootingGame
                 }
                 scoresToRemove.Clear();
             }
-            lock (ObjectsToRemove)
+
+            lock (thisLock)
             {
                 if (objectsToRemove.Count > 0)
                 {
