@@ -30,8 +30,7 @@ namespace ShootingGame
             this.spriteName = spriteName;
             this.layerDepth = layerDepth;
             Scale = 1;
-            pixel = new Texture2D(GameWorld.Instance.GraphicsDevice, 1, 1);
-            pixel.SetData(new[] { Color.White });
+            pixel = GameWorld.Instance.Pixel;
         }
 
         public void Draw(SpriteBatch spriteBatch)
