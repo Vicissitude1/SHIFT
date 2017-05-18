@@ -48,15 +48,15 @@ namespace ShootingGame
                 else spriteBatch.Draw(pixel, new Rectangle((int)(GameObject.GetComponent("Transform") as Transform).Position.X - 5, (int)(GameObject.GetComponent("Transform") as Transform).Position.Y - 4, (int)(GameObject.GetComponent("Enemy") as Enemy).EnemyHealth / 2, 3), Color.Red);
             }
 
-            if (GameObject.GetComponent("PlayerBullet") is PlayerBullet || GameObject.GetComponent("EnemyBullet") is EnemyBullet)
+            else if (GameObject.GetComponent("PlayerBullet") is PlayerBullet || GameObject.GetComponent("EnemyBullet") is EnemyBullet)
             {
-                Scale = 1.2f - 400 / (GameObject.GetComponent("Transform") as Transform).Position.Y/3;
+                Scale = 1.2f - 400 / (GameObject.GetComponent("Transform") as Transform).Position.Y / 3;
             }
 
             else if (GameObject.GetComponent("Player") is Player)
             {
                 spriteBatch.Draw(pixel, new Rectangle(0, 570, 1300, 150), Color.LightGray);
-                if(Player.CurrentWeapon.Name== "GUN")
+                if (Player.CurrentWeapon.Name == "GUN")
                     spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(170, 590, 50, 30), Color.White);
                 else if (Player.CurrentWeapon.Name == "RIFLE")
                     spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(150, 590, 140, 40), Color.White);
@@ -77,7 +77,7 @@ namespace ShootingGame
                     spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: " + Player.CurrentWeapon.Ammo, new Vector2(50, 640), Color.Black);
                     string ammo = "";
                     int i = 0;
-                    while(i<Player.CurrentWeapon.Ammo)
+                    while (i < Player.CurrentWeapon.Ammo)
                     {
                         ammo += "!";
                         i++;
@@ -86,12 +86,17 @@ namespace ShootingGame
                 }
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "Health: " + Player.Health, new Vector2(400, 600), Color.Black);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "Score: " + Player.Scores, new Vector2(400, 640), Color.Black);
-                spriteBatch.DrawString(GameWorld.Instance.ResultFont, " = " + GameWorld.Instance.Result, new Vector2(925, 625), Color.Black);
+                //spriteBatch.DrawString(GameWorld.Instance.ResultFont, " = " + GameWorld.Instance.Result, new Vector2(925, 625), Color.Black);
                 DrawBorder(spriteBatch, new Rectangle(500, 600, 102, 20), 1, Color.Black);
                 if (Player.Health >= 30)
                     spriteBatch.Draw(pixel, new Rectangle(500, 601, Player.Health, 18), Color.Green);
                 else spriteBatch.Draw(pixel, new Rectangle(500, 601, Player.Health, 18), Color.Red);
+            }
 
+            else if (GameObject.GetComponent("Dice") is Dice)
+            {
+                spriteBatch.DrawString(GameWorld.Instance.CFont, " = " + GameWorld.Instance.Result, new Vector2(800, 610), Color.Black);
+                Scale = 0.7f;
             }
         }
 

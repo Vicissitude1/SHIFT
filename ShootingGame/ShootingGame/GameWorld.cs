@@ -175,16 +175,16 @@ namespace ShootingGame
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(new Vector2(600, 470)));
+            gameObjects.Add(director.Construct(new Vector2(600, 500)));
 
             director = new Director(new DiceBuilder());
             GameObject d1 = director.Construct(new Vector2(650, 600));
             Dice dice1 = (Dice)d1.GetComponent("Dice");
             gameObjects.Add(d1);
-            GameObject d2 = director.Construct(new Vector2(750, 600));
+            GameObject d2 = director.Construct(new Vector2(700, 600));
             Dice dice2 = (Dice)d2.GetComponent("Dice");
             gameObjects.Add(d2);
-            GameObject d3 = director.Construct(new Vector2(850, 600));
+            GameObject d3 = director.Construct(new Vector2(750, 600));
             Dice dice3 = (Dice)d3.GetComponent("Dice");
             gameObjects.Add(d3);
             Dies.Add(dice1);
@@ -278,34 +278,7 @@ namespace ShootingGame
             {
                 playSound = true;
             }*/
-            KeyboardState k = Keyboard.GetState();
-            if (k.IsKeyDown(Keys.Up))
-            {
-                if (!UpPressed.IsKeyDown(Keys.Up))
-                {
-                    High();
-                }
-
-            }
-            else if (UpPressed.IsKeyDown(Keys.Up))
-            {
-
-            }
-            UpPressed = k;
-
-            if (k.IsKeyDown(Keys.Down))
-            {
-                if (!downPressed.IsKeyDown(Keys.Down))
-                {
-                    Low();
-                }
-
-            }
-            else if (downPressed.IsKeyDown(Keys.Down))
-            {
-
-            }
-            downPressed = k;
+            
 
             if(Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
             {
@@ -336,6 +309,7 @@ namespace ShootingGame
                     go.Update();
                 }
 
+                UpdateDiceUI();
                 UpdatePlayerShoot();
                 UpdateEnemyShoot();
             }
@@ -473,6 +447,38 @@ namespace ShootingGame
                 }
                 EnemyBulletsPositions.Clear();
             }
+        }
+
+        public void UpdateDiceUI()
+        {
+            KeyboardState k = Keyboard.GetState();
+            if (k.IsKeyDown(Keys.Up))
+            {
+                if (!UpPressed.IsKeyDown(Keys.Up))
+                {
+                    High();
+                }
+
+            }
+            else if (UpPressed.IsKeyDown(Keys.Up))
+            {
+
+            }
+            UpPressed = k;
+
+            if (k.IsKeyDown(Keys.Down))
+            {
+                if (!downPressed.IsKeyDown(Keys.Down))
+                {
+                    Low();
+                }
+
+            }
+            else if (downPressed.IsKeyDown(Keys.Down))
+            {
+
+            }
+            downPressed = k;
         }
 
         public int RollDices()
