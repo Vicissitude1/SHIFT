@@ -18,22 +18,27 @@ namespace ShootingGame
 
         public Aim(GameObject gameObject) : base(gameObject)
         {
-            T = new Thread(Move);
+            T = new Thread(Update);
             T.IsBackground = true;
+        }
+
+        public void Update()
+        {
+            while(true)
+            {
+                Thread.Sleep(20);
+                if (GameWorld.Instance.PlayGame && !GameWorld.Instance.StopGame)
+                    Move();
+            }
         }
 
         public void Move()
         {
-            while (true)
-            {
-                Thread.Sleep(20);
+            if (Mouse.GetState().Position.Y <= 450)
+                mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+            else mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, 450);
 
-                if (Mouse.GetState().Position.Y <= 450)
-                    mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
-                else mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, 450);
-
-                GameObject.Transform.Position = new Vector2(mouseCurrentPosition.X - 50, mouseCurrentPosition.Y - 50);
-            }
+            GameObject.Transform.Position = new Vector2(mouseCurrentPosition.X - 50, mouseCurrentPosition.Y - 50);
         }
     }
 }

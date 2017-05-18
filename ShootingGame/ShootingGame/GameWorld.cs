@@ -38,9 +38,16 @@ namespace ShootingGame
         Texture2D background;
         Texture2D sky;
         Texture2D grass;
+        Menu menu;
+        ScoreMenu scoreMenu;
+        public bool ReplaceObjects { get; set; }
+        public Texture2D Pixel { get; private set; }
         private SoundEffect effect;
         private static GameWorld instance;
         bool playSound;
+        public bool StopGame { get; set; }
+        public bool PlayGame { get; set; }
+        public bool ShowScoreMenu { get; set; }
         public bool CanAddPlayerBollet { get; set; }
         public float DeltaTime { get; private set; }
         public SpriteFont AFont { get; private set; }
@@ -121,8 +128,15 @@ namespace ShootingGame
         {
             // TODO: Add your initialization logic here
             Rnd = new Random();
+            
             playSound = false;
+            PlayGame = false;
+            ReplaceObjects = false;
+            ShowScoreMenu = false;
             CanAddPlayerBollet = false;
+            StopGame = true;
+            menu = new Menu();
+            scoreMenu = new ScoreMenu();
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
@@ -132,21 +146,25 @@ namespace ShootingGame
             scoresToRemove = new List<Score>();
             ObjectsToAdd = new List<GameObject>();
             EnemyBulletsPositions = new List<Vector2>();
+            Pixel = new Texture2D(GraphicsDevice, 1, 1);
+            Pixel.SetData(new[] { Color.White });
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
             
-            director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 200)));
-            director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 300)));
-            director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 400)));
-
+            gameObjects.Add(director.Construct(new Vector2(-50, 100)));
             
+            director = new Director(new EnemyBuilder());
+            gameObjects.Add(director.Construct(new Vector2(1350, 200)));
             
+            //director = new Director(new EnemyBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(-50, 300)));
             
-            /*for (int i = 0; i < 2; i++)
+            //director = new Director(new EnemyBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(1350, 400)));
+            
+            /*
+            for (int i = 0; i < 2; i++)
             {
                 director = new Director(new EnemyBuilder());
                 gameObjects.Add(director.Construct(new Vector2(Rnd.Next(100, 900), Rnd.Next(100, 400))));
@@ -198,11 +216,14 @@ namespace ShootingGame
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
             //shootSound = Content.Load<Song>("gunShot");
+            menu.LoadContent(Content);
+            scoreMenu.LoadContent(Content);
 
             foreach (GameObject go in gameObjects)
             {
                 go.LoadContent(Content);
             }
+
             foreach (GameObject go in gameObjects)
             {
                 if (go.GetComponent("Enemy") is Enemy)
@@ -211,8 +232,6 @@ namespace ShootingGame
                     (go.GetComponent("Player") as Player).T.Start();
                 else if (go.GetComponent("Aim") is Aim)
                     (go.GetComponent("Aim") as Aim).T.Start();
-                else if (go.GetComponent("Explosion") is Explosion)
-                    (go.GetComponent("Explosion") as Explosion).T.Start();
             }
         }
 
@@ -286,15 +305,48 @@ namespace ShootingGame
             }
             downPressed = k;
 
-            DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            foreach (GameObject go in gameObjects)
+            if(Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
             {
-                go.Update();
+                PlayGame = false;
             }
 
-            UpdatePlayerShoot();
-            UpdateEnemyShoot();
+            DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (PlayGame)
+            {
+                if(ReplaceObjects)
+                {
+                    foreach (GameObject go in gameObjects)
+                    {
+                        if (go.GetComponent("Enemy") is Enemy)
+                            (go.GetComponent("Enemy") as Enemy).Replace();
+                        else if (go.GetComponent("Player") is Player)
+                            (go.GetComponent("Player") as Player).Replace();
+                        else if (go.GetComponent("PlayerBullet") is PlayerBullet || go.GetComponent("EnemyBullet") is EnemyBullet)
+                            objectsToRemove.Add(go);
+                    }
+                        ReplaceObjects = false;
+                }
+                if (this.IsMouseVisible) this.IsMouseVisible = false;
+
+                foreach (GameObject go in gameObjects)
+                {
+                    go.Update();
+                }
+
+                UpdatePlayerShoot();
+                UpdateEnemyShoot();
+            }
+            else if (ShowScoreMenu)
+            {
+                if (!this.IsMouseVisible) this.IsMouseVisible = true;
+                scoreMenu.UpdateUI();
+            }
+            else
+            {
+                if (!this.IsMouseVisible) this.IsMouseVisible = true;
+                menu.UpdateUI();
+            }
+
             ClearLists();
 
             base.Update(gameTime);
@@ -310,34 +362,49 @@ namespace ShootingGame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
-            //spriteBatch.Draw(sky, new Vector2(0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            /*
-            spriteBatch.Draw(sky, new Vector2 (0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.Draw(background, new Vector2(0, 100), new Rectangle(0, 100, 1300, 470), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.Draw(grass, new Vector2(0, 65), new Rectangle(0, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1f);
-            spriteBatch.Draw(grass, new Vector2(500, 65), new Rectangle(500, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
-            spriteBatch.Draw(grass, new Vector2(1000, 65), new Rectangle(1000, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
-            */
-            spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
-            spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
-            spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
-            spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
-            spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
-            
-            
-
-            foreach (GameObject go in gameObjects)
+            if (PlayGame)
             {
-                go.Draw(spriteBatch);
-            }
-            if (scores.Count > 0)
-            {
-                foreach (Score s in scores)
+                //spriteBatch.Draw(sky, new Vector2(0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                /*
+                spriteBatch.Draw(sky, new Vector2 (0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(background, new Vector2(0, 100), new Rectangle(0, 100, 1300, 470), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(grass, new Vector2(0, 65), new Rectangle(0, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1f);
+                spriteBatch.Draw(grass, new Vector2(500, 65), new Rectangle(500, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
+                spriteBatch.Draw(grass, new Vector2(1000, 65), new Rectangle(1000, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
+                */
+                spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
+                spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
+                spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
+                spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
+                spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
+
+                if(!StopGame)
                 {
-                    s.Draw(spriteBatch);
+                    foreach (GameObject go in gameObjects)
+                    {
+                        go.Draw(spriteBatch);
+                    }
+                }
+                
+                if (scores.Count > 0)
+                {
+                    foreach (Score s in scores)
+                    {
+                        s.Draw(spriteBatch);
+                    }
+                }
+                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1050, 620), Color.Black);
+                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1050, 650), Color.Black);
+
+                if (StopGame)
+                {
+                    spriteBatch.DrawString(CFont, "GAME OVER!", new Vector2(570, 290), Color.Red);
+                    spriteBatch.DrawString(CFont, "Press [M] to exit to the MAIN MENU", new Vector2(480, 330), Color.Red);
                 }
             }
+            else if (ShowScoreMenu) scoreMenu.ShowScoreTable(spriteBatch);
+            else menu.ShowMainMenu(spriteBatch);
+
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -351,21 +418,25 @@ namespace ShootingGame
                     scores.Remove(s);
                 }
                 scoresToRemove.Clear();
-            } 
-
-            if (objectsToRemove.Count > 0)
-            {
-                foreach (GameObject go in objectsToRemove)
-                {
-                    collidersToRemove.Add(go.GetComponent("Collider") as Collider);
-                }
-
-                foreach (GameObject go in objectsToRemove)
-                {
-                    gameObjects.Remove(go);
-                }
-                objectsToRemove.Clear();
             }
+
+            lock (thisLock)
+            {
+                if (objectsToRemove.Count > 0)
+                {
+                    foreach (GameObject go in objectsToRemove)
+                    {
+                        collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+                    }
+
+                    foreach (GameObject go in objectsToRemove)
+                    {
+                        gameObjects.Remove(go);
+                    }
+                    objectsToRemove.Clear();
+                }
+            }
+          
 
             if (collidersToRemove.Count > 0)
             {
