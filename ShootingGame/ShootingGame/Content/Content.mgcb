@@ -307,12 +307,6 @@
 /processorParam:Quality=Best
 /build:buttonClick.wav
 
-#begin DFont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:DFont
-
 #begin dice.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -330,4 +324,10 @@
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
 /build:resultFont.spritefont
+
+#begin DFont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:DFont
 
