@@ -27,6 +27,7 @@ namespace ShootingGame
         private KeyboardState downPressed;
         public int Ammo { get; set; }
         public SpriteFont ResultFont { get; set; }
+        public bool HasPressed { get; set; } = false;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
         List<Collider> colliders;
@@ -100,7 +101,7 @@ namespace ShootingGame
             }
         }
 
-        public int CurrentDice { get; private set; }
+        public int CurrentDice { get; set; }
 
         private GameWorld()
         {
@@ -414,6 +415,7 @@ namespace ShootingGame
 
         public void High()
         {
+            HasPressed = true;
             int current;
 
             current = Result;
@@ -440,6 +442,7 @@ namespace ShootingGame
 
         public void Low()
         {
+            HasPressed = true;
             int current;
 
             current = Result;

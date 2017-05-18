@@ -14,24 +14,30 @@ namespace ShootingGame
     class Dice : Component, ILoadable, IUpdateable
     {
         private Animator animator;
-        
+
 
         public int Ammo { get; set; }
         private int result = GameWorld.Instance.Result;
-        public Thread T { get; set; }
+        private int currentDice;
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
             GameWorld.Instance.UpPressed = Keyboard.GetState();
-            GameWorld.Instance.Result += GameWorld.Instance.RollDices();
-            T = new Thread(Update);
-            T.IsBackground = true;
+            currentDice = Roll();
+            GameWorld.Instance.Result += currentDice;
         }
 
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)GameObject.GetComponent("Animator");
             CreateAnimation();
+        }
+
+        public int Roll()
+        {
+            int roll = GameWorld.Instance.Rnd.Next(1, 7);
+
+            return roll;
         }
 
         public void CreateAnimation()
@@ -73,8 +79,10 @@ namespace ShootingGame
 
         public void Update()
         {
-            
-            
+            if (GameWorld.Instance.HasPressed == false)
+            {
+                UpdateDice(currentDice);
+            }
         }
     }
 }
