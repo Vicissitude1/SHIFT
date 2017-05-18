@@ -20,6 +20,7 @@ namespace ShootingGame
         /// The object that is going to be locked
         /// </summary>
         static object thisLock = new object();
+        static object thisLock2 = new object();
         Director director;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
@@ -45,6 +46,7 @@ namespace ShootingGame
         public SpriteFont AFont { get; private set; }
         public SpriteFont BFont { get; private set; }
         public SpriteFont CFont { get; private set; }
+        public SpriteFont DFont { get; private set; }
         public Random Rnd { get; private set; }
         internal List<GameObject> ObjectsToAdd { get; set; }
         internal List<Vector2> EnemyBulletsPositions { get; set; }
@@ -64,12 +66,10 @@ namespace ShootingGame
         {
             get
             {
-                return objectsToRemove;
-            }
-
-            set
-            {
-                objectsToRemove = value;
+                lock (objectsToRemove)
+                {
+                    return objectsToRemove;
+                }
             }
         }
 
@@ -143,11 +143,11 @@ namespace ShootingGame
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 200)));
             
-            //director = new Director(new EnemyBuilder());
-            //gameObjects.Add(director.Construct(new Vector2(-50, 300)));
+            director = new Director(new EnemyBuilder());
+            gameObjects.Add(director.Construct(new Vector2(-50, 300)));
             
-            //director = new Director(new EnemyBuilder());
-            //gameObjects.Add(director.Construct(new Vector2(1350, 400)));
+            director = new Director(new EnemyBuilder());
+            gameObjects.Add(director.Construct(new Vector2(1350, 400)));
             
             /*
             for (int i = 0; i < 2; i++)
@@ -181,9 +181,10 @@ namespace ShootingGame
 
             // TODO: use this.Content to load your game content here
             
-            AFont = Content.Load<SpriteFont>("AFont");
-            BFont = Content.Load<SpriteFont>("BFont");
-            CFont = Content.Load<SpriteFont>("CFont");
+            AFont = Content.Load<SpriteFont>("AFont"); // 8
+            BFont = Content.Load<SpriteFont>("BFont"); // 12
+            CFont = Content.Load<SpriteFont>("CFont"); // 16
+            DFont = Content.Load<SpriteFont>("DFont"); // 16
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
@@ -255,7 +256,8 @@ namespace ShootingGame
                 PlayGame = false;
             }
 
-            DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            DeltaTime = !StopGame ? (float)gameTime.ElapsedGameTime.TotalSeconds : 0;
+
             if (PlayGame)
             {
                 if(ReplaceObjects)
@@ -323,14 +325,11 @@ namespace ShootingGame
                 spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
                 spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
 
-                if(!StopGame)
+                foreach (GameObject go in gameObjects)
                 {
-                    foreach (GameObject go in gameObjects)
-                    {
-                        go.Draw(spriteBatch);
-                    }
+                    go.Draw(spriteBatch);
                 }
-                
+
                 if (scores.Count > 0)
                 {
                     foreach (Score s in scores)
@@ -343,8 +342,8 @@ namespace ShootingGame
 
                 if (StopGame)
                 {
-                    spriteBatch.DrawString(CFont, "GAME OVER!", new Vector2(570, 290), Color.Red);
-                    spriteBatch.DrawString(CFont, "Press [M] to exit to the MAIN MENU", new Vector2(480, 330), Color.Red);
+                    spriteBatch.DrawString(DFont, "GAME OVER!", new Vector2(520, 170), Color.Red);
+                    spriteBatch.DrawString(DFont, "Press [M] to exit to the MAIN MENU", new Vector2(400, 230), Color.Red);
                 }
             }
             else if (ShowScoreMenu) scoreMenu.ShowScoreTable(spriteBatch);
@@ -365,7 +364,7 @@ namespace ShootingGame
                 scoresToRemove.Clear();
             }
 
-            lock (thisLock)
+            lock (objectsToRemove)
             {
                 if (objectsToRemove.Count > 0)
                 {

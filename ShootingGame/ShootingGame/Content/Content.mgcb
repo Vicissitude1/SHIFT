@@ -307,3 +307,9 @@
 /processorParam:Quality=Best
 /build:buttonClick.wav
 
+#begin DFont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:DFont
+
