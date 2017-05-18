@@ -23,6 +23,7 @@ namespace ShootingGame
         Director director;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
+        List<int> windowEdges;
         Texture2D background;
         private SoundEffect effect;
         private static GameWorld instance;
@@ -58,6 +59,19 @@ namespace ShootingGame
             }
         }
 
+        public List<int> WindowEdges
+        {
+            get
+            {
+                return windowEdges;
+            }
+
+            set
+            {
+                windowEdges = value;
+            }
+        }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -79,13 +93,16 @@ namespace ShootingGame
             playSound = false;
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
+            windowEdges = new List<int>();
+            windowEdges.Add(1250);
+            windowEdges.Add(5);
             //director = new Director(new EnemyBuilder());
             //gameObjects.Add(director.Construct(new Vector2(500, 300)));
 
             for (int i = 0; i < 5; i++)
             {
                 director = new Director(new EnemyBuilder());
-                gameObjects.Add(director.Construct(new Vector2(Rnd.Next(100, 900), Rnd.Next(100, 400))));
+                gameObjects.Add(director.Construct(new Vector2(windowEdges[Rnd.Next(0,2)], Rnd.Next(100, 400))));
             }
 
             director = new Director(new ExplosionBuilder());
