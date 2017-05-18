@@ -13,6 +13,7 @@ namespace ShootingGame
 {
     class Aim : Component
     {
+        Vector2 mouseCurrentPosition;
         public Thread T { get; private set; }
 
         public Aim(GameObject gameObject) : base(gameObject)
@@ -25,8 +26,13 @@ namespace ShootingGame
         {
             while (true)
             {
-                Thread.Sleep(20);     
-                GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 50, Mouse.GetState().Position.Y - 50);
+                Thread.Sleep(20);
+
+                if (Mouse.GetState().Position.Y <= 450)
+                    mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+                else mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, 450);
+
+                GameObject.Transform.Position = new Vector2(mouseCurrentPosition.X - 50, mouseCurrentPosition.Y - 50);
             }
         }
     }

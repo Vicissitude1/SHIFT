@@ -11,94 +11,50 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Enemy : Component, ILoadable, IAnimateable, IUpdateable
+    class Enemy : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
     {
         int speed;
         Vector2 translation;
+        Vector2 mouseCurrentPosition;
         Animator animator;
-        float timer;
-        int counter = 0;
-        Random rnd = new Random();
-        int randomHolder = 0;
+        bool canInjure;
         public int EnemyHealth { get; set; }
         public Thread T { get; private set; }
 
-
         public Enemy(GameObject gameObject) : base(gameObject)
         {
-            timer = 0;
-            speed = 1;
+            canInjure = true;
+            speed = 4;
             EnemyHealth = 100;
-            T = new Thread(UpdateHealth);
+            T = new Thread(Update);
             T.IsBackground = true;
-            randomHolder = rnd.Next(0, 4);
         }
 
         public void Update()
         {
-            UpdateHealth();
-            Move();
-            Thread.Sleep(10);
+            while(true)
+            {
+                //UpdateHealth();
+                Move();
+                Thread.Sleep(10);
+            }
         }
 
         public void Move()
         {
-            translation = Vector2.Zero;
-            if (EnemyHealth <= 0)
-            {
-            animator.PlayAnimation("Die");
-            }
-            else if (counter<=599 && EnemyHealth > 0)
-            {
-                switch (randomHolder)
-                {
-                    case 0:
-                        translation += new Vector2(0, -1);
-                        animator.PlayAnimation("WalkBack");
-                        counter++;
-                        break;
-                    case 1:
-                        translation += new Vector2(0, 30);
-                        animator.PlayAnimation("WalkFront");
-                        counter++;
-                        break;
-                    case 2:
-                        translation += new Vector2(-1, 0);
-                        animator.PlayAnimation("WalkLeft");
-                        counter++;
-                        break;
-                    case 3:
-                        translation += new Vector2(1, 0);
-                        animator.PlayAnimation("WalkRight");
-                        counter++;
-                        break;
-                    default:
-                        counter++;
-                        break;
-                }
-                GameObject.Transform.Position += translation * speed;
-            }
-            else if (counter >= 600 && EnemyHealth > 0)
-            {
-                animator.PlayAnimation("Shoot");
-            }
-            if (counter==150 && EnemyHealth > 0 || counter==300 && EnemyHealth > 0 || counter==450 && EnemyHealth > 0)
-            {
-                randomHolder = rnd.Next(0, 4);
-            }
-
-
-            /*
-                //A reference to the current keyboard state
-                KeyboardState keyState = Keyboard.GetState();
             
+            //A reference to the current keyboard state
+            KeyboardState keyState = Keyboard.GetState();
+                
             //The current translation of the player
-            //We are resetting it to make sure that he stops moving if not keys are pressed
+            //We are restting it to make sure that he stops moving if not keys are pressed
             translation = Vector2.Zero;
 
 
             //checks for input and adds it to the translation
-            /*
+            if (EnemyHealth <= 0)
+                animator.PlayAnimation("Die");
+            
             else if (keyState.IsKeyDown(Keys.W))
             {
                 translation += new Vector2(0, -1);
@@ -107,8 +63,7 @@ namespace ShootingGame
             else if (keyState.IsKeyDown(Keys.A))
             {
                 translation += new Vector2(-1, 0);
-                animator.Pltranslation += new Vector2(0, 1);
-                animator.PlayAnimation("WalkFront");ayAnimation("WalkLeft");
+                animator.PlayAnimation("WalkLeft");
             }
             else if (keyState.IsKeyDown(Keys.S))
             {
@@ -119,38 +74,30 @@ namespace ShootingGame
             {
                 translation += new Vector2(1, 0);
                 animator.PlayAnimation("WalkRight");
-            }*/
-            /*
+            }
             else animator.PlayAnimation("Shoot");
 
             //animator.PlayAnimation("Shoot");
             //Move the player's gameobject framerate independent
-            //GameObject.Transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
-            //GameObject.Transform.Position += translation * speed * (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale;
-            //GameObject.Transform.Position += translation * speed;
-             */
+            GameObject.Transform.Position += translation * speed * (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale;
         }
 
         public void UpdateHealth()
         {
-            while(true)
-            {
+            if (Mouse.GetState().Position.Y <= 450)
+                mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+            else mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, 450);
 
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed && Mouse.GetState().Position.X >= GameObject.Transform.Position.X && Mouse.GetState().Position.Y >= GameObject.Transform.Position.Y)
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && mouseCurrentPosition.X >= GameObject.Transform.Position.X && mouseCurrentPosition.Y >= GameObject.Transform.Position.Y)
+            {
+                if (mouseCurrentPosition.X <= (GameObject.Transform.Position.X + 35) && mouseCurrentPosition.Y <= (GameObject.Transform.Position.Y + 60) && EnemyHealth > 0 && canInjure)
                 {
-                    //if(Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Width) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height))
-                    if (Mouse.GetState().Position.X <= (GameObject.Transform.Position.X + 40) && Mouse.GetState().Position.Y <= (GameObject.Transform.Position.Y + 60))
-                    {
-                        //timer += GameWorld.Instance.DeltaTime;
-                        if (EnemyHealth > 0)
-                        {
-                            //Thread.Sleep(100);
-                            EnemyHealth -= 10;
-                            //timer = 0;
-                        }
-                    }
+                    EnemyHealth -= 25;
+                    canInjure = false;
                 }
             }
+            if (Mouse.GetState().LeftButton == ButtonState.Released)
+                canInjure = true;
         }
 
         public void LoadContent(ContentManager content)
@@ -161,10 +108,10 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
-            animator.CreateAnimation("WalkBack", new Animation(1, 0, 8, 33, 60, 6, Vector2.Zero));
-            animator.CreateAnimation("WalkLeft", new Animation(5, 140, 1, 50, 60, 10, Vector2.Zero));
-            animator.CreateAnimation("WalkRight", new Animation(4, 140, 7, 53, 60, 10, Vector2.Zero));
-            animator.CreateAnimation("WalkFront", new Animation(5, 0, 0, 40, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("WalkBack", new Animation(4, 0, 6, 52, 60, 15, Vector2.Zero));
+            animator.CreateAnimation("WalkLeft", new Animation(5, 140, 1, 50, 60, 15, Vector2.Zero));
+            animator.CreateAnimation("WalkRight", new Animation(4, 140, 6, 53, 60, 15, Vector2.Zero));
+            animator.CreateAnimation("WalkFront", new Animation(5, 0, 0, 40, 60, 15, Vector2.Zero));
             animator.CreateAnimation("Shoot", new Animation(3, 285, 10, 35, 60, 6, Vector2.Zero));
             animator.CreateAnimation("Die", new Animation(5, 288, 0, 50, 60, 4, Vector2.Zero));
             animator.PlayAnimation("Shoot");
@@ -174,15 +121,42 @@ namespace ShootingGame
         {
             if (animationName.Contains("Die"))
             {
+                GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position));
+                Player.Scores += 5;
                 EnemyHealth = 100;
-                counter = 0;
-                GameObject.Transform.Position = new Vector2(GameWorld.Instance.WindowEdges[rnd.Next(0, 2)], GameWorld.Instance.Rnd.Next(100, 400));
+                GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 900), GameWorld.Instance.Rnd.Next(100, 400));
+                (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
             }
             else if (animationName.Contains("Shoot"))
             {
-                if(Player.Health > 0)
-                Player.Health -= 1;
+                //if(Player.Health > 0)
+                //Player.Health -= 1;
+                GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }
+        }
+
+        public void OnCollisionStay(Collider other)
+        {
+            // (other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
+        }
+
+        public void OnCollisionEnter(Collider other)
+        {
+            if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
+            {
+                EnemyHealth -= (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).DamageLevel;
+                if (EnemyHealth < 0)
+                {
+                    EnemyHealth = 0;
+                    (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
+                }
+                (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
+            }
+        }
+
+        public void OnCollisionExit(Collider other)
+        {
+            //(other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
         }
     }
 }
