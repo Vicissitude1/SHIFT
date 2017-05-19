@@ -31,6 +31,7 @@ namespace ShootingGame
         public bool HasPressed { get; set; } = false;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
+        List<GameObject> tempObjectsToRemove;
         List<Collider> colliders;
         List<Collider> collidersToRemove;
         List<Score> scores;
@@ -139,6 +140,7 @@ namespace ShootingGame
             scoreMenu = new ScoreMenu();
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
+            tempObjectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
             collidersToRemove = new List<Collider>();
             scores = new List<Score>();
@@ -398,21 +400,36 @@ namespace ShootingGame
 
             lock (objectsToRemove)
             {
-                if (objectsToRemove.Count > 0)
+                if (objectsToRemove.Count > 0 && tempObjectsToRemove.Count == 0)
                 {
+                    tempObjectsToRemove.AddRange(objectsToRemove);
+                    /*
                     foreach (GameObject go in objectsToRemove)
                     {
+                        if (go.GetComponent("PlayerBullet") is PlayerBullet)
+                            (go.GetComponent("PlayerBullet") as PlayerBullet).T.Abort();
+                        else if (go.GetComponent("EnemyBullet") is EnemyBullet)
+                            (go.GetComponent("EnemyBullet") as EnemyBullet).T.Abort();
                         collidersToRemove.Add(go.GetComponent("Collider") as Collider);
-                    }
-
-                    foreach (GameObject go in objectsToRemove)
-                    {
                         gameObjects.Remove(go);
-                    }
+                    }*/
                     objectsToRemove.Clear();
                 }
             }
-          
+            if (tempObjectsToRemove.Count > 0)
+            {
+                foreach (GameObject go in tempObjectsToRemove)
+                {
+                    /*
+                    if (go.GetComponent("PlayerBullet") is PlayerBullet)
+                        (go.GetComponent("PlayerBullet") as PlayerBullet).T.Abort();
+                    else if (go.GetComponent("EnemyBullet") is EnemyBullet)
+                        (go.GetComponent("EnemyBullet") as EnemyBullet).T.Abort();*/
+                    collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+                    gameObjects.Remove(go);
+                }
+                tempObjectsToRemove.Clear();
+            }
 
             if (collidersToRemove.Count > 0)
             {

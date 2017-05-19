@@ -39,12 +39,12 @@ namespace ShootingGame
 
         public void Move()
         {
-            /*
+            
             if (GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
             {
                 GameWorld.Instance.ObjectsToRemove.Add(GameObject);
                 T.Abort();
-            }*/
+            }
             Thread.Sleep(30);
             
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.2f - 400 / GameObject.Transform.Position.Y / 3;

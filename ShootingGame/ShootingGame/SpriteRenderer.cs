@@ -57,15 +57,15 @@ namespace ShootingGame
 
                 //spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(100, 600, Player.CurrentWeapon.Sprite.Width, Player.CurrentWeapon.Sprite.Height), Color.White);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "WEAPON: ", new Vector2(250, 580), Color.Black);
+                spriteBatch.DrawString(GameWorld.Instance.BFont, "TOTAL AMMO: " + Player.CurrentWeapon.TotalAmmo, new Vector2(250, 625), Color.Black);
 
                 if (Player.CurrentWeapon.IsReloading)
                 {
-                    spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: RELOADING", new Vector2(250, 640), Color.Red);
-                    spriteBatch.Draw(pixel, new Rectangle(250, 660, Player.CurrentWeapon.CurrentReloadTime / 10, 5), Color.Red);
+                    spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: RELOADING", new Vector2(250, 650), Color.Red);
+                    spriteBatch.Draw(pixel, new Rectangle(250, 670, Player.CurrentWeapon.CurrentReloadTime / 10, 5), Color.Red);
                 }
                 else
                 {
-                    spriteBatch.DrawString(GameWorld.Instance.BFont, "TOTAL AMMO: " + Player.CurrentWeapon.TotalAmmo, new Vector2(250, 625), Color.Black);
                     spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: " + Player.CurrentWeapon.Ammo, new Vector2(250, 650), Color.Black);
                     string ammo = "";
                     int i = 0;

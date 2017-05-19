@@ -74,7 +74,7 @@ namespace ShootingGame
         {
             mouseState = Mouse.GetState();
 
-            if (IsReloading) Reload();
+            if (IsReloading && TotalAmmo > 0) Reload();
             else if (Ammo <= 0 && !IsReloading)
             {
                 canShoot = false;
