@@ -52,16 +52,25 @@ namespace ShootingGame
         {
             if (shootType == ShootType.Gun)
             {
+                GameWorld.Instance.GunIsActive = true;
+                GameWorld.Instance.MachineGunIsActive = false;
+                GameWorld.Instance.RifleIsActive = false;
                 sound = content.Load<Song>("pistol");
                 Sprite = content.Load<Texture2D>("pistolsprite");
             }
             else if (shootType == ShootType.Rifle)
             {
+                GameWorld.Instance.GunIsActive = false;
+                GameWorld.Instance.MachineGunIsActive = false;
+                GameWorld.Instance.RifleIsActive = true;
                 sound = content.Load<Song>("sniper");
                 Sprite = content.Load<Texture2D>("riflesprite");
             }
             else if (shootType == ShootType.MachineGun)
             {
+                GameWorld.Instance.GunIsActive = false;
+                GameWorld.Instance.MachineGunIsActive = true;
+                GameWorld.Instance.RifleIsActive = false;
                 sound = content.Load<Song>("sniper");
                 Sprite = content.Load<Texture2D>("machinegunsprite");
             }

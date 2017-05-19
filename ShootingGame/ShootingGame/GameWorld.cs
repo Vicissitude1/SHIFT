@@ -26,9 +26,14 @@ namespace ShootingGame
         private int reserve;
         public KeyboardState UpPressed { get; set; }
         private KeyboardState downPressed;
-        public int Ammo { get; set; }
+        public int GunAmmo { get; set; }
+        public int MachineGunAmmo { get; set; }
+        public int RifleAmmo { get; set; }
         public SpriteFont ResultFont { get; set; }
         public bool HasPressed { get; set; } = false;
+        public bool GunIsActive { get; set; } = false;
+        public bool MachineGunIsActive { get; set; } = false;
+        public bool RifleIsActive { get; set; } = false;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
         List<Collider> colliders;
@@ -128,7 +133,7 @@ namespace ShootingGame
         {
             // TODO: Add your initialization logic here
             Rnd = new Random();
-            
+
             playSound = false;
             PlayGame = false;
             ReplaceObjects = false;
@@ -151,18 +156,18 @@ namespace ShootingGame
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(500, 100)));
-            
+
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 200)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
-            
+
             /*
             for (int i = 0; i < 2; i++)
             {
@@ -200,18 +205,18 @@ namespace ShootingGame
         /// </summary>
         protected override void LoadContent()
         {
-            
+
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            
+
             AFont = Content.Load<SpriteFont>("AFont"); // 8
             BFont = Content.Load<SpriteFont>("BFont"); // 12
             CFont = Content.Load<SpriteFont>("CFont"); // 16
             DFont = Content.Load<SpriteFont>("DFont"); // 16
-            
+
             ResultFont = Content.Load<SpriteFont>("resultFont");
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
@@ -307,7 +312,7 @@ namespace ShootingGame
             }
             downPressed = k;
 
-            if(Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
+            if (Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
             {
                 PlayGame = false;
             }
@@ -316,7 +321,7 @@ namespace ShootingGame
 
             if (PlayGame)
             {
-                if(ReplaceObjects)
+                if (ReplaceObjects)
                 {
                     foreach (GameObject go in gameObjects)
                     {
@@ -327,7 +332,7 @@ namespace ShootingGame
                         else if (go.GetComponent("PlayerBullet") is PlayerBullet || go.GetComponent("EnemyBullet") is EnemyBullet)
                             objectsToRemove.Add(go);
                     }
-                        ReplaceObjects = false;
+                    ReplaceObjects = false;
                 }
                 if (this.IsMouseVisible) this.IsMouseVisible = false;
 
@@ -436,7 +441,7 @@ namespace ShootingGame
                     objectsToRemove.Clear();
                 }
             }
-          
+
 
             if (collidersToRemove.Count > 0)
             {
@@ -450,7 +455,7 @@ namespace ShootingGame
 
         public void UpdatePlayerShoot()
         {
-            if(CanAddPlayerBollet)
+            if (CanAddPlayerBollet)
             {
                 director = new Director(new PlayerBulletBuilder());
                 GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X, 470));
@@ -477,7 +482,7 @@ namespace ShootingGame
 
         public int RollDices()
         {
-            
+
             DiceResult = Rnd.Next(1, 7);
             Result += DiceResult;
 
@@ -491,19 +496,31 @@ namespace ShootingGame
 
             current = Result;
             Result = 0;
-            foreach(Dice dice in Dies)
+            foreach (Dice dice in Dies)
             {
                 CurrentDice = RollDices();
                 dice.UpdateDice(CurrentDice);
             }
-            
+
             if (current > Result)
             {
-                Ammo += current + reserve;
+                if (GunIsActive)
+                {
+                    GunAmmo += current + reserve;
+                }
+                else if (MachineGunIsActive)
+                {
+                    MachineGunAmmo += current + reserve;
+                }
+                else if (RifleIsActive)
+                {
+                    RifleAmmo += current + reserve;
+                }
                 if (reserve > 0)
                 {
                     reserve = 0;
                 }
+
             }
             if (current < Result)
             {
@@ -526,7 +543,18 @@ namespace ShootingGame
 
             if (current < Result)
             {
-                Ammo += current + reserve;
+                if (GunIsActive)
+                {
+                    GunAmmo += current + reserve;
+                }
+                else if (MachineGunIsActive)
+                {
+                    MachineGunAmmo += current + reserve;
+                }
+                else if (RifleIsActive)
+                {
+                    RifleAmmo += current + reserve;
+                }
                 if (reserve > 0)
                 {
                     reserve = 0;
