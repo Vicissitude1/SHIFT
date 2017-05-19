@@ -180,16 +180,16 @@ namespace ShootingGame
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(new Vector2(600, 470)));
+            gameObjects.Add(director.Construct(new Vector2(600, 500)));
 
             director = new Director(new DiceBuilder());
             GameObject d1 = director.Construct(new Vector2(650, 600));
             Dice dice1 = (Dice)d1.GetComponent("Dice");
             gameObjects.Add(d1);
-            GameObject d2 = director.Construct(new Vector2(750, 600));
+            GameObject d2 = director.Construct(new Vector2(700, 600));
             Dice dice2 = (Dice)d2.GetComponent("Dice");
             gameObjects.Add(d2);
-            GameObject d3 = director.Construct(new Vector2(850, 600));
+            GameObject d3 = director.Construct(new Vector2(750, 600));
             Dice dice3 = (Dice)d3.GetComponent("Dice");
             gameObjects.Add(d3);
             Dies.Add(dice1);
@@ -215,8 +215,8 @@ namespace ShootingGame
             AFont = Content.Load<SpriteFont>("AFont"); // 8
             BFont = Content.Load<SpriteFont>("BFont"); // 12
             CFont = Content.Load<SpriteFont>("CFont"); // 16
-            DFont = Content.Load<SpriteFont>("DFont"); // 16
-
+            DFont = Content.Load<SpriteFont>("DFont"); // 24
+            
             ResultFont = Content.Load<SpriteFont>("resultFont");
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");
@@ -283,36 +283,9 @@ namespace ShootingGame
             {
                 playSound = true;
             }*/
-            KeyboardState k = Keyboard.GetState();
-            if (k.IsKeyDown(Keys.Up))
-            {
-                if (!UpPressed.IsKeyDown(Keys.Up))
-                {
-                    High();
-                }
+            
 
-            }
-            else if (UpPressed.IsKeyDown(Keys.Up))
-            {
-
-            }
-            UpPressed = k;
-
-            if (k.IsKeyDown(Keys.Down))
-            {
-                if (!downPressed.IsKeyDown(Keys.Down))
-                {
-                    Low();
-                }
-
-            }
-            else if (downPressed.IsKeyDown(Keys.Down))
-            {
-
-            }
-            downPressed = k;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
+            if(Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
             {
                 PlayGame = false;
             }
@@ -340,7 +313,8 @@ namespace ShootingGame
                 {
                     go.Update();
                 }
-
+                if(!StopGame)
+                UpdateDiceUI();
                 UpdatePlayerShoot();
                 UpdateEnemyShoot();
             }
@@ -398,13 +372,15 @@ namespace ShootingGame
                         s.Draw(spriteBatch);
                     }
                 }
-                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1050, 620), Color.Black);
-                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1050, 650), Color.Black);
+                spriteBatch.DrawString(BFont, "RESERV: " + reserve, new Vector2(650, 660), Color.Black);
+
+                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
+                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
 
                 if (StopGame)
                 {
-                    spriteBatch.DrawString(DFont, "GAME OVER!", new Vector2(520, 170), Color.Red);
-                    spriteBatch.DrawString(DFont, "Press [M] to exit to the MAIN MENU", new Vector2(400, 230), Color.Red);
+                    spriteBatch.DrawString(DFont, "GAME OVER!", new Vector2(530, 170), Color.DarkMagenta);
+                    spriteBatch.DrawString(DFont, "Press [M] to exit to the MAIN MENU", new Vector2(400, 230), Color.DarkMagenta);
                 }
             }
             else if (ShowScoreMenu) scoreMenu.ShowScoreTable(spriteBatch);
@@ -480,6 +456,38 @@ namespace ShootingGame
             }
         }
 
+        public void UpdateDiceUI()
+        {
+            KeyboardState k = Keyboard.GetState();
+            if (k.IsKeyDown(Keys.Up))
+            {
+                if (!UpPressed.IsKeyDown(Keys.Up))
+                {
+                    High();
+                }
+
+            }
+            else if (UpPressed.IsKeyDown(Keys.Up))
+            {
+
+            }
+            UpPressed = k;
+
+            if (k.IsKeyDown(Keys.Down))
+            {
+                if (!downPressed.IsKeyDown(Keys.Down))
+                {
+                    Low();
+                }
+
+            }
+            else if (downPressed.IsKeyDown(Keys.Down))
+            {
+
+            }
+            downPressed = k;
+        }
+
         public int RollDices()
         {
 
@@ -504,18 +512,7 @@ namespace ShootingGame
 
             if (current > Result)
             {
-                if (GunIsActive)
-                {
-                    GunAmmo += current + reserve;
-                }
-                else if (MachineGunIsActive)
-                {
-                    MachineGunAmmo += current + reserve;
-                }
-                else if (RifleIsActive)
-                {
-                    RifleAmmo += current + reserve;
-                }
+                Player.CurrentWeapon.TotalAmmo += current + reserve;
                 if (reserve > 0)
                 {
                     reserve = 0;
@@ -543,18 +540,7 @@ namespace ShootingGame
 
             if (current < Result)
             {
-                if (GunIsActive)
-                {
-                    GunAmmo += current + reserve;
-                }
-                else if (MachineGunIsActive)
-                {
-                    MachineGunAmmo += current + reserve;
-                }
-                else if (RifleIsActive)
-                {
-                    RifleAmmo += current + reserve;
-                }
+                Player.CurrentWeapon.TotalAmmo += current + reserve;
                 if (reserve > 0)
                 {
                     reserve = 0;

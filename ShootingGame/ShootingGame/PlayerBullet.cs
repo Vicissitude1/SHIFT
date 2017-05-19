@@ -22,7 +22,7 @@ namespace ShootingGame
 
         public PlayerBullet(GameObject gameObject) : base(gameObject)
         {
-            speed = 8;
+            speed = 10;
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
@@ -39,19 +39,27 @@ namespace ShootingGame
 
         public void Move()
         {
+            /*
+            if (GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
+            {
+                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
+                T.Abort();
+            }*/
             Thread.Sleep(30);
+            
+            (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.2f - 400 / GameObject.Transform.Position.Y / 3;
             translation = Vector2.Zero;
             translation += new Vector2(0, -1);
             GameObject.Transform.Position += translation * speed;
 
-            if (GameObject.Transform.Position.Y < 100 || GameObject.Transform.Position.Y < aimPosition.Y || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
+            if (GameObject.Transform.Position.Y < 110 || GameObject.Transform.Position.Y < aimPosition.Y)
             {
                 IsRealesed = true;
             }             
 
             if (IsRealesed)
             {
-                if (GameObject.Transform.Position.Y < 100 || GameWorld.Instance.StopGame) speed = 0;
+                if (GameObject.Transform.Position.Y < 110 || GameWorld.Instance.StopGame) speed = 0;
                 else speed = 1;
                 animator.PlayAnimation("Expl");
             }
@@ -74,8 +82,8 @@ namespace ShootingGame
         {
             if (animationName.Contains("Expl"))
             {
-                T.Abort();
                 GameWorld.Instance.ObjectsToRemove.Add(GameObject);
+                T.Abort();
             }
         }
     }

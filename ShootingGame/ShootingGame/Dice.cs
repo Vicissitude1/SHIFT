@@ -14,8 +14,6 @@ namespace ShootingGame
     class Dice : Component, ILoadable, IUpdateable
     {
         private Animator animator;
-
-
         public int Ammo { get; set; }
         private int result = GameWorld.Instance.Result;
         private int currentDice;
@@ -25,6 +23,7 @@ namespace ShootingGame
             GameWorld.Instance.UpPressed = Keyboard.GetState();
             currentDice = Roll();
             GameWorld.Instance.Result += currentDice;
+            (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 0.7f;
         }
 
         public void LoadContent(ContentManager content)
