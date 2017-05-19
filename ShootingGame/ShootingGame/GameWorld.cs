@@ -507,7 +507,7 @@ namespace ShootingGame
             
             if (current > Result)
             {
-                Ammo += current + reserve;
+                Player.CurrentWeapon.TotalAmmo += current + reserve;
                 if (reserve > 0)
                 {
                     reserve = 0;

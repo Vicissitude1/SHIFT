@@ -122,10 +122,12 @@ namespace ShootingGame
                 if(maxAmmo <= TotalAmmo)
                 {
                     Ammo = maxAmmo;
+                    TotalAmmo -= maxAmmo;
                 }
                 else
                 {
                     Ammo = TotalAmmo;
+                    TotalAmmo = 0;
                 }
                 CurrentReloadTime = reloadTime;
                 IsReloading = false;
