@@ -142,8 +142,18 @@ namespace ShootingGame
                 IsReloading = false;
                 canPlayGunCockingSound = true;
             }
-            else CurrentReloadTime -= 20;
-            
+            else CurrentReloadTime -= 20;   
+        }
+
+        public void RestartWeapon()
+        {
+            TotalAmmo = 0;
+            Ammo = maxAmmo;
+            CurrentReloadTime = reloadTime;
+            canPlaySound = true;
+            IsReloading = false;
+            autoShootTimer = 0;
+            canPlayGunCockingSound = true;
         }
     }
 }

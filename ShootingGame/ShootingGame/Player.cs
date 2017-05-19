@@ -142,6 +142,8 @@ namespace ShootingGame
             currentWeaponIndex = 0;
             speed = 5;
             isChanged = false;
+            foreach (Weapon w in weapons)
+                w.RestartWeapon();
             CurrentWeapon = weapons[currentWeaponIndex];
         }
 
