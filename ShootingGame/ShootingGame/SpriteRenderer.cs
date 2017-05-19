@@ -59,10 +59,14 @@ namespace ShootingGame
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "WEAPON: ", new Vector2(250, 580), Color.Black);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "TOTAL AMMO: " + Player.CurrentWeapon.TotalAmmo, new Vector2(250, 625), Color.Black);
 
-                if (Player.CurrentWeapon.IsReloading)
+                if (Player.CurrentWeapon.IsReloading && Player.CurrentWeapon.TotalAmmo > 0)
                 {
                     spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: RELOADING", new Vector2(250, 650), Color.Red);
                     spriteBatch.Draw(pixel, new Rectangle(250, 670, Player.CurrentWeapon.CurrentReloadTime / 10, 5), Color.Red);
+                }
+                else if (Player.CurrentWeapon.IsReloading && Player.CurrentWeapon.TotalAmmo == 0 && Player.CurrentWeapon.Ammo == 0)
+                {
+                    spriteBatch.DrawString(GameWorld.Instance.BFont, "NO MORE AMMO", new Vector2(250, 650), Color.Red);
                 }
                 else
                 {
