@@ -510,7 +510,7 @@ namespace ShootingGame
                 dice.UpdateDice(CurrentDice);
             }
 
-            if (current > Result)
+            if (current < Result)
             {
                 Player.CurrentWeapon.TotalAmmo += current + reserve;
                 if (reserve > 0)
@@ -519,7 +519,7 @@ namespace ShootingGame
                 }
 
             }
-            if (current < Result)
+            if (current > Result)
             {
                 reserve += current;
             }
@@ -538,7 +538,7 @@ namespace ShootingGame
                 dice.UpdateDice(CurrentDice);
             }
 
-            if (current < Result)
+            if (current > Result)
             {
                 Player.CurrentWeapon.TotalAmmo += current + reserve;
                 if (reserve > 0)
@@ -546,7 +546,7 @@ namespace ShootingGame
                     reserve = 0;
                 }
             }
-            if (current > Result)
+            if (current < Result)
             {
                 reserve += current;
             }
