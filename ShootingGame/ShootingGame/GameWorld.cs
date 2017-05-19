@@ -155,21 +155,19 @@ namespace ShootingGame
             EnemyBulletsPositions = new List<Vector2>();
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
-
+            
             director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 100)));
-
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
-
+            
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 200)));
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
-
+            /*
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
-
+            */
             /*
             for (int i = 0; i < 2; i++)
             {
