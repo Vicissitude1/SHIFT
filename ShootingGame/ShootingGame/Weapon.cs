@@ -24,6 +24,7 @@ namespace ShootingGame
         int reloadTime;
         Song gunCocking;
         bool canPlayGunCockingSound;
+        public int TotalAmmo { get; set; }
         public string Name { get; private set; }
         public int Ammo { get; private set; }
         public int DamageLevel { get; private set; }
@@ -34,6 +35,7 @@ namespace ShootingGame
         public Weapon(string name, int maxAmmo, int damageLevel, int reloadTime, ShootType shootType)
         {
             this.Name = name;
+            this.TotalAmmo = 0;
             this.maxAmmo = this.Ammo = maxAmmo;
             this.DamageLevel = damageLevel;
             this.reloadTime = this.CurrentReloadTime = reloadTime;
@@ -117,7 +119,14 @@ namespace ShootingGame
             }
             if (CurrentReloadTime <= 0)
             {
-                Ammo = maxAmmo;
+                if(maxAmmo <= TotalAmmo)
+                {
+                    Ammo = maxAmmo;
+                }
+                else
+                {
+                    Ammo = TotalAmmo;
+                }
                 CurrentReloadTime = reloadTime;
                 IsReloading = false;
                 canPlayGunCockingSound = true;

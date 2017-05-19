@@ -143,40 +143,41 @@ namespace ShootingGame
                 }
             }
 
-            /*
-            //A reference to the current keyboard state
-            KeyboardState keyState = Keyboard.GetState();        
-            //The current translation of the player
-            //We are restting it to make sure that he stops moving if not keys are pressed
-            translation = Vector2.Zero;
-            //checks for input and adds it to the translation
-            if (EnemyHealth <= 0)
-                animator.PlayAnimation("Die");
-            
-            else if (keyState.IsKeyDown(Keys.W))
-            {
-                translation += new Vector2(0, -1);
-                animator.PlayAnimation("WalkBack");
-            }
-            else if (keyState.IsKeyDown(Keys.A))
-            {
-                translation += new Vector2(-1, 0);
-                animator.PlayAnimation("WalkLeft");
-            }
-            else if (keyState.IsKeyDown(Keys.S))
-            {
-                translation += new Vector2(0, 1);
-                animator.PlayAnimation("WalkFront");
-            }
-            else if (keyState.IsKeyDown(Keys.D))
-            {
-                translation += new Vector2(1, 0);
-                animator.PlayAnimation("WalkRight");
-            }
-            else animator.PlayAnimation("Shoot");*/
+                /*
+                //A reference to the current keyboard state
+                KeyboardState keyState = Keyboard.GetState();        
+                //The current translation of the player
+                //We are restting it to make sure that he stops moving if not keys are pressed
+                translation = Vector2.Zero;
+                //checks for input and adds it to the translation
+                if (EnemyHealth <= 0)
+                    animator.PlayAnimation("Die");
+
+                else if (keyState.IsKeyDown(Keys.W))
+                {
+                    translation += new Vector2(0, -1);
+                    animator.PlayAnimation("WalkBack");
+                }
+                else if (keyState.IsKeyDown(Keys.A))
+                {
+                    translation += new Vector2(-1, 0);
+                    animator.PlayAnimation("WalkLeft");
+                }
+                else if (keyState.IsKeyDown(Keys.S))
+                {
+                    translation += new Vector2(0, 1);
+                    animator.PlayAnimation("WalkFront");
+                }
+                else if (keyState.IsKeyDown(Keys.D))
+                {
+                    translation += new Vector2(1, 0);
+                    animator.PlayAnimation("WalkRight");
+                }
+                else animator.PlayAnimation("Shoot");*/
 
                 //animator.PlayAnimation("Shoot");
                 //Move the player's gameobject framerate independent
+            (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.5f - 400 / GameObject.Transform.Position.Y / 5;
             GameObject.Transform.Position += translation * speed * (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale;
         }
 

@@ -32,9 +32,9 @@ namespace ShootingGame
 
         public Player(GameObject gameObject) : base(gameObject)
         {
-            weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1500, ShootType.Gun),
-                                      new Weapon("RIFLE", 15, 50, 2000, ShootType.Rifle),
-                                      new Weapon("MACHINEGUN", 30, 35, 2000, ShootType.MachineGun)};
+            weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1000, ShootType.Gun),
+                                      new Weapon("RIFLE", 15, 50, 1500, ShootType.Rifle),
+                                      new Weapon("MACHINEGUN", 30, 35, 1500, ShootType.MachineGun)};
             Health = 100;
             PlayAnimation = false;
             T = new Thread(Update);

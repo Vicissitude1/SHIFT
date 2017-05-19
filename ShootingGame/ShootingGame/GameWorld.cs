@@ -210,7 +210,7 @@ namespace ShootingGame
             AFont = Content.Load<SpriteFont>("AFont"); // 8
             BFont = Content.Load<SpriteFont>("BFont"); // 12
             CFont = Content.Load<SpriteFont>("CFont"); // 16
-            DFont = Content.Load<SpriteFont>("DFont"); // 16
+            DFont = Content.Load<SpriteFont>("DFont"); // 24
             
             ResultFont = Content.Load<SpriteFont>("resultFont");
             //background = Content.Load<Texture2D>("DesertCity");
@@ -308,7 +308,7 @@ namespace ShootingGame
                 {
                     go.Update();
                 }
-
+                if(!StopGame)
                 UpdateDiceUI();
                 UpdatePlayerShoot();
                 UpdateEnemyShoot();
@@ -367,13 +367,15 @@ namespace ShootingGame
                         s.Draw(spriteBatch);
                     }
                 }
-                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1050, 620), Color.Black);
-                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1050, 650), Color.Black);
+                spriteBatch.DrawString(BFont, "RESERV: " + reserve, new Vector2(650, 660), Color.Black);
+
+                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
+                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
 
                 if (StopGame)
                 {
-                    spriteBatch.DrawString(DFont, "GAME OVER!", new Vector2(520, 170), Color.Red);
-                    spriteBatch.DrawString(DFont, "Press [M] to exit to the MAIN MENU", new Vector2(400, 230), Color.Red);
+                    spriteBatch.DrawString(DFont, "GAME OVER!", new Vector2(530, 170), Color.DarkMagenta);
+                    spriteBatch.DrawString(DFont, "Press [M] to exit to the MAIN MENU", new Vector2(400, 230), Color.DarkMagenta);
                 }
             }
             else if (ShowScoreMenu) scoreMenu.ShowScoreTable(spriteBatch);
@@ -532,7 +534,7 @@ namespace ShootingGame
 
             if (current < Result)
             {
-                Ammo += current + reserve;
+                Player.CurrentWeapon.TotalAmmo += current + reserve;
                 if (reserve > 0)
                 {
                     reserve = 0;
