@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using System;
 using Microsoft.Xna.Framework.Media;
+using IrrKlang;
 
 namespace ShootingGame
 {
@@ -51,6 +52,7 @@ namespace ShootingGame
         private SoundEffect effect;
         private static GameWorld instance;
         bool playSound;
+        public ISoundEngine Engine { get; private set; }
         public bool StopGame { get; set; }
         public bool PlayGame { get; set; }
         public bool ShowScoreMenu { get; set; }
@@ -215,7 +217,7 @@ namespace ShootingGame
             BFont = Content.Load<SpriteFont>("BFont"); // 12
             CFont = Content.Load<SpriteFont>("CFont"); // 16
             DFont = Content.Load<SpriteFont>("DFont"); // 24
-            
+            Engine = new ISoundEngine();
             ResultFont = Content.Load<SpriteFont>("resultFont");
             //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("sand");

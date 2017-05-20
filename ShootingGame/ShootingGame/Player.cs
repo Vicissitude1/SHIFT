@@ -22,7 +22,7 @@ namespace ShootingGame
         int selectedWeaponIndex;
         int speed;
         object thisLock = new object();
-        Song gunCocking;
+        //Song gunCocking;
         Weapon[] weapons;
         public static bool CanStartShoot { get; set; }
         public static bool PlayAnimation { get; set; }
@@ -60,7 +60,7 @@ namespace ShootingGame
             {
                 w.LoadContent(content);
             }
-            gunCocking = content.Load<Song>("gun-cocking-02");
+            //gunCocking = content.Load<Song>("gun-cocking-02");
             //Sets up a reference to the palyer's animator
             animator = (Animator)GameObject.GetComponent("Animator");
             //We can make our animations when we have a reference to the player's animator.
@@ -88,7 +88,8 @@ namespace ShootingGame
                     if (currentWeaponIndex != selectedWeaponIndex)
                     {
                         canChangeWeapon = false;
-                        MediaPlayer.Play(gunCocking);
+                        GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
+                        //MediaPlayer.Play(gunCocking);
                         PlayAnimation = false;
                     }
                 }
@@ -98,7 +99,8 @@ namespace ShootingGame
                     if (currentWeaponIndex != selectedWeaponIndex)
                     {
                         canChangeWeapon = false;
-                        MediaPlayer.Play(gunCocking);
+                        GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
+                        //MediaPlayer.Play(gunCocking);
                         PlayAnimation = false;
                     }
                 }
@@ -108,7 +110,8 @@ namespace ShootingGame
                     if (currentWeaponIndex != selectedWeaponIndex)
                     {
                         canChangeWeapon = false;
-                        MediaPlayer.Play(gunCocking);
+                        GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
+                        //MediaPlayer.Play(gunCocking);
                         PlayAnimation = false;
                     }
                 }

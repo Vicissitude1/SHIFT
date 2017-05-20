@@ -20,9 +20,9 @@ namespace ShootingGame
         bool canShoot;
         int autoShootTimer;
         MouseState mouseState;
-        Song sound;
+        //Song sound;
         int reloadTime;
-        Song gunCocking;
+        //Song gunCocking;
         bool canPlayGunCockingSound;
         public int TotalAmmo { get; set; }
         public string Name { get; private set; }
@@ -58,7 +58,7 @@ namespace ShootingGame
                 GameWorld.Instance.GunIsActive = true;
                 GameWorld.Instance.MachineGunIsActive = false;
                 GameWorld.Instance.RifleIsActive = false;
-                sound = content.Load<Song>("pistol");
+                //sound = content.Load<Song>("pistol");
                 Sprite = content.Load<Texture2D>("pistolsprite");
             }
             else if (shootType == ShootType.Rifle)
@@ -66,7 +66,7 @@ namespace ShootingGame
                 GameWorld.Instance.GunIsActive = false;
                 GameWorld.Instance.MachineGunIsActive = false;
                 GameWorld.Instance.RifleIsActive = true;
-                sound = content.Load<Song>("sniper");
+                //sound = content.Load<Song>("sniper");
                 Sprite = content.Load<Texture2D>("riflesprite");
             }
             else if (shootType == ShootType.MachineGun)
@@ -74,10 +74,10 @@ namespace ShootingGame
                 GameWorld.Instance.GunIsActive = false;
                 GameWorld.Instance.MachineGunIsActive = true;
                 GameWorld.Instance.RifleIsActive = false;
-                sound = content.Load<Song>("sniper");
+                //sound = content.Load<Song>("sniper");
                 Sprite = content.Load<Texture2D>("machinegunsprite");
             }
-            gunCocking = content.Load<Song>("gun-cocking-03");
+            //gunCocking = content.Load<Song>("gun-cocking-03");
         }
 
         public void UpdateWeaponStatus()
@@ -93,12 +93,22 @@ namespace ShootingGame
             }
             else if (mouseState.LeftButton == ButtonState.Pressed && canShoot && !IsReloading)
             {
-                if (shootType == ShootType.Gun || shootType == ShootType.Rifle)
+                if (shootType == ShootType.Gun)
                 {
                     Player.PlayAnimation = true;
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
-                    MediaPlayer.Play(sound);
+                    GameWorld.Instance.Engine.Play2D("Content/pistol.wav", false);
+                    //MediaPlayer.Play(sound);
+                    canShoot = false;
+                }
+                else if (shootType == ShootType.Rifle)
+                {
+                    Player.PlayAnimation = true;
+                    Ammo--;
+                    GameWorld.Instance.CanAddPlayerBullet = true;
+                    GameWorld.Instance.Engine.Play2D("Content/sniper.wav", false);
+                    //MediaPlayer.Play(sound);
                     canShoot = false;
                 }
                 else if (shootType == ShootType.MachineGun)
@@ -109,7 +119,8 @@ namespace ShootingGame
                         Player.PlayAnimation = true;
                         Ammo--;
                         GameWorld.Instance.CanAddPlayerBullet = true;
-                        MediaPlayer.Play(sound);
+                        GameWorld.Instance.Engine.Play2D("Content/pistol.wav", false);
+                        //MediaPlayer.Play(sound);
                         autoShootTimer = 0;
                     }
                 }
@@ -122,9 +133,10 @@ namespace ShootingGame
 
         public void Reload()
         {
-            if(CurrentReloadTime < reloadTime/10)
+            if(CurrentReloadTime < reloadTime/2 && canPlayGunCockingSound)
             {
-                MediaPlayer.Play(gunCocking);
+                GameWorld.Instance.Engine.Play2D("Content/gun-cocking-03.wav", false);
+                //MediaPlayer.Play(gunCocking);
                 canPlayGunCockingSound = false;
             }
             if (CurrentReloadTime <= 0)
