@@ -24,6 +24,7 @@ namespace ShootingGame
         object thisLock = new object();
         Song gunCocking;
         Weapon[] weapons;
+        public static bool CanStartShoot { get; set; }
         public static bool PlayAnimation { get; set; }
         public static Weapon CurrentWeapon { get; private set; }
         public static int Health { get; set; }
@@ -46,6 +47,7 @@ namespace ShootingGame
             speed = 5;
             isChanged = false;
             CurrentWeapon = weapons[currentWeaponIndex];
+            CanStartShoot = true;
         }
 
         /// <summary>
@@ -79,6 +81,7 @@ namespace ShootingGame
         {
             if (canChangeWeapon)
             {
+
                 if (Keyboard.GetState().IsKeyDown(Keys.D1))
                 {
                     selectedWeaponIndex = 0;
@@ -109,7 +112,10 @@ namespace ShootingGame
                         PlayAnimation = false;
                     }
                 }
+  
+                if (CanStartShoot)
                 CurrentWeapon.UpdateWeaponStatus();
+
                 if (currentWeaponIndex == 0)
                 {
                     if (PlayAnimation) animator.PlayAnimation("GunShoot");
@@ -125,6 +131,7 @@ namespace ShootingGame
                     if (PlayAnimation) animator.PlayAnimation("MachineGunShoot");
                     else animator.PlayAnimation("MachineGunIdle");
                 }
+                
             }
             else ChangeWeapon();
 
@@ -182,6 +189,7 @@ namespace ShootingGame
                     {
                         Health = 0;
                         GameWorld.Instance.StopGame = true;
+                        CanStartShoot = false;
                     } 
                 }
                 (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;

@@ -43,6 +43,7 @@ namespace ShootingGame
             canPlaySound = true;
             IsReloading = false;
             autoShootTimer = 0;
+            canShoot = false;
             canPlayGunCockingSound = true;
         }
 
@@ -92,7 +93,7 @@ namespace ShootingGame
             }
             else if (mouseState.LeftButton == ButtonState.Pressed && canShoot && !IsReloading)
             {
-                if(shootType==ShootType.Gun || shootType == ShootType.Rifle)
+                if (shootType == ShootType.Gun || shootType == ShootType.Rifle)
                 {
                     Player.PlayAnimation = true;
                     Ammo--;
@@ -100,10 +101,10 @@ namespace ShootingGame
                     MediaPlayer.Play(sound);
                     canShoot = false;
                 }
-                else if(shootType == ShootType.MachineGun)
+                else if (shootType == ShootType.MachineGun)
                 {
                     autoShootTimer++;
-                    if(autoShootTimer >= 8)
+                    if (autoShootTimer >= 8)
                     {
                         Player.PlayAnimation = true;
                         Ammo--;
@@ -152,6 +153,7 @@ namespace ShootingGame
             CurrentReloadTime = reloadTime;
             canPlaySound = true;
             IsReloading = false;
+            canShoot = false;
             autoShootTimer = 0;
             canPlayGunCockingSound = true;
         }

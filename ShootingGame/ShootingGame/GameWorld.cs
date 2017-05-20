@@ -287,6 +287,8 @@ namespace ShootingGame
             if(Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
             {
                 PlayGame = false;
+                StopGame = true;
+                Player.CanStartShoot = false;
             }
 
             DeltaTime = !StopGame ? (float)gameTime.ElapsedGameTime.TotalSeconds : 0;
@@ -305,6 +307,7 @@ namespace ShootingGame
                         else if (go.GetComponent("PlayerBullet") is PlayerBullet || go.GetComponent("EnemyBullet") is EnemyBullet)
                             objectsToRemove.Add(go);
                     }
+                    Player.CanStartShoot = true;
                     ReplaceObjects = false;
                 }
                 if (this.IsMouseVisible) this.IsMouseVisible = false;
