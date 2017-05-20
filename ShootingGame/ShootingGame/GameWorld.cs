@@ -20,15 +20,14 @@ namespace ShootingGame
         /// The object that is going to be locked
         /// </summary>
         static object thisLock = new object();
-        static object thisLock2 = new object();
         Director director;
         public int DiceResult { get; set; }
         private int reserve;
         public KeyboardState UpPressed { get; set; }
         private KeyboardState downPressed;
-        public int GunAmmo { get; set; }
-        public int MachineGunAmmo { get; set; }
-        public int RifleAmmo { get; set; }
+        //public int GunAmmo { get; set; }
+        //public int MachineGunAmmo { get; set; }
+        //public int RifleAmmo { get; set; }
         public SpriteFont ResultFont { get; set; }
         public bool HasPressed { get; set; } = false;
         public bool GunIsActive { get; set; } = false;
@@ -55,7 +54,7 @@ namespace ShootingGame
         public bool StopGame { get; set; }
         public bool PlayGame { get; set; }
         public bool ShowScoreMenu { get; set; }
-        public bool CanAddPlayerBollet { get; set; }
+        public bool CanAddPlayerBullet { get; set; }
         public float DeltaTime { get; private set; }
         public SpriteFont AFont { get; private set; }
         public SpriteFont BFont { get; private set; }
@@ -139,7 +138,7 @@ namespace ShootingGame
             PlayGame = false;
             ReplaceObjects = false;
             ShowScoreMenu = false;
-            CanAddPlayerBollet = false;
+            CanAddPlayerBullet = false;
             StopGame = true;
             menu = new Menu();
             scoreMenu = new ScoreMenu();
@@ -164,10 +163,10 @@ namespace ShootingGame
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
-            /*
+            
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
-            */
+            
             /*
             for (int i = 0; i < 2; i++)
             {
@@ -296,6 +295,7 @@ namespace ShootingGame
             {
                 if (ReplaceObjects)
                 {
+                    scores.Clear();
                     foreach (GameObject go in gameObjects)
                     {
                         if (go.GetComponent("Enemy") is Enemy)
@@ -406,16 +406,6 @@ namespace ShootingGame
                 if (objectsToRemove.Count > 0 && tempObjectsToRemove.Count == 0)
                 {
                     tempObjectsToRemove.AddRange(objectsToRemove);
-                    /*
-                    foreach (GameObject go in objectsToRemove)
-                    {
-                        if (go.GetComponent("PlayerBullet") is PlayerBullet)
-                            (go.GetComponent("PlayerBullet") as PlayerBullet).T.Abort();
-                        else if (go.GetComponent("EnemyBullet") is EnemyBullet)
-                            (go.GetComponent("EnemyBullet") as EnemyBullet).T.Abort();
-                        collidersToRemove.Add(go.GetComponent("Collider") as Collider);
-                        gameObjects.Remove(go);
-                    }*/
                     objectsToRemove.Clear();
                 }
             }
@@ -423,18 +413,12 @@ namespace ShootingGame
             {
                 foreach (GameObject go in tempObjectsToRemove)
                 {
-                    /*
-                    if (go.GetComponent("PlayerBullet") is PlayerBullet)
-                        (go.GetComponent("PlayerBullet") as PlayerBullet).T.Abort();
-                    else if (go.GetComponent("EnemyBullet") is EnemyBullet)
-                        (go.GetComponent("EnemyBullet") as EnemyBullet).T.Abort();*/
-                    collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+                    if ((go.GetComponent("PlayerBullet") is PlayerBullet) || (go.GetComponent("EnemyBullet") is EnemyBullet))
+                        collidersToRemove.Add(go.GetComponent("Collider") as Collider);
                     gameObjects.Remove(go);
                 }
                 tempObjectsToRemove.Clear();
             }
-
-
             if (collidersToRemove.Count > 0)
             {
                 foreach (Collider c in collidersToRemove)
@@ -447,13 +431,13 @@ namespace ShootingGame
 
         public void UpdatePlayerShoot()
         {
-            if (CanAddPlayerBollet)
+            if (CanAddPlayerBullet)
             {
                 director = new Director(new PlayerBulletBuilder());
                 GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X, 470));
                 go.LoadContent(Content);
                 gameObjects.Add(go);
-                CanAddPlayerBollet = false;
+                CanAddPlayerBullet = false;
             }
         }
 

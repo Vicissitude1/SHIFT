@@ -11,7 +11,6 @@ namespace ShootingGame
 {
     class EnemyBullet : Component
     {
-        Vector2 direction;
         int speed;
         Vector2 translation;
         Vector2 aimPosition;
@@ -43,12 +42,14 @@ namespace ShootingGame
                 GameWorld.Instance.ObjectsToRemove.Add(GameObject);
                 T.Abort();
             }
+            if (GameWorld.Instance.StopGame)
+                speed = 20;
             Thread.Sleep(30);
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.2f - 400 / GameObject.Transform.Position.Y / 3;
             GameObject.Transform.Position += translation * speed;
 
-            //if (GameObject.Transform.Position.Y > 550)
-            if (GameObject.Transform.Position.Y > 550 || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
+            if (GameObject.Transform.Position.Y > 550)
+            //if (GameObject.Transform.Position.Y > 550 || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
                 IsRealesed = true;
         }
     }

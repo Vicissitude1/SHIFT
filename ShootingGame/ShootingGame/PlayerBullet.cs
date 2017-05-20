@@ -16,6 +16,7 @@ namespace ShootingGame
         Vector2 translation;
         Vector2 aimPosition;
         Animator animator;
+        bool animationDone;
         public int DamageLevel { get; private set; }
         public Thread T { get; set; }
         public bool IsRealesed { get; set; }
@@ -25,6 +26,7 @@ namespace ShootingGame
             speed = 10;
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
+            animationDone = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
             T = new Thread(Update);
             T.IsBackground = true;
@@ -39,8 +41,7 @@ namespace ShootingGame
 
         public void Move()
         {
-            
-            if (GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
+            if (animationDone)
             {
                 GameWorld.Instance.ObjectsToRemove.Add(GameObject);
                 T.Abort();
@@ -52,6 +53,26 @@ namespace ShootingGame
             translation += new Vector2(0, -1);
             GameObject.Transform.Position += translation * speed;
 
+            if (GameWorld.Instance.StopGame)
+            {
+                if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y <= aimPosition.Y)
+                {
+                    speed = 0;
+                    animationDone = true;
+                }
+                else speed = 20;
+            }
+            else if (IsRealesed)
+            {
+                speed = GameObject.Transform.Position.Y < 120 ? 0 : 1;
+                animator.PlayAnimation("Expl");
+            }
+            else if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y < aimPosition.Y)
+            {
+                IsRealesed = true;
+            }
+
+            /*
             if (GameObject.Transform.Position.Y < 110 || GameObject.Transform.Position.Y < aimPosition.Y)
             {
                 IsRealesed = true;
@@ -62,7 +83,7 @@ namespace ShootingGame
                 if (GameObject.Transform.Position.Y < 110 || GameWorld.Instance.StopGame) speed = 0;
                 else speed = 1;
                 animator.PlayAnimation("Expl");
-            }
+            }*/
         }
 
         public void LoadContent(ContentManager content)
@@ -81,10 +102,7 @@ namespace ShootingGame
         public void OnAnimationDone(string animationName)
         {
             if (animationName.Contains("Expl"))
-            {
-                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
-                T.Abort();
-            }
+                animationDone = true;
         }
     }
 }

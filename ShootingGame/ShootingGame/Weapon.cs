@@ -96,7 +96,7 @@ namespace ShootingGame
                 {
                     Player.PlayAnimation = true;
                     Ammo--;
-                    GameWorld.Instance.CanAddPlayerBollet = true;
+                    GameWorld.Instance.CanAddPlayerBullet = true;
                     MediaPlayer.Play(sound);
                     canShoot = false;
                 }
@@ -107,7 +107,7 @@ namespace ShootingGame
                     {
                         Player.PlayAnimation = true;
                         Ammo--;
-                        GameWorld.Instance.CanAddPlayerBollet = true;
+                        GameWorld.Instance.CanAddPlayerBullet = true;
                         MediaPlayer.Play(sound);
                         autoShootTimer = 0;
                     }

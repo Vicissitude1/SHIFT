@@ -61,7 +61,6 @@ namespace ShootingGame
             gunCocking = content.Load<Song>("gun-cocking-02");
             //Sets up a reference to the palyer's animator
             animator = (Animator)GameObject.GetComponent("Animator");
-
             //We can make our animations when we have a reference to the player's animator.
             CreateAnimation();
         }

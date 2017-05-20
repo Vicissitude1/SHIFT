@@ -35,6 +35,7 @@ namespace ShootingGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            //if (!((GameObject.GetComponent("EnemyBullet") is EnemyBullet) && GameWorld.Instance.StopGame) || !((GameObject.GetComponent("PlayerBullet") is PlayerBullet) && GameWorld.Instance.StopGame))
             spriteBatch.Draw(Sprite, GameObject.Transform.Position + Offset, Rectangle, Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, layerDepth);
 
             if (GameObject.GetComponent("Enemy") is Enemy)

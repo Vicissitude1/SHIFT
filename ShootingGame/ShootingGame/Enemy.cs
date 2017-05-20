@@ -56,7 +56,7 @@ namespace ShootingGame
         {
             isSpawned = true;
             EnemyHealth = 100;
-            moveTimer = GameWorld.Instance.Rnd.Next(80, 200);
+            moveTimer = GameWorld.Instance.Rnd.Next(100, 200);
             canMove = true;
             if (GameWorld.Instance.Rnd.Next(2) == 0)
             {
@@ -71,6 +71,7 @@ namespace ShootingGame
                 currentDirection = Direction.Right;
                 animator.PlayAnimation("WalkLeft");
             }
+            (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
         }
 
         public void Move()
@@ -210,8 +211,6 @@ namespace ShootingGame
                 GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position));
                 Player.Scores += 5;
                 Replace();
-                //GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 900), GameWorld.Instance.Rnd.Next(100, 400));
-                (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
             }
             else if (animationName.Contains("Shoot"))
             {

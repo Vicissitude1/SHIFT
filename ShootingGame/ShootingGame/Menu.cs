@@ -117,7 +117,6 @@ namespace ShootingGame
             GameWorld.Instance.PlayGame = true;
             GameWorld.Instance.StopGame = false;
             GameWorld.Instance.ShowScoreMenu = false;
-            Player.Health = 100;
             if (canPlaySound)
             {
                 MediaPlayer.Play(buttonSound1);
