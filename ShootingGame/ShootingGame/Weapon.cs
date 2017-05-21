@@ -114,7 +114,7 @@ namespace ShootingGame
                 else if (shootType == ShootType.MachineGun)
                 {
                     autoShootTimer++;
-                    if (autoShootTimer >= 5)
+                    if (autoShootTimer >= 7)
                     {
                         Player.PlayAnimation = true;
                         Ammo--;
