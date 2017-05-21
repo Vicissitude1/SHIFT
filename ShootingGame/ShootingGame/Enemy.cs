@@ -216,6 +216,7 @@ namespace ShootingGame
             {
                 //if(Player.Health > 0)
                 //Player.Health -= 1;
+                GameWorld.Instance.Engine.Play2D("Content/rifleshot.wav", false);
                 shootsAmount--;
                 GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }

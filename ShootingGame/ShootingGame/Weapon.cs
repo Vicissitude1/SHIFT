@@ -98,7 +98,7 @@ namespace ShootingGame
                     Player.PlayAnimation = true;
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
-                    GameWorld.Instance.Engine.Play2D("Content/pistol.wav", false);
+                    GameWorld.Instance.Engine.Play2D("Content/gunshot.wav", false);
                     //MediaPlayer.Play(sound);
                     canShoot = false;
                 }
@@ -107,19 +107,19 @@ namespace ShootingGame
                     Player.PlayAnimation = true;
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
-                    GameWorld.Instance.Engine.Play2D("Content/sniper.wav", false);
+                    GameWorld.Instance.Engine.Play2D("Content/hithard.wav", false);
                     //MediaPlayer.Play(sound);
                     canShoot = false;
                 }
                 else if (shootType == ShootType.MachineGun)
                 {
                     autoShootTimer++;
-                    if (autoShootTimer >= 8)
+                    if (autoShootTimer >= 5)
                     {
                         Player.PlayAnimation = true;
                         Ammo--;
                         GameWorld.Instance.CanAddPlayerBullet = true;
-                        GameWorld.Instance.Engine.Play2D("Content/pistol.wav", false);
+                        GameWorld.Instance.Engine.Play2D("Content/gunshot.wav", false);
                         //MediaPlayer.Play(sound);
                         autoShootTimer = 0;
                     }

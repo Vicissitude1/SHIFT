@@ -138,12 +138,17 @@
     <Content Include="Content\gun-cocking-03.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\pistol.wav">
+    <Content Include="Content\gunshot.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\sniper.wav">
+    <Content Include="Content\hithard.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\pistol.wav" />
+    <Content Include="Content\rifleshot.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\sniper.wav" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
