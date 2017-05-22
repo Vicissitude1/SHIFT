@@ -83,9 +83,7 @@ namespace ShootingGame
             get
             {
                 lock (objectsToRemove)
-                {
                     return objectsToRemove;
-                }
             }
         }
 
@@ -93,12 +91,8 @@ namespace ShootingGame
         {
             get
             {
-                return scores;
-            }
-
-            set
-            {
-                scores = value;
+                lock (scores)
+                   return scores;
             }
         }
 
@@ -106,12 +100,8 @@ namespace ShootingGame
         {
             get
             {
-                return scoresToRemove;
-            }
-
-            set
-            {
-                scoresToRemove = value;
+                lock (scoresToRemove)
+                   return scoresToRemove;
             }
         }
 
@@ -179,7 +169,7 @@ namespace ShootingGame
             //director = new Director(new ExplosionBuilder());
             //gameObjects.Add(director.Construct(new Vector2(100, 100)));
             director = new Director(new PowerUpObjectBuilder());
-            gameObjects.Add(director.Construct(new Vector2(200, 20)));
+            gameObjects.Add(director.Construct(new Vector2(200, -20)));
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
@@ -310,6 +300,8 @@ namespace ShootingGame
                             (go.GetComponent("Enemy") as Enemy).Replace();
                         else if (go.GetComponent("Player") is Player)
                             (go.GetComponent("Player") as Player).Replace();
+                        else if (go.GetComponent("PowerUpObject") is PowerUpObject)
+                            (go.GetComponent("PowerUpObject") as PowerUpObject).Replace();
                         else if (go.GetComponent("PlayerBullet") is PlayerBullet || go.GetComponent("EnemyBullet") is EnemyBullet)
                             objectsToRemove.Add(go);
                     }
@@ -401,15 +393,18 @@ namespace ShootingGame
 
         public void ClearLists()
         {
-            if (scoresToRemove.Count > 0)
+            lock (scoresToRemove)
             {
-                foreach (Score s in scoresToRemove)
+                if (scoresToRemove.Count > 0)
                 {
-                    scores.Remove(s);
+                    foreach (Score s in scoresToRemove)
+                    {
+                        scores.Remove(s);
+                    }
+                    scoresToRemove.Clear();
                 }
-                scoresToRemove.Clear();
             }
-
+            
             lock (objectsToRemove)
             {
                 if (objectsToRemove.Count > 0 && tempObjectsToRemove.Count == 0)

@@ -116,5 +116,24 @@ namespace ShootingGame
 
             return weapons;
         }
+
+        public int GetBonusValue(string name, int id)
+        {
+            int bonusValue = 0;
+            try
+            {
+                using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
+                {
+                    dbConn.Open();
+                    SQLiteCommand command = new SQLiteCommand("select " + name + " from powerups where id=" + id.ToString(), dbConn);
+                    SQLiteDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                        bonusValue = ((int)reader[name]);
+                }
+            }
+            catch (SQLiteException ex)
+            { }
+            return bonusValue;
+        }
     }
 }

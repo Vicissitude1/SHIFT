@@ -18,18 +18,21 @@ namespace ShootingGame
         int inGameTimer;
         int outGameTimer;
         bool isInGame;
-        public bool IsDefeat { get; private set; }
+        int bonusValue;
+        DataBaseClass database;
+        bool isDefeat;
         PowerUpType currentPowerUp;
         public string Name { get; private set; }
         public Thread T { get; private set; }
 
         public PowerUpObject(GameObject gameObject) : base(gameObject)
         {
-            IsDefeat = false;
+            isDefeat = false;
             isInGame = false;
             inGameTimer = 0;
             outGameTimer = 200;
             speed = 4;
+            database = new DataBaseClass();
             T = new Thread(Update);
             T.IsBackground = true;
             currentPowerUp = (PowerUpType)GameWorld.Instance.Rnd.Next(3);
@@ -48,9 +51,32 @@ namespace ShootingGame
 
         public void Move()
         {
-            if (isInGame)
+            if (isDefeat)
             {
-                if (GameObject.Transform.Position.Y < 200 && !IsDefeat)
+                bonusValue = database.GetBonusValue(currentPowerUp.ToString(), GameWorld.Instance.Rnd.Next(1,6));
+                switch (currentPowerUp)
+                {
+                    case PowerUpType.Health:
+                        Player.Health += bonusValue;
+                        GameWorld.Instance.Scores.Add(new Score("Helath +" + bonusValue, (GameObject.GetComponent("Transform") as Transform).Position, Color.Yellow, GameWorld.Instance.BFont));
+                        break;
+                    case PowerUpType.Score:
+                        Player.Scores += bonusValue;
+                        GameWorld.Instance.Scores.Add(new Score("Score +" + bonusValue, (GameObject.GetComponent("Transform") as Transform).Position, Color.Yellow, GameWorld.Instance.BFont));
+                        break;
+                    default:
+                        Player.CurrentWeapon.TotalAmmo += bonusValue;
+                        GameWorld.Instance.Scores.Add(new Score("Ammo +" + bonusValue, (GameObject.GetComponent("Transform") as Transform).Position, Color.Yellow, GameWorld.Instance.BFont));
+                        break;
+                }
+                GameObject.Transform.Position = new Vector2(GameObject.Transform.Position.X, -20);
+                isInGame = false;
+                isDefeat = false;
+                outGameTimer = GameWorld.Instance.Rnd.Next(100, 300);
+            }
+            else if (isInGame)
+            {
+                if (GameObject.Transform.Position.Y < 200)
                 {
                     translation = Vector2.Zero;
                     translation += new Vector2(0, 1);
@@ -58,16 +84,15 @@ namespace ShootingGame
                 else translation = Vector2.Zero;
 
                 inGameTimer--;
-                if (inGameTimer <= 0 || IsDefeat)
+                if (inGameTimer <= 0)
                 {
                     isInGame = false;
                     outGameTimer = GameWorld.Instance.Rnd.Next(100, 300);
-                    //GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position));
                 }
             }
             else
             {
-                if (GameObject.Transform.Position.Y > 20)
+                if (GameObject.Transform.Position.Y > -20)
                 {
                     translation = Vector2.Zero;
                     translation += new Vector2(0, -1);
@@ -77,10 +102,9 @@ namespace ShootingGame
                 outGameTimer--;
                 if (outGameTimer <= 0)
                 {
-                    IsDefeat = false;
                     isInGame = true;
                     inGameTimer = 200;
-                    GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 1200), 20);
+                    GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 1200), -20);
                     (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
                     currentPowerUp = (PowerUpType)GameWorld.Instance.Rnd.Next(3);
                     Name = currentPowerUp.ToString().Substring(0, 1);
@@ -91,7 +115,7 @@ namespace ShootingGame
 
         public void Replace()
         {
-           
+            GameObject.Transform.Position = new Vector2(200, -20);
             (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
             isInGame = false;
             outGameTimer = 100;
@@ -104,7 +128,7 @@ namespace ShootingGame
                 Player.Health += 5;
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
                 (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
-                IsDefeat = true;
+                isDefeat = true;
             }
         }
     }

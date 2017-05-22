@@ -208,7 +208,7 @@ namespace ShootingGame
         {
             if (animationName.Contains("Die"))
             {
-                GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position));
+                GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position, Color.White, GameWorld.Instance.CFont));
                 Player.Scores += 5;
                 Replace();
             }

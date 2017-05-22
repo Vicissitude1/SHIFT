@@ -84,16 +84,14 @@ namespace ShootingGame
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "HEALTH: " + Player.Health, new Vector2(20, 580), Color.Black);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "SCORE: " + Player.Scores, new Vector2(20, 620), Color.Black);
                 spriteBatch.DrawString(GameWorld.Instance.ResultFont, " = " + GameWorld.Instance.Result, new Vector2(800, 610), Color.Black);
-                DrawBorder(spriteBatch, new Rectangle(120, 580, 102, 15), 1, Color.Black);
+                DrawBorder(spriteBatch, new Rectangle(120, 580, 101, 15), 1, Color.Black);
                 if (Player.Health >= 30)
                     spriteBatch.Draw(pixel, new Rectangle(120, 581, Player.Health, 13), Color.Green);
                 else spriteBatch.Draw(pixel, new Rectangle(120, 581, Player.Health, 13), Color.Red);
             }
             if (GameObject.GetComponent("PowerUpObject") is PowerUpObject)
             {
-                if ((GameObject.GetComponent("PowerUpObject") as PowerUpObject).IsDefeat)
-                    spriteBatch.DrawString(GameWorld.Instance.CFont, (GameObject.GetComponent("PowerUpObject") as PowerUpObject).Name, new Vector2(GameObject.Transform.Position.X + 17, GameObject.Transform.Position.Y + 10), Color.Black);
-                else spriteBatch.DrawString(GameWorld.Instance.CFont, (GameObject.GetComponent("PowerUpObject") as PowerUpObject).Name, new Vector2(GameObject.Transform.Position.X + 17, GameObject.Transform.Position.Y + 10), Color.Yellow);
+                spriteBatch.DrawString(GameWorld.Instance.CFont, (GameObject.GetComponent("PowerUpObject") as PowerUpObject).Name, new Vector2(GameObject.Transform.Position.X + 17, GameObject.Transform.Position.Y + 10), Color.Yellow);
             }
         }
 

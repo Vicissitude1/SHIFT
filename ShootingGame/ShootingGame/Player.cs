@@ -14,6 +14,7 @@ namespace ShootingGame
 {
     class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
     {
+        static int health;
         Animator animator;
         bool canShoot;
         bool canChangeWeapon;
@@ -21,15 +22,28 @@ namespace ShootingGame
         int currentWeaponIndex;
         int selectedWeaponIndex;
         int speed;
-        object thisLock = new object();
+        static object thisLock = new object();
         Weapon[] weapons;
         DataBaseClass database;
         public static bool CanStartShoot { get; set; }
         public static bool PlayAnimation { get; set; }
         public static Weapon CurrentWeapon { get; private set; }
-        public static int Health { get; set; }
         public Thread T { get; private set; }
         public static int Scores { get; set; }
+
+        public static int Health
+        {
+            get { return health;}
+            set
+            {
+                lock (thisLock)
+                {
+                    health = value;
+                    if (health < 0) health = 0;
+                    else if (health > 100) health = 100;
+                }
+            }
+        }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
@@ -187,12 +201,18 @@ namespace ShootingGame
                 lock (thisLock)
                 {
                     Health--;
+                    if (health == 0)
+                    {
+                        GameWorld.Instance.StopGame = true;
+                        CanStartShoot = false;
+                    }
+                    /*
                     if (Health < 0)
                     {
                         Health = 0;
                         GameWorld.Instance.StopGame = true;
                         CanStartShoot = false;
-                    } 
+                    } */
                 }
                 (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
             }

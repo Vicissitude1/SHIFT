@@ -15,13 +15,17 @@ namespace ShootingGame
         string bonus;
         Vector2 position;
         float speed;
+        Color color;
+        SpriteFont font;
         Vector2 translation;
         Thread t;
 
-        public Score(string bonus, Vector2 position)
+        public Score(string bonus, Vector2 position, Color color, SpriteFont font)
         {
             this.bonus = bonus;
             this.position = position;
+            this.color = color;
+            this.font = font;
             lifeTimer = 2500;
             speed = 100;
             t = new Thread(Move);
@@ -48,7 +52,7 @@ namespace ShootingGame
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Instance.CFont, bonus, position, Color.White);
+            spriteBatch.DrawString(font, bonus, position, color);
         }
     }
 }
