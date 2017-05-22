@@ -32,7 +32,6 @@ namespace ShootingGame
         Color buttonClearColor;
         Vector2 mousePosition;
         DataBaseClass dataBase;
-        //Song buttonSound1;
         bool canPlaySound;
 
         public ScoreMenu()
@@ -53,7 +52,6 @@ namespace ShootingGame
             buttonClearRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
             buttonSaveRectangle = new Rectangle(1000, 350, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(1000, 500, buttonSprite.Width, buttonSprite.Height);
-            //buttonSound1 = content.Load<Song>("buttonClick");
         }
 
         public void ShowScoreTable(SpriteBatch spriteBatch)
@@ -286,7 +284,6 @@ namespace ShootingGame
             if (canPlaySound)
             {
                 GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
-               // MediaPlayer.Play(buttonSound1);
                 canPlaySound = false;
             }
         }
@@ -298,11 +295,11 @@ namespace ShootingGame
                 while (players.Count > 10)
                     players.RemoveAt(10);
                 dataBase.SavePlayersList(players);
+                Player.Scores = 0;
                 canInsertName = false;
                 if (canPlaySound)
                 {
                     GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
-                    //MediaPlayer.Play(buttonSound1);
                     canPlaySound = false;
                 }
             }
@@ -315,7 +312,6 @@ namespace ShootingGame
             if(canPlaySound)
             {
                 GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
-               // MediaPlayer.Play(buttonSound1);
                 canPlaySound = false;
             }
             GameWorld.Instance.ShowScoreMenu = false;

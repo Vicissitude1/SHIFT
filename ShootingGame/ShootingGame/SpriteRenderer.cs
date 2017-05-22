@@ -89,6 +89,12 @@ namespace ShootingGame
                     spriteBatch.Draw(pixel, new Rectangle(120, 581, Player.Health, 13), Color.Green);
                 else spriteBatch.Draw(pixel, new Rectangle(120, 581, Player.Health, 13), Color.Red);
             }
+            if (GameObject.GetComponent("PowerUpObject") is PowerUpObject)
+            {
+                if ((GameObject.GetComponent("PowerUpObject") as PowerUpObject).IsDefeat)
+                    spriteBatch.DrawString(GameWorld.Instance.CFont, (GameObject.GetComponent("PowerUpObject") as PowerUpObject).Name, new Vector2(GameObject.Transform.Position.X + 17, GameObject.Transform.Position.Y + 10), Color.Black);
+                else spriteBatch.DrawString(GameWorld.Instance.CFont, (GameObject.GetComponent("PowerUpObject") as PowerUpObject).Name, new Vector2(GameObject.Transform.Position.X + 17, GameObject.Transform.Position.Y + 10), Color.Yellow);
+            }
         }
 
         public void LoadContent(ContentManager content)

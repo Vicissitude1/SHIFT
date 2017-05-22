@@ -16,13 +16,10 @@ namespace ShootingGame
     {
         int maxAmmo;
         ShootType shootType;
-        bool canPlaySound;
         bool canShoot;
         int autoShootTimer;
         MouseState mouseState;
-        //Song sound;
         int reloadTime;
-        //Song gunCocking;
         bool canPlayGunCockingSound;
         public int TotalAmmo { get; set; }
         public string Name { get; private set; }
@@ -40,7 +37,6 @@ namespace ShootingGame
             this.DamageLevel = damageLevel;
             this.reloadTime = this.CurrentReloadTime = reloadTime;
             this.shootType = shootType;
-            canPlaySound = true;
             IsReloading = false;
             autoShootTimer = 0;
             canShoot = false;
@@ -58,7 +54,6 @@ namespace ShootingGame
                 GameWorld.Instance.GunIsActive = true;
                 GameWorld.Instance.MachineGunIsActive = false;
                 GameWorld.Instance.RifleIsActive = false;
-                //sound = content.Load<Song>("pistol");
                 Sprite = content.Load<Texture2D>("pistolsprite");
             }
             else if (shootType == ShootType.Rifle)
@@ -66,7 +61,6 @@ namespace ShootingGame
                 GameWorld.Instance.GunIsActive = false;
                 GameWorld.Instance.MachineGunIsActive = false;
                 GameWorld.Instance.RifleIsActive = true;
-                //sound = content.Load<Song>("sniper");
                 Sprite = content.Load<Texture2D>("riflesprite");
             }
             else if (shootType == ShootType.MachineGun)
@@ -74,10 +68,8 @@ namespace ShootingGame
                 GameWorld.Instance.GunIsActive = false;
                 GameWorld.Instance.MachineGunIsActive = true;
                 GameWorld.Instance.RifleIsActive = false;
-                //sound = content.Load<Song>("sniper");
                 Sprite = content.Load<Texture2D>("machinegunsprite");
             }
-            //gunCocking = content.Load<Song>("gun-cocking-03");
         }
 
         public void UpdateWeaponStatus()
@@ -99,7 +91,6 @@ namespace ShootingGame
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
                     GameWorld.Instance.Engine.Play2D("Content/gunshot.wav", false);
-                    //MediaPlayer.Play(sound);
                     canShoot = false;
                 }
                 else if (shootType == ShootType.Rifle)
@@ -108,7 +99,6 @@ namespace ShootingGame
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
                     GameWorld.Instance.Engine.Play2D("Content/hithard.wav", false);
-                    //MediaPlayer.Play(sound);
                     canShoot = false;
                 }
                 else if (shootType == ShootType.MachineGun)
@@ -120,7 +110,6 @@ namespace ShootingGame
                         Ammo--;
                         GameWorld.Instance.CanAddPlayerBullet = true;
                         GameWorld.Instance.Engine.Play2D("Content/gunshot.wav", false);
-                        //MediaPlayer.Play(sound);
                         autoShootTimer = 0;
                     }
                 }
@@ -136,7 +125,6 @@ namespace ShootingGame
             if(CurrentReloadTime < reloadTime/2 && canPlayGunCockingSound)
             {
                 GameWorld.Instance.Engine.Play2D("Content/gun-cocking-03.wav", false);
-                //MediaPlayer.Play(gunCocking);
                 canPlayGunCockingSound = false;
             }
             if (CurrentReloadTime <= 0)
@@ -163,7 +151,6 @@ namespace ShootingGame
             TotalAmmo = 0;
             Ammo = maxAmmo;
             CurrentReloadTime = reloadTime;
-            canPlaySound = true;
             IsReloading = false;
             canShoot = false;
             autoShootTimer = 0;

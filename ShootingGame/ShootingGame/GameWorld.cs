@@ -162,13 +162,13 @@ namespace ShootingGame
             
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 200)));
-
+            /*
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
             
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
-            
+            */
             /*
             for (int i = 0; i < 2; i++)
             {
@@ -178,6 +178,8 @@ namespace ShootingGame
 
             //director = new Director(new ExplosionBuilder());
             //gameObjects.Add(director.Construct(new Vector2(100, 100)));
+            director = new Director(new PowerUpObjectBuilder());
+            gameObjects.Add(director.Construct(new Vector2(200, 20)));
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
@@ -240,6 +242,8 @@ namespace ShootingGame
                     (go.GetComponent("Player") as Player).T.Start();
                 else if (go.GetComponent("Aim") is Aim)
                     (go.GetComponent("Aim") as Aim).T.Start();
+                else if (go.GetComponent("PowerUpObject") is PowerUpObject)
+                    (go.GetComponent("PowerUpObject") as PowerUpObject).T.Start();
             }
         }
 
