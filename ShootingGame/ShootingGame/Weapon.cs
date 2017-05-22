@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    enum ShootType { Gun, Rifle, MachineGun}
+    enum WeaponType { BoltAction, SemiAuto, FullAuto}
 
     class Weapon
     {
         int maxAmmo;
-        ShootType shootType;
+        WeaponType shootType;
         bool canShoot;
         int autoShootTimer;
         MouseState mouseState;
@@ -29,7 +29,7 @@ namespace ShootingGame
         public int CurrentReloadTime { get; private set; }
         public bool IsReloading;
         
-        public Weapon(string name, int maxAmmo, int damageLevel, int reloadTime, ShootType shootType)
+        public Weapon(string name, int maxAmmo, int damageLevel, int reloadTime, WeaponType shootType)
         {
             this.Name = name;
             this.TotalAmmo = 0;
@@ -49,21 +49,21 @@ namespace ShootingGame
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            if (shootType == ShootType.Gun)
+            if (shootType == WeaponType.BoltAction)
             {
                 GameWorld.Instance.GunIsActive = true;
                 GameWorld.Instance.MachineGunIsActive = false;
                 GameWorld.Instance.RifleIsActive = false;
                 Sprite = content.Load<Texture2D>("pistolsprite");
             }
-            else if (shootType == ShootType.Rifle)
+            else if (shootType == WeaponType.SemiAuto)
             {
                 GameWorld.Instance.GunIsActive = false;
                 GameWorld.Instance.MachineGunIsActive = false;
                 GameWorld.Instance.RifleIsActive = true;
                 Sprite = content.Load<Texture2D>("riflesprite");
             }
-            else if (shootType == ShootType.MachineGun)
+            else if (shootType == WeaponType.FullAuto)
             {
                 GameWorld.Instance.GunIsActive = false;
                 GameWorld.Instance.MachineGunIsActive = true;
@@ -85,7 +85,7 @@ namespace ShootingGame
             }
             else if (mouseState.LeftButton == ButtonState.Pressed && canShoot && !IsReloading)
             {
-                if (shootType == ShootType.Gun)
+                if (shootType == WeaponType.BoltAction)
                 {
                     Player.PlayAnimation = true;
                     Ammo--;
@@ -93,7 +93,7 @@ namespace ShootingGame
                     GameWorld.Instance.Engine.Play2D("Content/gunshot.wav", false);
                     canShoot = false;
                 }
-                else if (shootType == ShootType.Rifle)
+                else if (shootType == WeaponType.SemiAuto)
                 {
                     Player.PlayAnimation = true;
                     Ammo--;
@@ -101,7 +101,7 @@ namespace ShootingGame
                     GameWorld.Instance.Engine.Play2D("Content/hithard.wav", false);
                     canShoot = false;
                 }
-                else if (shootType == ShootType.MachineGun)
+                else if (shootType == WeaponType.FullAuto)
                 {
                     autoShootTimer++;
                     if (autoShootTimer >= 7)

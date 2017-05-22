@@ -23,6 +23,7 @@ namespace ShootingGame
         int speed;
         object thisLock = new object();
         Weapon[] weapons;
+        DataBaseClass database;
         public static bool CanStartShoot { get; set; }
         public static bool PlayAnimation { get; set; }
         public static Weapon CurrentWeapon { get; private set; }
@@ -32,9 +33,12 @@ namespace ShootingGame
 
         public Player(GameObject gameObject) : base(gameObject)
         {
-            weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1000, ShootType.Gun),
-                                      new Weapon("RIFLE", 15, 50, 1500, ShootType.Rifle),
-                                      new Weapon("MACHINEGUN", 30, 35, 1500, ShootType.MachineGun)};
+            database = new DataBaseClass();
+            weapons = database.GetWeapons();
+            /*
+            weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction),
+                                      new Weapon("RIFLE", 15, 50, 1500, WeaponType.SemiAuto),
+                                      new Weapon("MACHINEGUN", 30, 35, 1500, WeaponType.FullAuto)};*/
             Health = 100;
             PlayAnimation = false;
             T = new Thread(Update);

@@ -90,5 +90,31 @@ namespace ShootingGame
             catch (SQLiteException ex)
             { }
         }
+
+        public Weapon[] GetWeapons()
+        {
+            Weapon[] weapons = new Weapon[3];
+
+            try
+            {
+                using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
+                {
+                    dbConn.Open();
+                    for (int i = 0; i < weapons.Length; i++)
+                    {
+                        SQLiteCommand command = new SQLiteCommand("select name, maxammo, damagelevel, reloadtime, weapontype from weapons where id=" + (i + 1).ToString(), dbConn);
+                        SQLiteDataReader reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            weapons[i] = new Weapon(reader["name"].ToString(), (int)reader["maxammo"], (int)reader["damagelevel"], (int)reader["reloadtime"], (WeaponType)Enum.Parse(typeof(WeaponType), reader["weapontype"].ToString()));
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            { }
+
+            return weapons;
+        }
     }
 }
