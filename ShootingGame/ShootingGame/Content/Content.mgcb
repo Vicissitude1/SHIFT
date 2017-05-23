@@ -139,18 +139,6 @@
 /processorParam:Quality=Best
 /build:gunShot.mp3
 
-#begin explosion2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:explosion2.png
-
 #begin AFont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -192,12 +180,6 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:pistol.wav
-
-#begin sniper.wav
-/importer:WavImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:sniper.wav
 
 #begin CFont
 /importer:FontDescriptionImporter

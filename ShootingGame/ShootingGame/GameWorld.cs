@@ -250,27 +250,6 @@ namespace ShootingGame
                 Exit();
 
             // TODO: Add your update logic here
-            /*
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
-            {
-                effect = Content.Load<SoundEffect>("gunShot");
-                float volume = 0.5f;
-                float pitch = 0.0f;
-                float pan = 0.0f;
-                effect.Play(volume, pitch, pan);
-                playSound = false;
-            }*/
-            /*
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && playSound)
-            {
-                MediaPlayer.Play(shootSound);
-                playSound = false;
-            }
-            if (Mouse.GetState().LeftButton == ButtonState.Released && !playSound)
-            {
-                playSound = true;
-            }*/
-            
 
             if(Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
             {

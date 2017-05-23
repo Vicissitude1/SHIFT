@@ -108,7 +108,6 @@ namespace ShootingGame
                     {
                         canChangeWeapon = false;
                         effect.Play();
-                        //GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
                         PlayAnimation = false;
                     }
                 }
@@ -119,7 +118,6 @@ namespace ShootingGame
                     {
                         canChangeWeapon = false;
                         effect.Play();
-                        //GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
                         PlayAnimation = false;
                     }
                 }
@@ -130,7 +128,6 @@ namespace ShootingGame
                     {
                         canChangeWeapon = false;
                         effect.Play();
-                        //GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
                         PlayAnimation = false;
                     }
                 }

@@ -146,7 +146,6 @@
     <Content Include="Content\rifleshot.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\sniper.wav" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
