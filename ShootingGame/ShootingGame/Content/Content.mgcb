@@ -349,3 +349,9 @@
 /processorParam:Quality=Best
 /build:hithard.wav
 
+#begin powerUp.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:powerUp.mp3
+

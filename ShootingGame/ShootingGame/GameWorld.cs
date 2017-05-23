@@ -163,7 +163,7 @@ namespace ShootingGame
             //director = new Director(new ExplosionBuilder());
             //gameObjects.Add(director.Construct(new Vector2(100, 100)));
             director = new Director(new PowerUpObjectBuilder());
-            gameObjects.Add(director.Construct(new Vector2(200, -20)));
+            gameObjects.Add(director.Construct(new Vector2(200, -100)));
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());

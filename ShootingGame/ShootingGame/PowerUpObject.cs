@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +12,10 @@ namespace ShootingGame
 {
     enum PowerUpType { Health, Score, Ammo }
 
-    class PowerUpObject : Component, ICollisionEnter
+    class PowerUpObject : Component, ICollisionEnter, ILoadable
     {
         int speed;
         Vector2 translation;
-        //Animator animator;
         int inGameTimer;
         int outGameTimer;
         bool isInGame;
@@ -22,6 +23,7 @@ namespace ShootingGame
         DataBaseClass database;
         bool isDefeat;
         PowerUpType currentPowerUp;
+        SoundEffect effect;
         public string Name { get; private set; }
         public Thread T { get; private set; }
 
@@ -31,12 +33,21 @@ namespace ShootingGame
             isInGame = false;
             inGameTimer = 0;
             outGameTimer = 200;
-            speed = 4;
+            speed = 5;
             database = new DataBaseClass();
             T = new Thread(Update);
             T.IsBackground = true;
             currentPowerUp = (PowerUpType)GameWorld.Instance.Rnd.Next(3);
             Name = currentPowerUp.ToString().Substring(0, 1);
+        }
+
+        /// <summary>
+        /// Loads the player's content
+        /// </summary>
+        /// <param name="content"></param>
+        public void LoadContent(ContentManager content)
+        {
+            effect = content.Load<SoundEffect>("powerUp");
         }
 
         public void Update()
@@ -69,14 +80,15 @@ namespace ShootingGame
                         GameWorld.Instance.Scores.Add(new Score("Ammo +" + bonusValue, (GameObject.GetComponent("Transform") as Transform).Position, Color.Yellow, GameWorld.Instance.BFont));
                         break;
                 }
-                GameObject.Transform.Position = new Vector2(GameObject.Transform.Position.X, -20);
+                effect.Play();
+                GameObject.Transform.Position = new Vector2(GameObject.Transform.Position.X, -100);
                 isInGame = false;
                 isDefeat = false;
                 outGameTimer = GameWorld.Instance.Rnd.Next(100, 300);
             }
             else if (isInGame)
             {
-                if (GameObject.Transform.Position.Y < 200)
+                if (GameObject.Transform.Position.Y < 150)
                 {
                     translation = Vector2.Zero;
                     translation += new Vector2(0, 1);
@@ -92,7 +104,7 @@ namespace ShootingGame
             }
             else
             {
-                if (GameObject.Transform.Position.Y > -20)
+                if (GameObject.Transform.Position.Y > -100)
                 {
                     translation = Vector2.Zero;
                     translation += new Vector2(0, -1);
@@ -104,7 +116,7 @@ namespace ShootingGame
                 {
                     isInGame = true;
                     inGameTimer = 200;
-                    GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 1200), -20);
+                    GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 1200), -100);
                     (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
                     currentPowerUp = (PowerUpType)GameWorld.Instance.Rnd.Next(3);
                     Name = currentPowerUp.ToString().Substring(0, 1);
@@ -115,7 +127,7 @@ namespace ShootingGame
 
         public void Replace()
         {
-            GameObject.Transform.Position = new Vector2(200, -20);
+            GameObject.Transform.Position = new Vector2(200, -100);
             (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
             isInGame = false;
             outGameTimer = 100;
