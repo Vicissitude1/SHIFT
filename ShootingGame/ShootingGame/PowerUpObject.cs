@@ -42,7 +42,7 @@ namespace ShootingGame
         }
 
         /// <summary>
-        /// Loads the player's content
+        /// Loads the PowerUpObject's content
         /// </summary>
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
