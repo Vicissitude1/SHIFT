@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +15,7 @@ namespace ShootingGame
     class Menu
     {
         Texture2D buttonSprite;
+        SoundEffect effect;
         Rectangle buttonHowRectangle;
         Rectangle buttonStartRectangle;
         Rectangle buttonExitRectangle;
@@ -40,6 +42,7 @@ namespace ShootingGame
             buttonScoreRectangle = new Rectangle(1000, 300, buttonSprite.Width, buttonSprite.Height);
             buttonStartRectangle = new Rectangle(1000, 400, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(1000, 550, buttonSprite.Width, buttonSprite.Height);
+            effect = content.Load<SoundEffect>("buttonClick");
         }
 
         public void ShowMainMenu(SpriteBatch spriteBatch)
@@ -92,7 +95,7 @@ namespace ShootingGame
         {
             if (canPlaySound)
             {
-                GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
+                effect.Play();
                 canPlaySound = false;
             }
         }
@@ -103,7 +106,7 @@ namespace ShootingGame
             GameWorld.Instance.ShowScoreMenu = true;
             if (canPlaySound)
             {
-                GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
+                effect.Play();
                 canPlaySound = false;
             }
         }
@@ -117,7 +120,7 @@ namespace ShootingGame
             GameWorld.Instance.ShowScoreMenu = false;
             if (canPlaySound)
             {
-                GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
+                effect.Play();
                 canPlaySound = false;
             }
         }
@@ -127,7 +130,7 @@ namespace ShootingGame
             GameWorld.Instance.Exit();
             if (canPlaySound)
             {
-                GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
+                effect.Play();
                 canPlaySound = false;
             }
         }

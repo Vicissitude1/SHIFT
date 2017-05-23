@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,6 +25,7 @@ namespace ShootingGame
         int moveTimer;
         int shootsAmount;
         Direction currentDirection;
+        SoundEffect effect;
         public int EnemyHealth { get; set; }
         public Thread T { get; private set; }
 
@@ -40,6 +42,7 @@ namespace ShootingGame
             if (GameObject.Transform.Position.X < 90)
                 currentDirection = Direction.Right;
             else currentDirection = Direction.Left;
+
         }
 
         public void Update()
@@ -189,6 +192,7 @@ namespace ShootingGame
 
         public void LoadContent(ContentManager content)
         {
+            effect = content.Load<SoundEffect>("rifleshot");
             animator = (Animator)GameObject.GetComponent("Animator");
             CreateAnimation();
         }
@@ -214,9 +218,7 @@ namespace ShootingGame
             }
             else if (animationName.Contains("Shoot"))
             {
-                //if(Player.Health > 0)
-                //Player.Health -= 1;
-                GameWorld.Instance.Engine.Play2D("Content/rifleshot.wav", false);
+                effect.Play();
                 shootsAmount--;
                 GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }

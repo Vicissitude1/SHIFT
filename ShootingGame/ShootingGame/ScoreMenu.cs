@@ -30,6 +30,7 @@ namespace ShootingGame
         Color buttonSaveColor;
         Color buttonExitColor;
         Color buttonClearColor;
+        SoundEffect effect;
         Vector2 mousePosition;
         DataBaseClass dataBase;
         bool canPlaySound;
@@ -52,6 +53,7 @@ namespace ShootingGame
             buttonClearRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
             buttonSaveRectangle = new Rectangle(1000, 350, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(1000, 500, buttonSprite.Width, buttonSprite.Height);
+            effect = content.Load<SoundEffect>("buttonClick");
         }
 
         public void ShowScoreTable(SpriteBatch spriteBatch)
@@ -283,7 +285,7 @@ namespace ShootingGame
             text = "";
             if (canPlaySound)
             {
-                GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
+                effect.Play();
                 canPlaySound = false;
             }
         }
@@ -299,7 +301,7 @@ namespace ShootingGame
                 canInsertName = false;
                 if (canPlaySound)
                 {
-                    GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
+                    effect.Play();
                     canPlaySound = false;
                 }
             }
@@ -311,7 +313,7 @@ namespace ShootingGame
             hasToLoadFormDB = true;  
             if(canPlaySound)
             {
-                GameWorld.Instance.Engine.Play2D("Content/buttonClick.wav", false);
+                effect.Play();
                 canPlaySound = false;
             }
             GameWorld.Instance.ShowScoreMenu = false;

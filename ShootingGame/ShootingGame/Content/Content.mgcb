@@ -243,13 +243,13 @@
 
 #begin gun-cocking-03.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:gun-cocking-03.wav
 
 #begin gun-cocking-02.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:gun-cocking-02.wav
 
@@ -291,7 +291,7 @@
 
 #begin buttonClick.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:buttonClick.wav
 
@@ -330,4 +330,22 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:shield.png
+
+#begin rifleshot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:rifleshot.wav
+
+#begin gunshot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:gunshot.wav
+
+#begin hithard.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:hithard.wav
 
