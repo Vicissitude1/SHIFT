@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -25,6 +26,7 @@ namespace ShootingGame
         static object thisLock = new object();
         Weapon[] weapons;
         DataBaseClass database;
+        SoundEffect effect;
         public static bool CanStartShoot { get; set; }
         public static bool PlayAnimation { get; set; }
         public static Weapon CurrentWeapon { get; private set; }
@@ -77,6 +79,7 @@ namespace ShootingGame
             {
                 w.LoadContent(content);
             }
+            effect = content.Load<SoundEffect>("gun-cocking-02");
             //Sets up a reference to the palyer's animator
             animator = (Animator)GameObject.GetComponent("Animator");
             //We can make our animations when we have a reference to the player's animator.
@@ -104,7 +107,8 @@ namespace ShootingGame
                     if (currentWeaponIndex != selectedWeaponIndex)
                     {
                         canChangeWeapon = false;
-                        GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
+                        effect.Play();
+                        //GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
                         PlayAnimation = false;
                     }
                 }
@@ -114,7 +118,8 @@ namespace ShootingGame
                     if (currentWeaponIndex != selectedWeaponIndex)
                     {
                         canChangeWeapon = false;
-                        GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
+                        effect.Play();
+                        //GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
                         PlayAnimation = false;
                     }
                 }
@@ -124,7 +129,8 @@ namespace ShootingGame
                     if (currentWeaponIndex != selectedWeaponIndex)
                     {
                         canChangeWeapon = false;
-                        GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
+                        effect.Play();
+                        //GameWorld.Instance.Engine.Play2D("Content/gun-cocking-02.wav", false);
                         PlayAnimation = false;
                     }
                 }

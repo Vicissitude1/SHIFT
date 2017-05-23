@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -21,6 +22,9 @@ namespace ShootingGame
         MouseState mouseState;
         int reloadTime;
         bool canPlayGunCockingSound;
+        SoundEffect effectGun;
+        SoundEffect effectRifle;
+        SoundEffect effectGunCocking;
         public int TotalAmmo { get; set; }
         public string Name { get; private set; }
         public int Ammo { get; private set; }
@@ -70,6 +74,9 @@ namespace ShootingGame
                 GameWorld.Instance.RifleIsActive = false;
                 Sprite = content.Load<Texture2D>("machinegunsprite");
             }
+            effectGun = content.Load<SoundEffect>("gunshot");
+            effectRifle = content.Load<SoundEffect>("hithard");
+            effectGunCocking = content.Load<SoundEffect>("gun-cocking-03");
         }
 
         public void UpdateWeaponStatus()
@@ -90,7 +97,7 @@ namespace ShootingGame
                     Player.PlayAnimation = true;
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
-                    GameWorld.Instance.Engine.Play2D("Content/gunshot.wav", false);
+                    effectGun.Play();
                     canShoot = false;
                 }
                 else if (shootType == WeaponType.SemiAuto)
@@ -98,7 +105,7 @@ namespace ShootingGame
                     Player.PlayAnimation = true;
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
-                    GameWorld.Instance.Engine.Play2D("Content/hithard.wav", false);
+                    effectRifle.Play();
                     canShoot = false;
                 }
                 else if (shootType == WeaponType.FullAuto)
@@ -109,7 +116,7 @@ namespace ShootingGame
                         Player.PlayAnimation = true;
                         Ammo--;
                         GameWorld.Instance.CanAddPlayerBullet = true;
-                        GameWorld.Instance.Engine.Play2D("Content/gunshot.wav", false);
+                        effectGun.Play();
                         autoShootTimer = 0;
                     }
                 }
@@ -124,7 +131,7 @@ namespace ShootingGame
         {
             if(CurrentReloadTime < reloadTime/2 && canPlayGunCockingSound)
             {
-                GameWorld.Instance.Engine.Play2D("Content/gun-cocking-03.wav", false);
+                effectGunCocking.Play();
                 canPlayGunCockingSound = false;
             }
             if (CurrentReloadTime <= 0)
