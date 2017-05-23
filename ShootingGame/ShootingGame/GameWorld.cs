@@ -140,7 +140,8 @@ namespace ShootingGame
             EnemyBulletsPositions = new List<Vector2>();
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
-            
+            DataBaseClass.Instance.CreateTables();
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
             
@@ -198,7 +199,6 @@ namespace ShootingGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-
             AFont = Content.Load<SpriteFont>("AFont"); // 8
             BFont = Content.Load<SpriteFont>("BFont"); // 12
             CFont = Content.Load<SpriteFont>("CFont"); // 16
@@ -207,7 +207,7 @@ namespace ShootingGame
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
-            //shootSound = Content.Load<Song>("gunShot");
+  
             menu.LoadContent(Content);
             scoreMenu.LoadContent(Content);
 

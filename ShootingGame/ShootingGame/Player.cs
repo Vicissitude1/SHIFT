@@ -25,7 +25,6 @@ namespace ShootingGame
         int speed;
         static object thisLock = new object();
         Weapon[] weapons;
-        DataBaseClass database;
         SoundEffect effect;
         public static bool CanStartShoot { get; set; }
         public static bool PlayAnimation { get; set; }
@@ -49,8 +48,7 @@ namespace ShootingGame
 
         public Player(GameObject gameObject) : base(gameObject)
         {
-            database = new DataBaseClass();
-            weapons = database.GetWeapons();
+            weapons = DataBaseClass.Instance.GetWeapons();
             /*
             weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction),
                                       new Weapon("RIFLE", 15, 50, 1500, WeaponType.SemiAuto),

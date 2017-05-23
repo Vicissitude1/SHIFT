@@ -32,12 +32,10 @@ namespace ShootingGame
         Color buttonClearColor;
         SoundEffect effect;
         Vector2 mousePosition;
-        DataBaseClass dataBase;
         bool canPlaySound;
 
         public ScoreMenu()
         {
-            dataBase = new DataBaseClass();
             hasToLoadFormDB = true;
             canInsertName = false;
             insertIndex = 0;
@@ -91,7 +89,7 @@ namespace ShootingGame
         {
             if (hasToLoadFormDB)
             {
-                players = dataBase.GetPlayersList();
+                players = DataBaseClass.Instance.GetPlayersList();
 
                 if (Player.Scores > 0)
                 {
@@ -274,7 +272,7 @@ namespace ShootingGame
         {
             if(players.Count > 0)
             players.Clear();
-            dataBase.ClearPlayersList();
+            DataBaseClass.Instance.ClearPlayersList();
             insertIndex = 0;
             if (Player.Scores > 0)
             {
@@ -296,7 +294,7 @@ namespace ShootingGame
             {
                 while (players.Count > 10)
                     players.RemoveAt(10);
-                dataBase.SavePlayersList(players);
+                DataBaseClass.Instance.SavePlayersList(players);
                 Player.Scores = 0;
                 canInsertName = false;
                 if (canPlaySound)

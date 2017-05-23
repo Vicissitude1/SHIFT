@@ -20,7 +20,6 @@ namespace ShootingGame
         int outGameTimer;
         bool isInGame;
         int bonusValue;
-        DataBaseClass database;
         bool isDefeat;
         PowerUpType currentPowerUp;
         SoundEffect effect;
@@ -34,7 +33,6 @@ namespace ShootingGame
             inGameTimer = 0;
             outGameTimer = 200;
             speed = 5;
-            database = new DataBaseClass();
             T = new Thread(Update);
             T.IsBackground = true;
             currentPowerUp = (PowerUpType)GameWorld.Instance.Rnd.Next(3);
@@ -64,7 +62,7 @@ namespace ShootingGame
         {
             if (isDefeat)
             {
-                bonusValue = database.GetBonusValue(currentPowerUp.ToString(), GameWorld.Instance.Rnd.Next(1,6));
+                bonusValue = DataBaseClass.Instance.GetBonusValue(currentPowerUp.ToString(), GameWorld.Instance.Rnd.Next(1,6));
                 switch (currentPowerUp)
                 {
                     case PowerUpType.Health:

@@ -4,25 +4,65 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using System.IO;
 
 namespace ShootingGame
 {
     class DataBaseClass
     {
+        static DataBaseClass instance;
+
+        public static DataBaseClass Instance
+        {
+            get { return instance ?? (instance = new DataBaseClass()); }
+        }
+
+        private DataBaseClass()
+        { }
         /// <summary>
         /// Creates database file and table
         /// </summary>
-        public void CreateTable()
+        public void CreateTables()
         {
-            //SQLiteConnection.CreateFile("data.db");
-            /*
+            if (!File.Exists("data.db"))
+            {
+                SQLiteConnection.CreateFile("data.db");
+                using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
+                {
+                    dbConn.Open();
+                    SQLiteCommand command = new SQLiteCommand("create table scoretable (id integer primary key, name string, score int)", dbConn);
+                    command.ExecuteNonQuery();
+
+                    command = new SQLiteCommand("create table weapons (id integer primary key, name string, maxammo int, damagelevel int, reloadtime int, weapontype string)", dbConn);
+                    command.ExecuteNonQuery();
+                    command = new SQLiteCommand("insert into weapons (id, name, maxammo, damagelevel, reloadtime, weapontype) values (null, 'GUN', 7, 20, 1000, 'BoltAction')", dbConn);
+                    command.ExecuteNonQuery();
+                    command = new SQLiteCommand("insert into weapons (id, name, maxammo, damagelevel, reloadtime, weapontype) values (null, 'RIFLE', 15, 50, 1500, 'SemiAuto')", dbConn);
+                    command.ExecuteNonQuery();
+                    command = new SQLiteCommand("insert into weapons (id, name, maxammo, damagelevel, reloadtime, weapontype) values (null, 'MACHINEGUN', 30, 35, 1500, 'FullAuto')", dbConn);
+                    command.ExecuteNonQuery();
+
+                    command = new SQLiteCommand("create table powerups (id integer primary key, health int, score int, ammo int)", dbConn);
+                    command.ExecuteNonQuery();
+                    command = new SQLiteCommand("insert into powerups (id, health, score, ammo) values (null, 3, 5, 2)", dbConn);
+                    command.ExecuteNonQuery();
+                    command = new SQLiteCommand("insert into powerups (id, health, score, ammo) values (null, 6, 10, 4)", dbConn);
+                    command.ExecuteNonQuery();
+                    command = new SQLiteCommand("insert into powerups (id, health, score, ammo) values (null, 9, 15, 8)", dbConn);
+                    command.ExecuteNonQuery();
+                    command = new SQLiteCommand("insert into powerups (id, health, score, ammo) values (null, 12, 20, 16)", dbConn);
+                    command.ExecuteNonQuery();
+                    command = new SQLiteCommand("insert into powerups (id, health, score, ammo) values (null, 15, 25, 32)", dbConn);
+                    command.ExecuteNonQuery();
+                }
+            }
+           /*
             using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
             {
                 dbConn.Open();
                 SQLiteCommand command = new SQLiteCommand("create table scoretable (id integer primary key, name string, score int)", dbConn);
                 command.ExecuteNonQuery();
-            }*/
-            /*
+            }
             using (SQLiteConnection dbConn = new SQLiteConnection("Data Source = data.db; Version = 3"))
             {
                 dbConn.Open();
