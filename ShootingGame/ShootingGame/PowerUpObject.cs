@@ -67,7 +67,7 @@ namespace ShootingGame
                 {
                     case PowerUpType.Health:
                         Player.Health += bonusValue;
-                        GameWorld.Instance.Scores.Add(new Score("Helath +" + bonusValue, (GameObject.GetComponent("Transform") as Transform).Position, Color.Yellow, GameWorld.Instance.BFont));
+                        GameWorld.Instance.Scores.Add(new Score("Health +" + bonusValue, (GameObject.GetComponent("Transform") as Transform).Position, Color.Yellow, GameWorld.Instance.BFont));
                         break;
                     case PowerUpType.Score:
                         Player.Scores += bonusValue;
@@ -135,7 +135,6 @@ namespace ShootingGame
         {
             if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
             {
-                Player.Health += 5;
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
                 (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
                 isDefeat = true;

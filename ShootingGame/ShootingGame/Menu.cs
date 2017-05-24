@@ -63,21 +63,10 @@ namespace ShootingGame
             MouseState mouseState = Mouse.GetState();
             mousePosition = new Vector2(mouseState.Position.X, mouseState.Position.Y);
 
-            if (buttonHowRectangle.Contains(mousePosition))
-                buttonHowColor = Color.White;
-            else buttonHowColor = Color.LightGray;
-
-            if (buttonScoreRectangle.Contains(mousePosition))
-                buttonScoreColor = Color.White;
-            else buttonScoreColor = Color.LightGray;
-
-            if (buttonStartRectangle.Contains(mousePosition))
-                buttonStartColor = Color.White;
-            else buttonStartColor = Color.LightGray;
-
-            if (buttonExitRectangle.Contains(mousePosition))
-                buttonExitColor = Color.White;
-            else buttonExitColor = Color.LightGray;
+            buttonHowColor = (buttonHowRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
+            buttonScoreColor = (buttonScoreRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
+            buttonStartColor = (buttonStartRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
+            buttonExitColor = (buttonExitRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
 
             if (mouseState.LeftButton == ButtonState.Pressed && buttonHowRectangle.Contains(mousePosition))
                 ButtonHowPressed();

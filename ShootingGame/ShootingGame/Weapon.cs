@@ -22,8 +22,7 @@ namespace ShootingGame
         MouseState mouseState;
         int reloadTime;
         bool canPlayGunCockingSound;
-        SoundEffect effectGun;
-        SoundEffect effectRifle;
+        SoundEffect effect;
         SoundEffect effectGunCocking;
         public int TotalAmmo { get; set; }
         public string Name { get; private set; }
@@ -48,34 +47,26 @@ namespace ShootingGame
         }
 
         /// <summary>
-        /// Loads the player's content
+        /// Loads the weapon's content
         /// </summary>
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
             if (shootType == WeaponType.BoltAction)
             {
-                GameWorld.Instance.GunIsActive = true;
-                GameWorld.Instance.MachineGunIsActive = false;
-                GameWorld.Instance.RifleIsActive = false;
+                effect = content.Load<SoundEffect>("gunshot");
                 Sprite = content.Load<Texture2D>("pistolsprite");
             }
             else if (shootType == WeaponType.SemiAuto)
             {
-                GameWorld.Instance.GunIsActive = false;
-                GameWorld.Instance.MachineGunIsActive = false;
-                GameWorld.Instance.RifleIsActive = true;
+                effect = content.Load<SoundEffect>("hithard");
                 Sprite = content.Load<Texture2D>("riflesprite");
             }
             else if (shootType == WeaponType.FullAuto)
             {
-                GameWorld.Instance.GunIsActive = false;
-                GameWorld.Instance.MachineGunIsActive = true;
-                GameWorld.Instance.RifleIsActive = false;
+                effect = content.Load<SoundEffect>("gunshot");
                 Sprite = content.Load<Texture2D>("machinegunsprite");
             }
-            effectGun = content.Load<SoundEffect>("gunshot");
-            effectRifle = content.Load<SoundEffect>("hithard");
             effectGunCocking = content.Load<SoundEffect>("gun-cocking-03");
         }
 
@@ -92,20 +83,12 @@ namespace ShootingGame
             }
             else if (mouseState.LeftButton == ButtonState.Pressed && canShoot && !IsReloading)
             {
-                if (shootType == WeaponType.BoltAction)
+                if (shootType == WeaponType.BoltAction || shootType == WeaponType.SemiAuto)
                 {
                     Player.PlayAnimation = true;
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
-                    effectGun.Play();
-                    canShoot = false;
-                }
-                else if (shootType == WeaponType.SemiAuto)
-                {
-                    Player.PlayAnimation = true;
-                    Ammo--;
-                    GameWorld.Instance.CanAddPlayerBullet = true;
-                    effectRifle.Play();
+                    effect.Play();
                     canShoot = false;
                 }
                 else if (shootType == WeaponType.FullAuto)
@@ -116,15 +99,12 @@ namespace ShootingGame
                         Player.PlayAnimation = true;
                         Ammo--;
                         GameWorld.Instance.CanAddPlayerBullet = true;
-                        effectGun.Play();
+                        effect.Play();
                         autoShootTimer = 0;
                     }
                 }
             }
-            else if (mouseState.LeftButton == ButtonState.Released)
-            {
-                canShoot = true;
-            }
+            else if (mouseState.LeftButton == ButtonState.Released) canShoot = true;
         }
 
         public void Reload()

@@ -29,7 +29,6 @@ namespace ShootingGame
         Rectangle buttonClearRectangle;
         Color buttonSaveColor;
         Color buttonExitColor;
-        Color buttonClearColor;
         SoundEffect effect;
         Vector2 mousePosition;
         bool canPlaySound;
@@ -41,7 +40,7 @@ namespace ShootingGame
             insertIndex = 0;
             text = "";
             players = new List<PlayerListRow>();
-            buttonSaveColor = buttonExitColor = buttonClearColor = Color.LightGray;
+            buttonSaveColor = buttonExitColor = Color.LightGray;
             canPlaySound = true;
         }
 
@@ -57,8 +56,6 @@ namespace ShootingGame
         public void ShowScoreTable(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(GameWorld.Instance.CFont, "PLACE              NAME                              SCORE ", new Vector2(200, 100), Color.DarkBlue);
-            //spriteBatch.Draw(buttonSprite, buttonClearRectangle, buttonClearColor);
-            //spriteBatch.DrawString(GameWorld.Instance.CFont, "CLEAR LIST ", new Vector2(buttonClearRectangle.X + 50, buttonClearRectangle.Y + 15), buttonClearColor);
             spriteBatch.Draw(buttonSprite, buttonSaveRectangle, buttonSaveColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "SAVE ", new Vector2(buttonSaveRectangle.X + 80, buttonSaveRectangle.Y + 15), buttonSaveColor);
             spriteBatch.Draw(buttonSprite, buttonExitRectangle, buttonExitColor);
@@ -135,21 +132,10 @@ namespace ShootingGame
             MouseState mouseState = Mouse.GetState();
             mousePosition = new Vector2(mouseState.Position.X, mouseState.Position.Y);
 
-            if (buttonClearRectangle.Contains(mousePosition))
-                buttonClearColor = Color.White;  
-            else buttonClearColor = Color.LightGray;
+            buttonSaveColor = buttonSaveRectangle.Contains(mousePosition) && canInsertName && text != "" ? Color.White : Color.LightGray;
+            buttonExitColor = (buttonExitRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
 
-            if (buttonSaveRectangle.Contains(mousePosition) && canInsertName && text != "")
-                buttonSaveColor = Color.White;
-            else buttonSaveColor = Color.LightGray;
-
-            if (buttonExitRectangle.Contains(mousePosition))
-                buttonExitColor = Color.White;
-            else buttonExitColor = Color.LightGray;
-
-            if (mouseState.LeftButton == ButtonState.Pressed && buttonClearRectangle.Contains(mousePosition))
-                ButtonClearPressed();
-            else if (mouseState.LeftButton == ButtonState.Pressed && buttonSaveRectangle.Contains(mousePosition))
+            if (mouseState.LeftButton == ButtonState.Pressed && buttonSaveRectangle.Contains(mousePosition))
                 ButtonSavePressed();
             else if (mouseState.LeftButton == ButtonState.Pressed && buttonExitRectangle.Contains(mousePosition))
                 ButtonExitPressed();
@@ -267,27 +253,7 @@ namespace ShootingGame
         {
             return lastKeyboardState.IsKeyDown(theKey) && currentKeyboardState.IsKeyUp(theKey);
         }
-
-        public void ButtonClearPressed()
-        {
-           /* if(players.Count > 0)
-            players.Clear();
-            DataBaseClass.Instance.ClearPlayersList();
-            insertIndex = 0;
-            if (Player.Scores > 0)
-            {
-                players.Add(new PlayerListRow("", Player.Scores));
-                canInsertName = true;
-            }
-            else canInsertName = false;
-            text = "";
-            if (canPlaySound)
-            {
-                effect.Play();
-                canPlaySound = false;
-            }*/
-        }
-
+       
         public void ButtonSavePressed()
         {
             if (players[insertIndex].Name != "" && canInsertName)

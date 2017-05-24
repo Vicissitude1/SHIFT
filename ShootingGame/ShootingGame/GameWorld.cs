@@ -26,9 +26,6 @@ namespace ShootingGame
         public KeyboardState UpPressed { get; set; }
         private KeyboardState downPressed;
         public bool HasPressed { get; set; } = false;
-        public bool GunIsActive { get; set; } = false;
-        public bool MachineGunIsActive { get; set; } = false;
-        public bool RifleIsActive { get; set; } = false;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
         List<GameObject> tempObjectsToRemove;
@@ -45,9 +42,7 @@ namespace ShootingGame
         Random rnd;
         public bool ReplaceObjects { get; set; }
         public Texture2D Pixel { get; private set; }
-        private SoundEffect effect;
         private static GameWorld instance;
-        bool playSound;
         public bool StopGame { get; set; }
         public bool PlayGame { get; set; }
         public bool ShowScoreMenu { get; set; }
@@ -129,8 +124,6 @@ namespace ShootingGame
         {
             // TODO: Add your initialization logic here
             rnd = new Random();
-
-            playSound = false;
             PlayGame = false;
             ReplaceObjects = false;
             ShowScoreMenu = false;
@@ -170,9 +163,6 @@ namespace ShootingGame
                 director = new Director(new EnemyBuilder());
                 gameObjects.Add(director.Construct(new Vector2(Rnd.Next(100, 900), Rnd.Next(100, 400))));
             }*/
-
-            //director = new Director(new ExplosionBuilder());
-            //gameObjects.Add(director.Construct(new Vector2(100, 100)));
             director = new Director(new PowerUpObjectBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, -100)));
             director = new Director(new AimBuilder());
@@ -328,14 +318,6 @@ namespace ShootingGame
             spriteBatch.Begin();
             if (PlayGame)
             {
-                //spriteBatch.Draw(sky, new Vector2(0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                /*
-                spriteBatch.Draw(sky, new Vector2 (0, 0), new Rectangle(0, 0, 1300, 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                spriteBatch.Draw(background, new Vector2(0, 100), new Rectangle(0, 100, 1300, 470), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                spriteBatch.Draw(grass, new Vector2(0, 65), new Rectangle(0, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1f);
-                spriteBatch.Draw(grass, new Vector2(500, 65), new Rectangle(500, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
-                spriteBatch.Draw(grass, new Vector2(1000, 65), new Rectangle(1000, 65, 300, 70), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
-                */
                 spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
                 spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
                 spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
