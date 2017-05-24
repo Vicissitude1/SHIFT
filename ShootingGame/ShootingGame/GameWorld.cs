@@ -33,6 +33,7 @@ namespace ShootingGame
         List<Collider> collidersToRemove;
         List<Score> scores;
         List<Score> scoresToRemove;
+        List<int> enemySpawns = new List<int>();
         internal List<Dice> Dies { get; set; }
         Texture2D background;
         Texture2D sky;
@@ -102,6 +103,19 @@ namespace ShootingGame
 
         public int CurrentDice { get; private set; }
 
+        public List<int> EnemySpawns
+        {
+            get
+            {
+                return enemySpawns;
+            }
+
+            set
+            {
+                enemySpawns = value;
+            }
+        }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -131,16 +145,18 @@ namespace ShootingGame
             scoresToRemove = new List<Score>();
             ObjectsToAdd = new List<GameObject>();
             EnemyBulletsPositions = new List<Vector2>();
+            enemySpawns.Add(10);
+            enemySpawns.Add(1245);
 
             director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 100)));
+            gameObjects.Add(director.Construct(new Vector2(enemySpawns[Rnd.Next(0, 2)], 100)));
             
             director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 200)));
+            gameObjects.Add(director.Construct(new Vector2(enemySpawns[Rnd.Next(0, 2)], 200)));
             director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 300)));
+            gameObjects.Add(director.Construct(new Vector2(enemySpawns[Rnd.Next(0, 2)], 300)));
             director = new Director(new EnemyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(500, 400)));
+            gameObjects.Add(director.Construct(new Vector2(enemySpawns[Rnd.Next(0, 2)], 400)));
 
             
             

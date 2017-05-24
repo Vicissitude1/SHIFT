@@ -18,68 +18,137 @@ namespace ShootingGame
         Vector2 mouseCurrentPosition;
         Animator animator;
         bool canInjure;
+        int counter = 0;
+        int randomHolder;
+        Random rnd = new Random();
         public int EnemyHealth { get; set; }
         public Thread T { get; private set; }
 
         public Enemy(GameObject gameObject) : base(gameObject)
         {
             canInjure = true;
-            speed = 4;
+            speed = 1;
             EnemyHealth = 100;
             T = new Thread(Update);
             T.IsBackground = true;
+            randomHolder = rnd.Next(0, 4);
         }
 
         public void Update()
         {
             while(true)
             {
-                //UpdateHealth();
                 Move();
-                Thread.Sleep(10);
+                Thread.Sleep(20);
             }
         }
 
         public void Move()
         {
-            
-            //A reference to the current keyboard state
-            KeyboardState keyState = Keyboard.GetState();
-                
-            //The current translation of the player
-            //We are restting it to make sure that he stops moving if not keys are pressed
             translation = Vector2.Zero;
-
-
-            //checks for input and adds it to the translation
             if (EnemyHealth <= 0)
+            {
                 animator.PlayAnimation("Die");
-            
-            else if (keyState.IsKeyDown(Keys.W))
-            {
-                translation += new Vector2(0, -1);
-                animator.PlayAnimation("WalkBack");
             }
-            else if (keyState.IsKeyDown(Keys.A))
+            else if (counter <= 599 && EnemyHealth > 0)
             {
-                translation += new Vector2(-1, 0);
-                animator.PlayAnimation("WalkLeft");
+                Walk();
             }
-            else if (keyState.IsKeyDown(Keys.S))
+            else if (counter >= 600 && EnemyHealth > 0)
             {
-                translation += new Vector2(0, 1);
-                animator.PlayAnimation("WalkFront");
+                if (counter > 750)
+                {
+                    Walk();
+                    if (counter>900)
+                    {
+                        counter = 600;
+                    }
+                }
+                else
+                {
+                    animator.PlayAnimation("Shoot");
+                    counter++;
+                }
             }
-            else if (keyState.IsKeyDown(Keys.D))
+            if (counter == 150 && EnemyHealth > 0 || counter == 300 && EnemyHealth > 0 || counter == 450 && EnemyHealth > 0)
             {
-                translation += new Vector2(1, 0);
-                animator.PlayAnimation("WalkRight");
+                randomHolder = rnd.Next(0, 4);
             }
-            else animator.PlayAnimation("Shoot");
+        }
 
-            //animator.PlayAnimation("Shoot");
-            //Move the player's gameobject framerate independent
-            GameObject.Transform.Position += translation * speed * (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale;
+        public void Walk()
+        {
+            switch (randomHolder)
+            {
+                case 0:
+                    if (GameObject.Transform.Position.Y < 105)
+                    {
+                        translation += new Vector2(0, 1);
+                        animator.PlayAnimation("WalkFront");
+                        randomHolder = 1;
+                        counter++;
+                        break;
+                    }
+                    else
+                    {
+                        translation += new Vector2(0, -1);
+                        animator.PlayAnimation("WalkBack");
+                        counter++;
+                        break;
+                    }
+                case 1:
+                    if (GameObject.Transform.Position.Y > 395)
+                    {
+                        translation += new Vector2(0, -1);
+                        animator.PlayAnimation("WalkBack");
+                        randomHolder = 0;
+                        counter++;
+                        break;
+                    }
+                    else
+                    {
+                        translation += new Vector2(0, 1);
+                        animator.PlayAnimation("WalkFront");
+                        counter++;
+                        break;
+                    }
+                case 2:
+                    if (GameObject.Transform.Position.X < 5)
+                    {
+                        translation += new Vector2(1, 0);
+                        animator.PlayAnimation("WalkRight");
+                        randomHolder = 3;
+                        counter++;
+                        break;
+                    }
+                    else
+                    {
+                        translation += new Vector2(-1, 0);
+                        animator.PlayAnimation("WalkLeft");
+                        counter++;
+                        break;
+                    }
+                case 3:
+                    if (GameObject.Transform.Position.X > 1250)
+                    {
+                        translation += new Vector2(-1, 0);
+                        animator.PlayAnimation("WalkLeft");
+                        randomHolder = 2;
+                        counter++;
+                        break;
+                    }
+                    else
+                    {
+                        translation += new Vector2(1, 0);
+                        animator.PlayAnimation("WalkRight");
+                        counter++;
+                        break;
+                    }
+                default:
+                    counter++;
+                    break;
+            }
+            GameObject.Transform.Position += translation * speed;
         }
 
         public void UpdateHealth()
@@ -124,13 +193,12 @@ namespace ShootingGame
                 GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position));
                 Player.Scores += 5;
                 EnemyHealth = 100;
-                GameObject.Transform.Position = new Vector2(GameWorld.Instance.Rnd.Next(100, 900), GameWorld.Instance.Rnd.Next(100, 400));
+                counter = 0;
+                GameObject.Transform.Position = new Vector2(GameWorld.Instance.EnemySpawns[rnd.Next(0,2)], GameWorld.Instance.Rnd.Next(100, 400));
                 (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
             }
             else if (animationName.Contains("Shoot"))
             {
-                //if(Player.Health > 0)
-                //Player.Health -= 1;
                 GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }
         }
