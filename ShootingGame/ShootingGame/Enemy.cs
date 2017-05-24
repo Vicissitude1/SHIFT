@@ -26,19 +26,23 @@ namespace ShootingGame
         int shootsAmount;
         Direction currentDirection;
         SoundEffect effect;
+        int counter = 0;
+        int randomHolder;
         public int EnemyHealth { get; set; }
         public Thread T { get; private set; }
 
         public Enemy(GameObject gameObject) : base(gameObject)
         {
             isSpawned = true;
-            speed = 2;
+            speed = 1;
             EnemyHealth = 100;
             T = new Thread(Update);
             T.IsBackground = true;
             canMove = true;
             moveTimer = GameWorld.Instance.Rnd.Next(100, 300);
             shootsAmount = 2;
+            randomHolder = GameWorld.Instance.Rnd.Next(0, 4);
+            counter += GameWorld.Instance.Rnd.Next(1, 21);
             if (GameObject.Transform.Position.X < 90)
                 currentDirection = Direction.Right;
             else currentDirection = Direction.Left;
@@ -59,6 +63,7 @@ namespace ShootingGame
         {
             isSpawned = true;
             EnemyHealth = 100;
+            counter = 0;
             moveTimer = GameWorld.Instance.Rnd.Next(100, 200);
             canMove = true;
             if (GameWorld.Instance.Rnd.Next(2) == 0)
@@ -84,10 +89,10 @@ namespace ShootingGame
                 translation = Vector2.Zero;
                 animator.PlayAnimation("Die");
             }
-                
+
             else if (canMove)
             {
-                if(isSpawned)
+                if (isSpawned)
                 {
                     if (GameObject.Transform.Position.X > 100 && currentDirection == Direction.Right)
                         isSpawned = false;
@@ -95,57 +100,40 @@ namespace ShootingGame
                         isSpawned = false;
                 }
 
-                switch (currentDirection)
-                {
-                    case Direction.Down:
-                        if (GameObject.Transform.Position.Y > 400)
-                            currentDirection = Direction.Up;
-                        translation = Vector2.Zero;
-                        translation += new Vector2(0, 1);
-                        animator.PlayAnimation("WalkFront");
-                        break;
-                    case Direction.Up:
-                        if (GameObject.Transform.Position.Y < 100)
-                            currentDirection = Direction.Down;
-                        translation = Vector2.Zero;
-                        translation += new Vector2(0, -1);
-                        animator.PlayAnimation("WalkBack");
-                        break;
-                    case Direction.Left:
-                        if (GameObject.Transform.Position.X < 100 && !isSpawned)
-                            currentDirection = Direction.Right;
-                        translation = Vector2.Zero;
-                        translation += new Vector2(-1, 0);
-                        animator.PlayAnimation("WalkLeft");
-                        break;
-                    default:
-                        if (GameObject.Transform.Position.X > 1200 && !isSpawned)
-                            currentDirection = Direction.Left;
-                        translation = Vector2.Zero;
-                        translation += new Vector2(1, 0);
-                        animator.PlayAnimation("WalkRight");
-                        break;
-                }
-                moveTimer--;
-
-                if (moveTimer == 0)
-                {
-                    canMove = false;
-                    shootsAmount = GameWorld.Instance.Rnd.Next(1,3);
-                }        
-            }
-            else
-            {
                 translation = Vector2.Zero;
-                animator.PlayAnimation("Shoot");
-
-                if (shootsAmount == 0)
+                if (EnemyHealth <= 0)
                 {
-                    UpdateDirection();
-                    canMove = true;
-                    moveTimer = GameWorld.Instance.Rnd.Next(20, 60);
+                    animator.PlayAnimation("Die");
                 }
-            }
+                else if (counter <= 599 && EnemyHealth > 0)
+                {
+                    Walk();
+                }
+                else if (counter >= 600 && EnemyHealth > 0)
+                {
+                    if (counter == 750)
+                    {
+                        randomHolder = GameWorld.Instance.Rnd.Next(0, 4);
+                    }
+                    if (counter > 750)
+                    {
+                        Walk();
+                        if (counter == 900)
+                        {
+                            randomHolder = GameWorld.Instance.Rnd.Next(0, 4);
+                            counter = 600;
+                        }
+                    }
+                    else
+                    {
+                        animator.PlayAnimation("Shoot");
+                        counter++;
+                    }
+                }
+                if (counter == 150 && EnemyHealth > 0 || counter == 300 && EnemyHealth > 0 || counter == 450 && EnemyHealth > 0)
+                {
+                    randomHolder = GameWorld.Instance.Rnd.Next(0, 4);
+                }
 
                 /*
                 //A reference to the current keyboard state
@@ -182,7 +170,8 @@ namespace ShootingGame
                 //animator.PlayAnimation("Shoot");
                 //Move the player's gameobject framerate independent
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.5f - 400 / GameObject.Transform.Position.Y / 5;
-            GameObject.Transform.Position += translation * speed * (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale;
+                GameObject.Transform.Position += translation * speed * (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale;
+            }
         }
 
         public void UpdateDirection()
@@ -241,19 +230,93 @@ namespace ShootingGame
                 }
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
             }
-            else if (other.GameObject.GetComponent("Enemy") is Enemy)
+           /* else if (other.GameObject.GetComponent("Enemy") is Enemy)
             {
                 if(canMove)
                 {
                     canMove = false;
                     shootsAmount = GameWorld.Instance.Rnd.Next(1, 3);
                 }
-            }
+            }*/
         }
 
         public void OnCollisionExit(Collider other)
         {
             //(other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+        }
+        public void Walk()
+        {
+            switch (randomHolder)
+            {
+                case 0:
+                    if (GameObject.Transform.Position.Y < 105)
+                    {
+                        translation += new Vector2(0, 1);
+                        animator.PlayAnimation("WalkFront");
+                        randomHolder = 1;
+                        counter++;
+                        break;
+                    }
+                    else
+                    {
+                        translation += new Vector2(0, -1);
+                        animator.PlayAnimation("WalkBack");
+                        counter++;
+                        break;
+                    }
+                case 1:
+                    if (GameObject.Transform.Position.Y > 395)
+                    {
+                        translation += new Vector2(0, -1);
+                        animator.PlayAnimation("WalkBack");
+                        randomHolder = 0;
+                        counter++;
+                        break;
+                    }
+                    else
+                    {
+                        translation += new Vector2(0, 1);
+                        animator.PlayAnimation("WalkFront");
+                        counter++;
+                        break;
+                    }
+                case 2:
+                    if (GameObject.Transform.Position.X < 5)
+                    {
+                        translation += new Vector2(1, 0);
+                        animator.PlayAnimation("WalkRight");
+                        randomHolder = 3;
+                        counter++;
+                        break;
+                    }
+                    else
+                    {
+                        translation += new Vector2(-1, 0);
+                        animator.PlayAnimation("WalkLeft");
+                        counter++;
+                        break;
+                    }
+                case 3:
+                    if (GameObject.Transform.Position.X > 1250)
+                    {
+                        translation += new Vector2(-1, 0);
+                        animator.PlayAnimation("WalkLeft");
+                        randomHolder = 2;
+                        counter++;
+                        break;
+                    }
+                    else
+                    {
+                        translation += new Vector2(1, 0);
+                        animator.PlayAnimation("WalkRight");
+                        counter++;
+                        break;
+                    }
+                default:
+                    counter++;
+                    break;
+            }
+            GameObject.Transform.Position += translation * speed;
         }
     }
 }

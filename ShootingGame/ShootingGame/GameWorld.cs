@@ -42,6 +42,7 @@ namespace ShootingGame
         Texture2D grass;
         Menu menu;
         ScoreMenu scoreMenu;
+        Random rnd;
         public bool ReplaceObjects { get; set; }
         public Texture2D Pixel { get; private set; }
         private SoundEffect effect;
@@ -56,7 +57,7 @@ namespace ShootingGame
         public SpriteFont BFont { get; private set; }
         public SpriteFont CFont { get; private set; }
         public SpriteFont DFont { get; private set; }
-        public Random Rnd { get; private set; }
+        //public Random Rnd { get; private set; }
         internal List<GameObject> ObjectsToAdd { get; set; }
         internal List<Vector2> EnemyBulletsPositions { get; set; }
         public int Result { get; set; }
@@ -101,6 +102,15 @@ namespace ShootingGame
 
         public int CurrentDice { get; set; }
 
+        public Random Rnd
+        {
+            get
+            {
+                lock(rnd)
+                return rnd;
+            }
+        }
+
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -118,7 +128,7 @@ namespace ShootingGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Rnd = new Random();
+            rnd = new Random();
 
             playSound = false;
             PlayGame = false;
@@ -147,13 +157,13 @@ namespace ShootingGame
             
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 200)));
-            /*
+            
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
             
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
-            */
+            
             /*
             for (int i = 0; i < 2; i++)
             {
