@@ -57,8 +57,8 @@ namespace ShootingGame
         public void ShowScoreTable(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(GameWorld.Instance.CFont, "PLACE              NAME                              SCORE ", new Vector2(200, 100), Color.DarkBlue);
-            spriteBatch.Draw(buttonSprite, buttonClearRectangle, buttonClearColor);
-            spriteBatch.DrawString(GameWorld.Instance.CFont, "CLEAR LIST ", new Vector2(buttonClearRectangle.X + 50, buttonClearRectangle.Y + 15), buttonClearColor);
+            //spriteBatch.Draw(buttonSprite, buttonClearRectangle, buttonClearColor);
+            //spriteBatch.DrawString(GameWorld.Instance.CFont, "CLEAR LIST ", new Vector2(buttonClearRectangle.X + 50, buttonClearRectangle.Y + 15), buttonClearColor);
             spriteBatch.Draw(buttonSprite, buttonSaveRectangle, buttonSaveColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "SAVE ", new Vector2(buttonSaveRectangle.X + 80, buttonSaveRectangle.Y + 15), buttonSaveColor);
             spriteBatch.Draw(buttonSprite, buttonExitRectangle, buttonExitColor);
@@ -270,7 +270,7 @@ namespace ShootingGame
 
         public void ButtonClearPressed()
         {
-            if(players.Count > 0)
+           /* if(players.Count > 0)
             players.Clear();
             DataBaseClass.Instance.ClearPlayersList();
             insertIndex = 0;
@@ -285,7 +285,7 @@ namespace ShootingGame
             {
                 effect.Play();
                 canPlaySound = false;
-            }
+            }*/
         }
 
         public void ButtonSavePressed()
