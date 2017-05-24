@@ -31,7 +31,7 @@ namespace ShootingGame
             isDefeat = false;
             isInGame = false;
             inGameTimer = 0;
-            outGameTimer = 200;
+            outGameTimer = 1000;
             speed = 5;
             T = new Thread(Update);
             T.IsBackground = true;
