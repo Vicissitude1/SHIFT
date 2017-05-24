@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Collider : Component, IDrawable, ILoadable, IUpdateable
+    public class Collider : Component, IDrawable, ILoadable, IUpdateable
     {
         Texture2D texture2D;
         SpriteRenderer spriteRenderer;
