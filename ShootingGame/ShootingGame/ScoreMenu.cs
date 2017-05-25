@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the ScoreMenu
+    /// </summary>
     class ScoreMenu
     {
         Keys[] keysToCheck = new Keys[] { Keys.A, Keys.B, Keys.C, Keys.D, Keys.E, Keys.F, Keys.G, Keys.H, Keys.I, Keys.J, Keys.K, Keys.L, Keys.M, Keys.N, Keys.O,
@@ -20,6 +23,7 @@ namespace ShootingGame
         KeyboardState lastKeyboardState;
         bool hasToLoadFormDB;
         bool canInsertName;
+        bool canPlaySound;
         string text;
         int insertIndex;
         Texture2D buttonSprite;
@@ -31,8 +35,10 @@ namespace ShootingGame
         Color buttonExitColor;
         SoundEffect effect;
         Vector2 mousePosition;
-        bool canPlaySound;
 
+        /// <summary>
+        /// ScoreMenu's construtor
+        /// </summary>
         public ScoreMenu()
         {
             hasToLoadFormDB = true;
@@ -44,15 +50,22 @@ namespace ShootingGame
             canPlaySound = true;
         }
 
+        /// <summary>
+        /// Loads the Scoremenu's content
+        /// </summary>
+        /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
             buttonSprite = content.Load<Texture2D>("redbutton1");
-            buttonClearRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
             buttonSaveRectangle = new Rectangle(1000, 350, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(1000, 500, buttonSprite.Width, buttonSprite.Height);
             effect = content.Load<SoundEffect>("buttonClick");
         }
 
+        /// <summary>
+        /// Draws the buttons and score list on the screen
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void ShowScoreTable(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(GameWorld.Instance.CFont, "PLACE              NAME                              SCORE ", new Vector2(200, 100), Color.DarkBlue);
@@ -81,7 +94,9 @@ namespace ShootingGame
                 }
             }
         }
-
+         /// <summary>
+         /// Updates score list from database and pastes current player
+         /// </summary>
         public void UpdateScoreTable()
         {
             if (hasToLoadFormDB)
@@ -110,6 +125,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Updates UI
+        /// </summary>
         public void UpdateUI()
         {
             UpdateScoreTable();
@@ -254,6 +272,9 @@ namespace ShootingGame
             return lastKeyboardState.IsKeyDown(theKey) && currentKeyboardState.IsKeyUp(theKey);
         }
        
+        /// <summary>
+        /// Saves the current score list to database
+        /// </summary>
         public void ButtonSavePressed()
         {
             if (players[insertIndex].Name != "" && canInsertName)
@@ -271,6 +292,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Performs exit to the Main Menu
+        /// </summary>
         public void ButtonExitPressed()
         {
             canInsertName = false;

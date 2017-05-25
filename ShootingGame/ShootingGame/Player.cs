@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
+    class Player : Component, ILoadable, IAnimateable, ICollisionEnter
     {
         static int health;
         Animator animator;
@@ -26,11 +26,11 @@ namespace ShootingGame
         static object thisLock = new object();
         Weapon[] weapons;
         SoundEffect effect;
+        public static int Scores { get; set; }
         public static bool CanStartShoot { get; set; }
         public static bool PlayAnimation { get; set; }
         public static Weapon CurrentWeapon { get; private set; }
         public Thread T { get; private set; }
-        public static int Scores { get; set; }
 
         public static int Health
         {
@@ -190,11 +190,6 @@ namespace ShootingGame
             }
         }
 
-        public void OnCollisionStay(Collider other)
-        {
-            // (other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
-        }
-
         public void OnCollisionEnter(Collider other)
         {
             if (other.GameObject.GetComponent("EnemyBullet") is EnemyBullet)
@@ -207,21 +202,9 @@ namespace ShootingGame
                         GameWorld.Instance.StopGame = true;
                         CanStartShoot = false;
                     }
-                    /*
-                    if (Health < 0)
-                    {
-                        Health = 0;
-                        GameWorld.Instance.StopGame = true;
-                        CanStartShoot = false;
-                    } */
                 }
                 (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
             }
-        }
-
-        public void OnCollisionExit(Collider other)
-        {
-            //(other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
         }
 
         public void ChangeWeapon()

@@ -10,22 +10,32 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Types of powerup
+    /// </summary>
     enum PowerUpType { Health, Score, Ammo }
 
+    /// <summary>
+    /// Represents the PowerUpObject
+    /// </summary>
     class PowerUpObject : Component, ICollisionEnter, ILoadable
     {
         int speed;
-        Vector2 translation;
         int inGameTimer;
         int outGameTimer;
-        bool isInGame;
         int bonusValue;
+        bool isInGame;
         bool isDefeat;
         PowerUpType currentPowerUp;
         SoundEffect effect;
+        Vector2 translation;
         public string Name { get; private set; }
         public Thread T { get; private set; }
 
+        /// <summary>
+        /// The PowerUpObject's constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public PowerUpObject(GameObject gameObject) : base(gameObject)
         {
             isDefeat = false;

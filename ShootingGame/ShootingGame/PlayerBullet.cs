@@ -13,10 +13,10 @@ namespace ShootingGame
     class PlayerBullet : Component, ILoadable, IAnimateable
     {
         int speed;
+        bool animationDone;
         Vector2 translation;
         Vector2 aimPosition;
         Animator animator;
-        bool animationDone;
         public int DamageLevel { get; private set; }
         public Thread T { get; set; }
         public bool IsRealesed { get; set; }
@@ -71,19 +71,6 @@ namespace ShootingGame
             {
                 IsRealesed = true;
             }
-
-            /*
-            if (GameObject.Transform.Position.Y < 110 || GameObject.Transform.Position.Y < aimPosition.Y)
-            {
-                IsRealesed = true;
-            }             
-
-            if (IsRealesed)
-            {
-                if (GameObject.Transform.Position.Y < 110 || GameWorld.Instance.StopGame) speed = 0;
-                else speed = 1;
-                animator.PlayAnimation("Expl");
-            }*/
         }
 
         public void LoadContent(ContentManager content)

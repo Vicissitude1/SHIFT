@@ -8,6 +8,9 @@ using System.IO;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the DataBaseClass
+    /// </summary>
     class DataBaseClass
     {
         static DataBaseClass instance;
@@ -17,10 +20,14 @@ namespace ShootingGame
             get { return instance ?? (instance = new DataBaseClass()); }
         }
 
+        /// <summary>
+        /// The DataBaseClass's constructor
+        /// </summary>
         private DataBaseClass()
         { }
+
         /// <summary>
-        /// Creates database file and table
+        /// Creates database file with tables, if it doesn't exist
         /// </summary>
         public void CreateTables()
         {

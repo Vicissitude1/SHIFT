@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the PlayerListRow
+    /// </summary>
     class PlayerListRow
     {
         public string Name { get; set; }
         public int Score { get; private set; }
 
+        /// <summary>
+        /// The PlayerListRow's constructor
+        /// </summary>
+        /// <param name="name">The Player's name</param>
+        /// <param name="score">The Player's scores</param>
         public PlayerListRow(string name, int score)
         {
             this.Name = name;

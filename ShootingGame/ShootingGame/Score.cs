@@ -9,17 +9,27 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the Score
+    /// </summary>
     class Score
     {
-        float lifeTimer;
+        int speed;
+        int lifeTimer;
         string bonus;
         Vector2 position;
-        float speed;
         Color color;
         SpriteFont font;
         Vector2 translation;
         Thread t;
 
+        /// <summary>
+        /// The Score's constructor
+        /// </summary>
+        /// <param name="bonus">The bonus value</param>
+        /// <param name="position">The score's start position</param>
+        /// <param name="color">Score's font color</param>
+        /// <param name="font">Score's font</param>
         public Score(string bonus, Vector2 position, Color color, SpriteFont font)
         {
             this.bonus = bonus;

@@ -13,6 +13,7 @@ namespace ShootingGame
     {
         Transform transform;
         List<Component> components;
+
         public Transform Transform
         {
             get

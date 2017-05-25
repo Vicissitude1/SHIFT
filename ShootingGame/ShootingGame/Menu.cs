@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the Menu
+    /// </summary>
     class Menu
     {
         Texture2D buttonSprite;

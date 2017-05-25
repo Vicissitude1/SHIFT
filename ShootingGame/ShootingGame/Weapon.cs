@@ -11,27 +11,58 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Types of weapon
+    /// </summary>
     enum WeaponType { BoltAction, SemiAuto, FullAuto}
 
+    /// <summary>
+    /// Represents the Weapon
+    /// </summary>
     class Weapon
     {
-        int maxAmmo;
         WeaponType shootType;
-        bool canShoot;
+        int maxAmmo;
         int autoShootTimer;
-        MouseState mouseState;
+        int totalAmmo;
         int reloadTime;
+        bool canShoot;
         bool canPlayGunCockingSound;
+        object thisLock = new object();
+        MouseState mouseState;
         SoundEffect effect;
         SoundEffect effectGunCocking;
-        public int TotalAmmo { get; set; }
+        public bool IsReloading { get; private set; }
         public string Name { get; private set; }
         public int Ammo { get; private set; }
         public int DamageLevel { get; private set; }
-        public Texture2D Sprite;
+        public Texture2D Sprite { get; private set; }
         public int CurrentReloadTime { get; private set; }
-        public bool IsReloading;
+        public int TotalAmmo
+        {
+            get
+            {
+                lock(thisLock)
+                return totalAmmo;
+            }
+            set
+            {
+                lock(thisLock)
+                {
+                    totalAmmo = value;
+                    if (totalAmmo > 200) totalAmmo = 200;
+                }
+            }
+        }
         
+        /// <summary>
+        /// The Weapon's constructor
+        /// </summary>
+        /// <param name="name">Weapon's name</param>
+        /// <param name="maxAmmo">Weapon's max ammo</param>
+        /// <param name="damageLevel">Bullet's damage level</param>
+        /// <param name="reloadTime">Reloading time</param>
+        /// <param name="shootType">Weapon type</param>
         public Weapon(string name, int maxAmmo, int damageLevel, int reloadTime, WeaponType shootType)
         {
             this.Name = name;
@@ -116,16 +147,19 @@ namespace ShootingGame
             }
             if (CurrentReloadTime <= 0)
             {
-                if(maxAmmo <= TotalAmmo)
+                lock(thisLock)
                 {
-                    Ammo = maxAmmo;
-                    TotalAmmo -= maxAmmo;
-                }
-                else
-                {
-                    Ammo = TotalAmmo;
-                    TotalAmmo = 0;
-                }
+                    if (maxAmmo <= totalAmmo)
+                    {
+                        Ammo = maxAmmo;
+                        totalAmmo -= maxAmmo;
+                    }
+                    else
+                    {
+                        Ammo = totalAmmo;
+                        totalAmmo = 0;
+                    }
+                }  
                 CurrentReloadTime = reloadTime;
                 IsReloading = false;
                 canPlayGunCockingSound = true;

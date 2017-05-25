@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the EnemyBullet
+    /// </summary>
     class EnemyBullet : Component
     {
         int speed;
@@ -17,6 +20,10 @@ namespace ShootingGame
         public Thread T { get; set; }
         public bool IsRealesed { get; set; }
 
+        /// <summary>
+        /// The EnemyBullet's constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public EnemyBullet(GameObject gameObject) : base(gameObject)
         {
             speed = 8;
@@ -49,7 +56,6 @@ namespace ShootingGame
             GameObject.Transform.Position += translation * speed;
 
             if (GameObject.Transform.Position.Y > 550)
-            //if (GameObject.Transform.Position.Y > 550 || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
                 IsRealesed = true;
         }
     }

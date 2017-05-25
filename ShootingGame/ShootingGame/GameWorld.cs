@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using System;
 using Microsoft.Xna.Framework.Media;
+using System.Threading;
 
 namespace ShootingGame
 {
@@ -33,13 +34,18 @@ namespace ShootingGame
         List<Collider> collidersToRemove;
         List<Score> scores;
         List<Score> scoresToRemove;
+        List<Score> tempScores;
+        List<Vector2> enemyBulletsPositions;
+        List<Vector2> tempEnemyBulletsPositions;
         internal List<Dice> Dies { get; set; }
         Texture2D background;
         Texture2D sky;
         Texture2D grass;
         Menu menu;
         ScoreMenu scoreMenu;
-        Random rnd;
+        Thread diceTimerThread;
+        bool canRollDice;
+        int diceTimerCounter;
         public bool ReplaceObjects { get; set; }
         public Texture2D Pixel { get; private set; }
         private static GameWorld instance;
@@ -52,10 +58,10 @@ namespace ShootingGame
         public SpriteFont BFont { get; private set; }
         public SpriteFont CFont { get; private set; }
         public SpriteFont DFont { get; private set; }
-        //public Random Rnd { get; private set; }
+        public Random Rnd { get; private set; }
         internal List<GameObject> ObjectsToAdd { get; set; }
-        internal List<Vector2> EnemyBulletsPositions { get; set; }
         public int Result { get; set; }
+
         internal List<Collider> Colliders
         {
             get
@@ -63,6 +69,7 @@ namespace ShootingGame
                 return colliders;
             }
         }
+
         public static GameWorld Instance
         {
             get { return instance ?? (instance = new GameWorld()); }
@@ -97,12 +104,12 @@ namespace ShootingGame
 
         public int CurrentDice { get; set; }
 
-        public Random Rnd
+        public List<Vector2> EnemyBulletsPositions
         {
             get
             {
-                lock(rnd)
-                return rnd;
+                lock(enemyBulletsPositions)
+                return enemyBulletsPositions;
             }
         }
 
@@ -123,7 +130,7 @@ namespace ShootingGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            rnd = new Random();
+            Rnd = new Random();
             PlayGame = false;
             ReplaceObjects = false;
             ShowScoreMenu = false;
@@ -137,13 +144,18 @@ namespace ShootingGame
             colliders = new List<Collider>();
             collidersToRemove = new List<Collider>();
             scores = new List<Score>();
-            Dies = new List<Dice>();
             scoresToRemove = new List<Score>();
+            tempScores = new List<Score>();
+            Dies = new List<Dice>();
             ObjectsToAdd = new List<GameObject>();
-            EnemyBulletsPositions = new List<Vector2>();
+            enemyBulletsPositions = new List<Vector2>();
+            tempEnemyBulletsPositions = new List<Vector2>();
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
             DataBaseClass.Instance.CreateTables();
+            diceTimerThread = new Thread(DiceTimer);
+            canRollDice = true;
+            diceTimerCounter = 0;
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
@@ -193,8 +205,6 @@ namespace ShootingGame
         /// </summary>
         protected override void LoadContent()
         {
-
-
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -227,6 +237,8 @@ namespace ShootingGame
                 else if (go.GetComponent("PowerUpObject") is PowerUpObject)
                     (go.GetComponent("PowerUpObject") as PowerUpObject).T.Start();
             }
+            diceTimerThread.IsBackground = true;
+            diceTimerThread.Start();
         }
 
         /// <summary>
@@ -264,7 +276,7 @@ namespace ShootingGame
             {
                 if (ReplaceObjects)
                 {
-                    scores.Clear();
+                    tempScores.Clear();
                     foreach (GameObject go in gameObjects)
                     {
                         if (go.GetComponent("Enemy") is Enemy)
@@ -278,6 +290,7 @@ namespace ShootingGame
                     }
                     Player.CanStartShoot = true;
                     ReplaceObjects = false;
+                    diceTimerCounter = 0;
                 }
                 if (this.IsMouseVisible) this.IsMouseVisible = false;
 
@@ -285,7 +298,7 @@ namespace ShootingGame
                 {
                     go.Update();
                 }
-                if(!StopGame)
+                if(!StopGame && canRollDice)
                 UpdateDiceUI();
                 UpdatePlayerShoot();
                 UpdateEnemyShoot();
@@ -301,7 +314,7 @@ namespace ShootingGame
                 menu.UpdateUI();
             }
 
-            ClearLists();
+            UpdateLists();
 
             base.Update(gameTime);
         }
@@ -328,18 +341,21 @@ namespace ShootingGame
                 {
                     go.Draw(spriteBatch);
                 }
-
-                if (scores.Count > 0)
+                lock(scores)
                 {
-                    foreach (Score s in scores)
+                    if (tempScores.Count > 0)
                     {
-                        s.Draw(spriteBatch);
+                        foreach (Score s in tempScores)
+                        {
+                            s.Draw(spriteBatch);
+                        }
                     }
                 }
-                spriteBatch.DrawString(BFont, "RESERV: " + reserve, new Vector2(650, 660), Color.Black);
-
+                
+                spriteBatch.DrawString(CFont, "RESERV: " + reserve, new Vector2(650, 660), Color.Black);
                 spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
                 spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
+                spriteBatch.Draw(Pixel, new Rectangle(650, 580, diceTimerCounter, 10), Color.Blue);
 
                 if (StopGame)
                 {
@@ -354,23 +370,30 @@ namespace ShootingGame
             base.Draw(gameTime);
         }
 
-        public void ClearLists()
+        public void UpdateLists()
         {
+            lock(scores)
+            {
+                if (scores.Count > 0)
+                {
+                    tempScores.AddRange(scores);
+                    scores.Clear();
+                }
+            }   
             lock (scoresToRemove)
             {
                 if (scoresToRemove.Count > 0)
                 {
                     foreach (Score s in scoresToRemove)
                     {
-                        scores.Remove(s);
+                        tempScores.Remove(s);
                     }
                     scoresToRemove.Clear();
                 }
-            }
-            
+            }   
             lock (objectsToRemove)
             {
-                if (objectsToRemove.Count > 0 && tempObjectsToRemove.Count == 0)
+                if (objectsToRemove.Count > 0)
                 {
                     tempObjectsToRemove.AddRange(objectsToRemove);
                     objectsToRemove.Clear();
@@ -410,16 +433,24 @@ namespace ShootingGame
 
         public void UpdateEnemyShoot()
         {
-            if (EnemyBulletsPositions.Count > 0)
+            lock(enemyBulletsPositions)
             {
-                foreach (Vector2 position in EnemyBulletsPositions)
+                if (EnemyBulletsPositions.Count > 0)
+                {
+                    tempEnemyBulletsPositions.AddRange(enemyBulletsPositions);
+                    EnemyBulletsPositions.Clear();
+                }
+            }
+            if (tempEnemyBulletsPositions.Count > 0)
+            {
+                foreach (Vector2 position in tempEnemyBulletsPositions)
                 {
                     director = new Director(new EnemyBulletBuilder());
                     GameObject go = director.Construct(position);
                     go.LoadContent(Content);
                     gameObjects.Add(go);
                 }
-                EnemyBulletsPositions.Clear();
+                tempEnemyBulletsPositions.Clear();
             }
         }
 
@@ -431,6 +462,8 @@ namespace ShootingGame
                 if (!UpPressed.IsKeyDown(Keys.Up))
                 {
                     High();
+                    canRollDice = false;
+                    diceTimerCounter = 130;
                 }
 
             }
@@ -445,6 +478,8 @@ namespace ShootingGame
                 if (!downPressed.IsKeyDown(Keys.Down))
                 {
                     Low();
+                    canRollDice = false;
+                    diceTimerCounter = 130;
                 }
 
             }
@@ -516,6 +551,17 @@ namespace ShootingGame
             if (current < Result)
             {
                 reserve += current;
+            }
+        }
+
+        public void DiceTimer()
+        {
+            while(true)
+            {
+                Thread.Sleep(50);
+                if (diceTimerCounter > 0)
+                    diceTimerCounter--;
+                else if (!canRollDice) canRollDice = true;
             }
         }
     }

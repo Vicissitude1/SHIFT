@@ -14,11 +14,10 @@ namespace ShootingGame
 {
     enum Direction { Up, Down, Right, Left}
 
-    class Enemy : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
+    class Enemy : Component, ILoadable, IAnimateable, ICollisionEnter
     {
         int speed;
         Vector2 translation;
-        Vector2 mouseCurrentPosition;
         Animator animator;
         bool isSpawned;
         bool canMove;
@@ -213,11 +212,6 @@ namespace ShootingGame
             }
         }
 
-        public void OnCollisionStay(Collider other)
-        {
-            // (other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
-        }
-
         public void OnCollisionEnter(Collider other)
         {
             if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
@@ -240,10 +234,6 @@ namespace ShootingGame
             }*/
         }
 
-        public void OnCollisionExit(Collider other)
-        {
-            //(other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
-        }
         public void Walk()
         {
             switch (randomHolder)
