@@ -40,7 +40,7 @@ namespace ShootingGame
 
         public void LoadContent(ContentManager content)
         {
-            buttonSprite = content.Load<Texture2D>("button");
+            buttonSprite = content.Load<Texture2D>("redbutton1");
             buttonHowRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
             buttonScoreRectangle = new Rectangle(1000, 300, buttonSprite.Width, buttonSprite.Height);
             buttonStartRectangle = new Rectangle(1000, 400, buttonSprite.Width, buttonSprite.Height);

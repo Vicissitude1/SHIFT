@@ -48,14 +48,7 @@ namespace ShootingGame
             else if (GameObject.GetComponent("Player") is Player)
             {
                 spriteBatch.Draw(pixel, new Rectangle(0, 570, 1300, 150), Color.LightGray);
-                if (Player.CurrentWeapon.Name == "GUN")
-                    spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(370, 575, 50, 30), Color.White);
-                else if (Player.CurrentWeapon.Name == "RIFLE")
-                    spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(350, 575, 140, 40), Color.White);
-                else if (Player.CurrentWeapon.Name == "MACHINEGUN")
-                    spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(350, 550, 130, 100), Color.White);
-
-                //spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(100, 600, Player.CurrentWeapon.Sprite.Width, Player.CurrentWeapon.Sprite.Height), Color.White);
+                spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(370, 580, Player.CurrentWeapon.Sprite.Width, Player.CurrentWeapon.Sprite.Height), Color.White);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "WEAPON: ", new Vector2(250, 580), Color.Black);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "TOTAL AMMO: " + Player.CurrentWeapon.TotalAmmo, new Vector2(250, 625), Color.Black);
 
