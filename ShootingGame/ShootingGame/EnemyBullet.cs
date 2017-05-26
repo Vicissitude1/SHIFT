@@ -44,13 +44,8 @@ namespace ShootingGame
 
         public void Move()
         {
-            if (IsRealesed)
-            {
-                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
-                T.Abort();
-            }
-            if (GameWorld.Instance.StopGame)
-                speed = 20;
+            if (IsRealesed) T.Abort();
+            if (GameWorld.Instance.StopGame) speed = 20;
             Thread.Sleep(30);
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.2f - 400 / GameObject.Transform.Position.Y / 3;
             GameObject.Transform.Position += translation * speed;

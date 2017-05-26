@@ -56,7 +56,7 @@ namespace ShootingGame
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            buttonSprite = content.Load<Texture2D>("redbutton1");
+            buttonSprite = content.Load<Texture2D>("button");
             buttonSaveRectangle = new Rectangle(1000, 350, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(1000, 500, buttonSprite.Width, buttonSprite.Height);
             effect = content.Load<SoundEffect>("buttonClick");
@@ -70,9 +70,9 @@ namespace ShootingGame
         {
             spriteBatch.DrawString(GameWorld.Instance.CFont, "PLACE              NAME                              SCORE ", new Vector2(200, 100), Color.DarkBlue);
             spriteBatch.Draw(buttonSprite, buttonSaveRectangle, buttonSaveColor);
-            spriteBatch.DrawString(GameWorld.Instance.CFont, "SAVE ", new Vector2(buttonSaveRectangle.X + 80, buttonSaveRectangle.Y + 15), buttonSaveColor);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, "SAVE ", new Vector2(buttonSaveRectangle.X + 70, buttonSaveRectangle.Y + 15), buttonSaveColor);
             spriteBatch.Draw(buttonSprite, buttonExitRectangle, buttonExitColor);
-            spriteBatch.DrawString(GameWorld.Instance.CFont, "MAIN MENU", new Vector2(buttonExitRectangle.X + 50, buttonExitRectangle.Y + 15), buttonExitColor);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, "MAIN MENU", new Vector2(buttonExitRectangle.X + 40, buttonExitRectangle.Y + 15), buttonExitColor);
 
             if (players.Count > 0)
             {

@@ -40,7 +40,7 @@ namespace ShootingGame
 
         public void LoadContent(ContentManager content)
         {
-            buttonSprite = content.Load<Texture2D>("redbutton1");
+            buttonSprite = content.Load<Texture2D>("button");
             buttonHowRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
             buttonScoreRectangle = new Rectangle(1000, 300, buttonSprite.Width, buttonSprite.Height);
             buttonStartRectangle = new Rectangle(1000, 400, buttonSprite.Width, buttonSprite.Height);
@@ -52,13 +52,13 @@ namespace ShootingGame
         {
             spriteBatch.DrawString(GameWorld.Instance.CFont, "**MAIN MENU** ", new Vector2(500, 50), Color.DarkBlue);
             spriteBatch.Draw(buttonSprite, buttonHowRectangle, buttonHowColor);
-            spriteBatch.DrawString(GameWorld.Instance.CFont, "HOW TO PLAY", new Vector2(buttonHowRectangle.X + 40, buttonHowRectangle.Y + 15), buttonHowColor);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, "HOW TO PLAY", new Vector2(buttonHowRectangle.X + 25, buttonHowRectangle.Y + 15), buttonHowColor);
             spriteBatch.Draw(buttonSprite, buttonScoreRectangle, buttonScoreColor);
-            spriteBatch.DrawString(GameWorld.Instance.CFont, "SCORE LIST ", new Vector2(buttonScoreRectangle.X + 50, buttonScoreRectangle.Y + 15), buttonScoreColor);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, "SCORE LIST ", new Vector2(buttonScoreRectangle.X + 35, buttonScoreRectangle.Y + 15), buttonScoreColor);
             spriteBatch.Draw(buttonSprite, buttonStartRectangle, buttonStartColor);
-            spriteBatch.DrawString(GameWorld.Instance.CFont, "START GAME ", new Vector2(buttonStartRectangle.X + 50, buttonStartRectangle.Y + 15), buttonStartColor);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, "START GAME ", new Vector2(buttonStartRectangle.X + 35, buttonStartRectangle.Y + 15), buttonStartColor);
             spriteBatch.Draw(buttonSprite, buttonExitRectangle, buttonExitColor);
-            spriteBatch.DrawString(GameWorld.Instance.CFont, "EXIT GAME", new Vector2(buttonExitRectangle.X + 50, buttonExitRectangle.Y + 15), buttonExitColor);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, "EXIT GAME", new Vector2(buttonExitRectangle.X + 45, buttonExitRectangle.Y + 15), buttonExitColor);
         }
 
         public void UpdateUI()

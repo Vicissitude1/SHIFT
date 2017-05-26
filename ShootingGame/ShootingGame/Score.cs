@@ -21,7 +21,7 @@ namespace ShootingGame
         Color color;
         SpriteFont font;
         Vector2 translation;
-        Thread t;
+        public Thread T { get; private set; }
 
         /// <summary>
         /// The Score's constructor
@@ -36,11 +36,11 @@ namespace ShootingGame
             this.position = position;
             this.color = color;
             this.font = font;
-            lifeTimer = 2500;
+            lifeTimer = 2000;
             speed = 100;
-            t = new Thread(Move);
-            t.IsBackground = true;
-            t.Start();
+            T = new Thread(Move);
+            T.IsBackground = true;
+            T.Start();
         }
 
         public void Move()
@@ -51,12 +51,7 @@ namespace ShootingGame
                 translation += new Vector2(0, -1);
                 position += translation * speed / 20;
                 lifeTimer -= 100;
-
-                if (lifeTimer <= 0)
-                {
-                    GameWorld.Instance.ScoresToRemove.Add(this);
-                    t.Abort();
-                }
+                if (lifeTimer <= 0) T.Abort();
                 Thread.Sleep(100);
             } 
         }

@@ -41,11 +41,7 @@ namespace ShootingGame
 
         public void Move()
         {
-            if (animationDone)
-            {
-                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
-                T.Abort();
-            }
+            if (animationDone) T.Abort();
             Thread.Sleep(30);
             
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.2f - 400 / GameObject.Transform.Position.Y / 3;

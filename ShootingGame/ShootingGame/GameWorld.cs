@@ -17,10 +17,6 @@ namespace ShootingGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        /// <summary>
-        /// The object that is going to be locked
-        /// </summary>
-        static object thisLock = new object();
         Director director;
         public int DiceResult { get; set; }
         private int reserve;
@@ -29,12 +25,11 @@ namespace ShootingGame
         public bool HasPressed { get; set; } = false;
         List<GameObject> gameObjects;
         List<GameObject> objectsToRemove;
-        List<GameObject> tempObjectsToRemove;
         List<Collider> colliders;
         List<Collider> collidersToRemove;
         List<Score> scores;
-        List<Score> scoresToRemove;
         List<Score> tempScores;
+        List<Score> scoresToRemove;
         List<Vector2> enemyBulletsPositions;
         List<Vector2> tempEnemyBulletsPositions;
         internal List<Dice> Dies { get; set; }
@@ -75,30 +70,12 @@ namespace ShootingGame
             get { return instance ?? (instance = new GameWorld()); }
         }
 
-        internal List<GameObject> ObjectsToRemove
-        {
-            get
-            {
-                lock (objectsToRemove)
-                    return objectsToRemove;
-            }
-        }
-
         internal List<Score> Scores
         {
             get
             {
                 lock (scores)
                    return scores;
-            }
-        }
-
-        internal List<Score> ScoresToRemove
-        {
-            get
-            {
-                lock (scoresToRemove)
-                   return scoresToRemove;
             }
         }
 
@@ -140,12 +117,11 @@ namespace ShootingGame
             scoreMenu = new ScoreMenu();
             gameObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
-            tempObjectsToRemove = new List<GameObject>();
             colliders = new List<Collider>();
             collidersToRemove = new List<Collider>();
             scores = new List<Score>();
-            scoresToRemove = new List<Score>();
             tempScores = new List<Score>();
+            scoresToRemove = new List<Score>();
             Dies = new List<Dice>();
             ObjectsToAdd = new List<GameObject>();
             enemyBulletsPositions = new List<Vector2>();
@@ -276,7 +252,6 @@ namespace ShootingGame
             {
                 if (ReplaceObjects)
                 {
-                    tempScores.Clear();
                     foreach (GameObject go in gameObjects)
                     {
                         if (go.GetComponent("Enemy") is Enemy)
@@ -285,8 +260,6 @@ namespace ShootingGame
                             (go.GetComponent("Player") as Player).Replace();
                         else if (go.GetComponent("PowerUpObject") is PowerUpObject)
                             (go.GetComponent("PowerUpObject") as PowerUpObject).Replace();
-                        else if (go.GetComponent("PlayerBullet") is PlayerBullet || go.GetComponent("EnemyBullet") is EnemyBullet)
-                            objectsToRemove.Add(go);
                     }
                     Player.CanStartShoot = true;
                     ReplaceObjects = false;
@@ -341,17 +314,15 @@ namespace ShootingGame
                 {
                     go.Draw(spriteBatch);
                 }
-                lock(scores)
+
+                if (tempScores.Count > 0)
                 {
-                    if (tempScores.Count > 0)
+                    foreach (Score s in tempScores)
                     {
-                        foreach (Score s in tempScores)
-                        {
-                            s.Draw(spriteBatch);
-                        }
+                        s.Draw(spriteBatch);
                     }
                 }
-                
+
                 spriteBatch.DrawString(CFont, "RESERV: " + reserve, new Vector2(650, 660), Color.Black);
                 spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
                 spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
@@ -379,35 +350,44 @@ namespace ShootingGame
                     tempScores.AddRange(scores);
                     scores.Clear();
                 }
-            }   
-            lock (scoresToRemove)
+            }
+            if (tempScores.Count > 0)
             {
-                if (scoresToRemove.Count > 0)
+                foreach (Score s in tempScores)
                 {
-                    foreach (Score s in scoresToRemove)
-                    {
-                        tempScores.Remove(s);
-                    }
-                    scoresToRemove.Clear();
-                }
-            }   
-            lock (objectsToRemove)
-            {
-                if (objectsToRemove.Count > 0)
-                {
-                    tempObjectsToRemove.AddRange(objectsToRemove);
-                    objectsToRemove.Clear();
+                    if (!s.T.IsAlive) scoresToRemove.Add(s);
                 }
             }
-            if (tempObjectsToRemove.Count > 0)
+            if (scoresToRemove.Count > 0)
             {
-                foreach (GameObject go in tempObjectsToRemove)
+                foreach (Score s in scoresToRemove)
+                {
+                    tempScores.Remove(s);
+                }
+                scoresToRemove.Clear();
+            }
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.GetComponent("EnemyBullet") is EnemyBullet)
+                {
+                    if (!((go.GetComponent("EnemyBullet") as EnemyBullet).T.IsAlive))
+                        objectsToRemove.Add(go);
+                }
+                else if (go.GetComponent("PlayerBullet") is PlayerBullet)
+                {
+                    if (!((go.GetComponent("PlayerBullet") as PlayerBullet).T.IsAlive))
+                        objectsToRemove.Add(go);
+                }
+            }
+            if (objectsToRemove.Count > 0)
+            {
+                foreach (GameObject go in objectsToRemove)
                 {
                     if ((go.GetComponent("PlayerBullet") is PlayerBullet) || (go.GetComponent("EnemyBullet") is EnemyBullet))
                         collidersToRemove.Add(go.GetComponent("Collider") as Collider);
                     gameObjects.Remove(go);
                 }
-                tempObjectsToRemove.Clear();
+                objectsToRemove.Clear();
             }
             if (collidersToRemove.Count > 0)
             {
@@ -417,6 +397,7 @@ namespace ShootingGame
                 }
                 collidersToRemove.Clear();
             }
+            
         }
 
         public void UpdatePlayerShoot()
@@ -559,8 +540,7 @@ namespace ShootingGame
             while(true)
             {
                 Thread.Sleep(50);
-                if (diceTimerCounter > 0)
-                    diceTimerCounter--;
+                if (diceTimerCounter > 0) diceTimerCounter--;
                 else if (!canRollDice) canRollDice = true;
             }
         }
