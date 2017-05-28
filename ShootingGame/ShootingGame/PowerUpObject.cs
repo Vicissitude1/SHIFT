@@ -152,6 +152,7 @@ namespace ShootingGame
                 else translation = Vector2.Zero;
 
                 inGameTimer--;
+
                 if (inGameTimer <= 0)
                 {
                     isInGame = false;
@@ -169,6 +170,7 @@ namespace ShootingGame
                 else translation = Vector2.Zero;
 
                 outGameTimer--;
+
                 // Replaces the PowerUpObject when the outgame timer is expired
                 if (outGameTimer <= 0)
                 {
@@ -204,8 +206,13 @@ namespace ShootingGame
             // Only if the PowerUpObject is colliding with player's bullet
             if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
             {
+                // Makes sure that PlayerBullet will be deleted from the game
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
+
+                // Stops the collision check
                 (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
+
+                // Makes sure that PoawerUpObject will be replaced
                 isDefeat = true;
             }
         }
