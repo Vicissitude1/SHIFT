@@ -65,6 +65,10 @@ namespace ShootingGame
             doCollisionCheck = true;
         }
 
+        /// <summary>
+        /// Draws the collision box
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
             Rectangle topLine = new Rectangle(CollisionBox.X, CollisionBox.Y, CollisionBox.Width, 1);
@@ -77,17 +81,27 @@ namespace ShootingGame
             spriteBatch.Draw(texture2D, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
 
+        /// <summary>
+        /// Loads the content
+        /// </summary>
+        /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             texture2D = content.Load<Texture2D>("CollisionTexture");
         }
 
+        /// <summary>
+        /// Makes sure that CheckCollision method is called
+        /// </summary>
         public void Update()
         {
             CheckCollision();
         }
 
+        /// <summary>
+        /// Checks the collision
+        /// </summary>
         public void CheckCollision()
         {
             if (doCollisionCheck)

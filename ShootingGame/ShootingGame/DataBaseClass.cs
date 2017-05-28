@@ -14,7 +14,7 @@ namespace ShootingGame
     class DataBaseClass
     {
         /// <summary>
-        /// The singeltone pattern
+        /// The singletone pattern
         /// </summary>
         static DataBaseClass instance;
 

@@ -17,44 +17,171 @@ namespace ShootingGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        /// <summary>
+        /// Referance to the Director class
+        /// </summary>
         Director director;
-        public int DiceResult { get; set; }
+
+
         private int reserve;
+        
+        /// <summary>
+        /// The list of the gameobjects
+        /// </summary>
+        List<GameObject> gameObjects;
+
+        /// <summary>
+        /// The list of the gamebjects to remove
+        /// </summary>
+        List<GameObject> objectsToRemove;
+
+        /// <summary>
+        /// The list of the collider components
+        /// </summary>
+        List<Collider> colliders;
+
+        /// <summary>
+        /// The list of the collider components to remove
+        /// </summary>
+        List<Collider> collidersToRemove;
+
+        /// <summary>
+        /// The score list
+        /// </summary>
+        List<Score> scores;
+
+        /// <summary>
+        /// The score list used in the game loop
+        /// </summary>
+        List<Score> tempScores;
+
+        /// <summary>
+        /// The score list to remove
+        /// </summary>
+        List<Score> scoresToRemove;
+
+        /// <summary>
+        /// The list of positions where to place new EnemyBullets
+        /// </summary>
+        List<Vector2> enemyBulletsPositions;
+
+        /// <summary>
+        /// The list of positions of new EnemyBollets used in the game loop
+        /// </summary>
+        List<Vector2> tempEnemyBulletsPositions;
+
+        /// <summary>
+        /// The background image
+        /// </summary>
+        Texture2D background;
+
+        /// <summary>
+        /// The sky image
+        /// </summary>
+        Texture2D sky;
+
+        /// <summary>
+        /// The grass image
+        /// </summary>
+        Texture2D grass;
+
+        /// <summary>
+        /// Referance to the Main Menu
+        /// </summary>
+        Menu menu;
+
+        /// <summary>
+        /// Referance to the Score Menu
+        /// </summary>
+        ScoreMenu scoreMenu;
+
+        /// <summary>
+        /// The dice timer thread
+        /// </summary>
+        Thread diceTimerThread;
+
+        /// <summary>
+        /// Checks if player can roll the dice
+        /// </summary>
+        bool canRollDice;
+
+        /// <summary>
+        /// The dice roll timer
+        /// </summary>
+        int diceTimerCounter;
         public KeyboardState UpPressed { get; set; }
         private KeyboardState downPressed;
         public bool HasPressed { get; set; } = false;
-        List<GameObject> gameObjects;
-        List<GameObject> objectsToRemove;
-        List<Collider> colliders;
-        List<Collider> collidersToRemove;
-        List<Score> scores;
-        List<Score> tempScores;
-        List<Score> scoresToRemove;
-        List<Vector2> enemyBulletsPositions;
-        List<Vector2> tempEnemyBulletsPositions;
         internal List<Dice> Dies { get; set; }
-        Texture2D background;
-        Texture2D sky;
-        Texture2D grass;
-        Menu menu;
-        ScoreMenu scoreMenu;
-        Thread diceTimerThread;
-        bool canRollDice;
-        int diceTimerCounter;
+        public int DiceResult { get; set; }
+
+        /// <summary>
+        /// Checks if necassery to replace some GameObjects when the game is restarted
+        /// </summary>
         public bool ReplaceObjects { get; set; }
+
+        /// <summary>
+        /// Pixel to draw
+        /// </summary>
         public Texture2D Pixel { get; private set; }
+
+        /// <summary>
+        /// Singletone pattern
+        /// </summary>
         private static GameWorld instance;
+
+        /// <summary>
+        /// Checks if necasery to pause the game
+        /// </summary>
         public bool StopGame { get; set; }
+
+        /// <summary>
+        /// Checks if player can play game
+        /// </summary>
         public bool PlayGame { get; set; }
+
+        /// <summary>
+        /// Checks if necassey to show Score Menu
+        /// </summary>
         public bool ShowScoreMenu { get; set; }
+
+        /// <summary>
+        /// Cheks if necassey to add new GameObject PlayerBullet
+        /// </summary>
         public bool CanAddPlayerBullet { get; set; }
+
+        /// <summary>
+        /// The DeltaTime
+        /// </summary>
         public float DeltaTime { get; private set; }
+
+        /// <summary>
+        /// The font with size 8
+        /// </summary>
         public SpriteFont AFont { get; private set; }
+
+        /// <summary>
+        /// The font with size 12
+        /// </summary>
         public SpriteFont BFont { get; private set; }
+
+        /// <summary>
+        /// The font with size 16
+        /// </summary>
         public SpriteFont CFont { get; private set; }
+
+        /// <summary>
+        /// The font with size 24
+        /// </summary>
         public SpriteFont DFont { get; private set; }
+
+        /// <summary>
+        /// Referance to the Random class
+        /// </summary>
         public Random Rnd { get; private set; }
+
         internal List<GameObject> ObjectsToAdd { get; set; }
+
         public int Result { get; set; }
 
         internal List<Collider> Colliders
@@ -90,6 +217,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// The GameWorld's constructor
+        /// </summary>
         private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -132,7 +262,7 @@ namespace ShootingGame
             diceTimerThread = new Thread(DiceTimer);
             canRollDice = true;
             diceTimerCounter = 0;
-
+            // Adds the GameObjects to the game
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
             
@@ -202,6 +332,7 @@ namespace ShootingGame
                 go.LoadContent(Content);
             }
 
+            // Starts threads for some GameObjects
             foreach (GameObject go in gameObjects)
             {
                 if (go.GetComponent("Enemy") is Enemy)
@@ -245,11 +376,12 @@ namespace ShootingGame
                 StopGame = true;
                 Player.CanStartShoot = false;
             }
-
+            // Makes sure that animation doesn't play when the game is paused
             DeltaTime = !StopGame ? (float)gameTime.ElapsedGameTime.TotalSeconds : 0;
 
             if (PlayGame)
             {
+                // Replaces some GameObjects when the game is restarted
                 if (ReplaceObjects)
                 {
                     foreach (GameObject go in gameObjects)
@@ -267,14 +399,20 @@ namespace ShootingGame
                 }
                 if (this.IsMouseVisible) this.IsMouseVisible = false;
 
+                // Updates the gameObjects
                 foreach (GameObject go in gameObjects)
                 {
                     go.Update();
                 }
+                // Checks if player rolls the dice
                 if(!StopGame && canRollDice)
                 UpdateDiceUI();
-                UpdatePlayerShoot();
-                UpdateEnemyShoot();
+
+                // Checks if player made a shot
+                UpdatePlayerShot();
+
+                // Checks if enemies made any shots
+                UpdateEnemyShot();
             }
             else if (ShowScoreMenu)
             {
@@ -310,11 +448,13 @@ namespace ShootingGame
                 spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
                 spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
 
+                // Draws the gameObjects
                 foreach (GameObject go in gameObjects)
                 {
                     go.Draw(spriteBatch);
                 }
 
+                // Draws the scores
                 if (tempScores.Count > 0)
                 {
                     foreach (Score s in tempScores)
@@ -341,8 +481,12 @@ namespace ShootingGame
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Updates all the lists
+        /// </summary>
         public void UpdateLists()
         {
+            // Removes scores from list scores to tempscores, it gives more time to access to the list scores
             lock(scores)
             {
                 if (scores.Count > 0)
@@ -351,6 +495,7 @@ namespace ShootingGame
                     scores.Clear();
                 }
             }
+            // Checks if there are scores with aborted threads in the list tempScores and adds them to the list scoresToRemove
             if (tempScores.Count > 0)
             {
                 foreach (Score s in tempScores)
@@ -358,6 +503,7 @@ namespace ShootingGame
                     if (!s.T.IsAlive) scoresToRemove.Add(s);
                 }
             }
+            // Removes scores with aborted threads from the list tempScores
             if (scoresToRemove.Count > 0)
             {
                 foreach (Score s in scoresToRemove)
@@ -366,6 +512,7 @@ namespace ShootingGame
                 }
                 scoresToRemove.Clear();
             }
+            // Checks if there are gameObjects with components with aborted threads and adds them to the list objectToRemove
             foreach (GameObject go in gameObjects)
             {
                 if (go.GetComponent("EnemyBullet") is EnemyBullet)
@@ -379,6 +526,7 @@ namespace ShootingGame
                         objectsToRemove.Add(go);
                 }
             }
+            // Removes gameObjects with components with aborted threads from the lists gameObject and colliders
             if (objectsToRemove.Count > 0)
             {
                 foreach (GameObject go in objectsToRemove)
@@ -400,7 +548,10 @@ namespace ShootingGame
             
         }
 
-        public void UpdatePlayerShoot()
+        /// <summary>
+        /// Checks if player made a shot, and adds new PlayerBullet gameObject, if necassery
+        /// </summary>
+        public void UpdatePlayerShot()
         {
             if (CanAddPlayerBullet)
             {
@@ -412,9 +563,14 @@ namespace ShootingGame
             }
         }
 
-        public void UpdateEnemyShoot()
+        /// <summary>
+        /// Checks if enemy made a shot, and adds new EnemyBullet object, if necassery
+        /// </summary>
+        public void UpdateEnemyShot()
         {
-            lock(enemyBulletsPositions)
+            // Removes content from the list enmyBulletsPositions to tempEnemyBulletPositions,
+            // it gives more time to access to the list enemyBulletsPositions
+            lock (enemyBulletsPositions)
             {
                 if (EnemyBulletsPositions.Count > 0)
                 {
@@ -422,6 +578,7 @@ namespace ShootingGame
                     EnemyBulletsPositions.Clear();
                 }
             }
+            // Adds new EnemyBullet gameObjects, if it is necassery
             if (tempEnemyBulletsPositions.Count > 0)
             {
                 foreach (Vector2 position in tempEnemyBulletsPositions)
@@ -535,6 +692,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Updates the dice timer, the timer starts every time, when player rolls the dice
+        /// </summary>
         public void DiceTimer()
         {
             while(true)

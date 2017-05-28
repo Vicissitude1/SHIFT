@@ -12,6 +12,9 @@ namespace ShootingGame
     /// </summary>
     class PlayerBulletBuilder : IBuilder
     {
+        /// <summary>
+        /// The gameObject to build
+        /// </summary>
         GameObject gameObject;
 
         /// <summary>
@@ -27,6 +30,10 @@ namespace ShootingGame
             gameObject.AddComponent(new Collider(gameObject));
         }
 
+        /// <summary>
+        /// Returns the gameObject
+        /// </summary>
+        /// <returns></returns>
         public GameObject GetResult()
         {
             return gameObject;

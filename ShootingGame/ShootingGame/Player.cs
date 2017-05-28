@@ -24,7 +24,7 @@ namespace ShootingGame
         static int health;
 
         /// <summary>
-        /// The reference to the player's animator
+        /// The reference to the Player's animator
         /// </summary>
         Animator animator;
 
@@ -157,6 +157,9 @@ namespace ShootingGame
             CreateAnimation();
         }
 
+        /// <summary>
+        /// Updates the Plyer's functionlity
+        /// </summary>
         public void Update()
         {
             while(true)
@@ -167,6 +170,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Updates the UI for Player
+        /// </summary>
         public void Move()
         {
             if (canChangeWeapon)
@@ -266,6 +272,10 @@ namespace ShootingGame
             animator.PlayAnimation("GunIdle");
         }
 
+        /// <summary>
+        /// Stops the animation for gun and rifle, when it is done
+        /// </summary>
+        /// <param name="animationName"></param>
         public void OnAnimationDone(string animationName)
         {
             if (animationName.Contains("GunShoot") || animationName.Contains("RifleShoot"))
@@ -276,17 +286,21 @@ namespace ShootingGame
 
         public void OnCollisionEnter(Collider other)
         {
+            // When the Player is colliding with EnemyBullet
             if (other.GameObject.GetComponent("EnemyBullet") is EnemyBullet)
             {
                 lock (thisLock)
                 {
+                    // Reduces the Player's health by 1
                     Health--;
+                    // Stops the Game, when the Player's health = 0
                     if (health == 0)
                     {
                         GameWorld.Instance.StopGame = true;
                         CanStartShoot = false;
                     }
                 }
+                // Makes sure that EnemyBullet has to be deleted from the game
                 (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
             }
         }
@@ -305,6 +319,7 @@ namespace ShootingGame
 
             if (isChanged)
             {
+                // Stops the weapon changing when the Y-position less than 500
                 if(GameObject.Transform.Position.Y <= 500)
                 {
                     isChanged = false;
@@ -313,12 +328,14 @@ namespace ShootingGame
                 }
                 else
                 {
+                    // Moves the weapon up after changing
                     translation += new Vector2(0, -1);
                     GameObject.Transform.Position += translation * speed;
                 }
             }
             else
             {
+                // Performs the changing weapon, corresponding to the UI
                 if(GameObject.Transform.Position.Y > 600)
                 {
                     currentWeaponIndex = selectedWeaponIndex;
@@ -330,6 +347,7 @@ namespace ShootingGame
                 }
                 else
                 {
+                    // Moves the weapon down
                     translation += new Vector2(0, 1);
                     GameObject.Transform.Position += translation * speed;
                 }

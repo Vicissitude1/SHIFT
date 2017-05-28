@@ -12,42 +12,80 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    enum Direction { Up, Down, Right, Left}
-
+    /// <summary>
+    /// Represents the Enemy
+    /// </summary>
     class Enemy : Component, ILoadable, IAnimateable, ICollisionEnter
     {
+        /// <summary>
+        /// The Enemy's movement speed
+        /// </summary>
         int speed;
+
+        /// <summary>
+        /// The Enemy's translation
+        /// </summary>
         Vector2 translation;
+
+        /// <summary>
+        /// The reference to the player's animator
+        /// </summary>
         Animator animator;
-        bool isSpawned;
+
+        /// <summary>
+        /// Checks if Enemy can move
+        /// </summary>
         bool canMove;
+
+        /// <summary>
+        /// The Enemy's movement timer
+        /// </summary>
         int moveTimer;
-        int shootsAmount;
-        Direction currentDirection;
+        
+        /// <summary>
+        /// The Enemy's shot sound effect
+        /// </summary>
         SoundEffect effect;
+
+        /// <summary>
+        /// 
+        /// </summary>
         int counter = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
         int randomHolder;
+
+        /// <summary>
+        /// The Enemy's health level
+        /// </summary>
         public int EnemyHealth { get; set; }
+
+        /// <summary>
+        /// The Enemy's thread
+        /// </summary>
         public Thread T { get; private set; }
 
+        /// <summary>
+        /// The Enemy's constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public Enemy(GameObject gameObject) : base(gameObject)
         {
-            isSpawned = true;
             speed = 1;
             EnemyHealth = 100;
             T = new Thread(Update);
             T.IsBackground = true;
             canMove = true;
             moveTimer = GameWorld.Instance.Rnd.Next(100, 300);
-            shootsAmount = 2;
             randomHolder = GameWorld.Instance.Rnd.Next(0, 4);
             counter += GameWorld.Instance.Rnd.Next(1, 21);
-            if (GameObject.Transform.Position.X < 90)
-                currentDirection = Direction.Right;
-            else currentDirection = Direction.Left;
-
         }
 
+        /// <summary>
+        /// Updates the Enemy's functionality
+        /// </summary>
         public void Update()
         {
             while(true)
@@ -58,29 +96,21 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Replaces the Enemy when the game is restarted
+        /// </summary>
         public void Replace()
         {
-            isSpawned = true;
             EnemyHealth = 100;
             counter = 0;
             moveTimer = GameWorld.Instance.Rnd.Next(100, 200);
             canMove = true;
-            if (GameWorld.Instance.Rnd.Next(2) == 0)
-            {
-                GameObject.Transform.Position = new Vector2(-50, GameWorld.Instance.Rnd.Next(100, 400));
-                currentDirection = Direction.Right;
-                animator.PlayAnimation("WalkRight");
-                
-            }
-            else
-            {
-                GameObject.Transform.Position = new Vector2(1350, GameWorld.Instance.Rnd.Next(100, 400));
-                currentDirection = Direction.Right;
-                animator.PlayAnimation("WalkLeft");
-            }
             (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
         }
 
+        /// <summary>
+        /// The Enemy's movement
+        /// </summary>
         public void Move()
         {
             if (EnemyHealth <= 0)
@@ -91,14 +121,6 @@ namespace ShootingGame
 
             else if (canMove)
             {
-                if (isSpawned)
-                {
-                    if (GameObject.Transform.Position.X > 100 && currentDirection == Direction.Right)
-                        isSpawned = false;
-                    else if (GameObject.Transform.Position.X < 1100 && currentDirection == Direction.Left)
-                        isSpawned = false;
-                }
-
                 translation = Vector2.Zero;
                 if (EnemyHealth <= 0)
                 {
@@ -134,50 +156,16 @@ namespace ShootingGame
                     randomHolder = GameWorld.Instance.Rnd.Next(0, 4);
                 }
 
-                /*
-                //A reference to the current keyboard state
-                KeyboardState keyState = Keyboard.GetState();        
-                //The current translation of the player
-                //We are restting it to make sure that he stops moving if not keys are pressed
-                translation = Vector2.Zero;
-                //checks for input and adds it to the translation
-                if (EnemyHealth <= 0)
-                    animator.PlayAnimation("Die");
-
-                else if (keyState.IsKeyDown(Keys.W))
-                {
-                    translation += new Vector2(0, -1);
-                    animator.PlayAnimation("WalkBack");
-                }
-                else if (keyState.IsKeyDown(Keys.A))
-                {
-                    translation += new Vector2(-1, 0);
-                    animator.PlayAnimation("WalkLeft");
-                }
-                else if (keyState.IsKeyDown(Keys.S))
-                {
-                    translation += new Vector2(0, 1);
-                    animator.PlayAnimation("WalkFront");
-                }
-                else if (keyState.IsKeyDown(Keys.D))
-                {
-                    translation += new Vector2(1, 0);
-                    animator.PlayAnimation("WalkRight");
-                }
-                else animator.PlayAnimation("Shoot");*/
-
-                //animator.PlayAnimation("Shoot");
-                //Move the player's gameobject framerate independent
+            // Changes the sprite's size and enemy's movement speed according to the position
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.5f - 400 / GameObject.Transform.Position.Y / 5;
                 GameObject.Transform.Position += translation * speed * (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale;
             }
         }
 
-        public void UpdateDirection()
-        {
-            currentDirection = (Direction)GameWorld.Instance.Rnd.Next(5);
-        }
-
+        /// <summary>
+        /// Loads the Enemy's content
+        /// </summary>
+        /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
             effect = content.Load<SoundEffect>("rifleshot");
@@ -185,6 +173,9 @@ namespace ShootingGame
             CreateAnimation();
         }
 
+        /// <summary>
+        /// Creats the Enemy's animations
+        /// </summary>
         public void CreateAnimation()
         {
             animator.CreateAnimation("WalkBack", new Animation(4, 0, 6, 52, 60, 10, Vector2.Zero));
@@ -196,42 +187,47 @@ namespace ShootingGame
             animator.PlayAnimation("Shoot");
         }
 
+        /// <summary>
+        /// The functionality, when the animations "Die" and "Shoot" are done
+        /// </summary>
+        /// <param name="animationName"></param>
         public void OnAnimationDone(string animationName)
         {
+            // Adds score to Player when the enemy dies
             if (animationName.Contains("Die"))
             {
                 GameWorld.Instance.Scores.Add(new Score("+5", (GameObject.GetComponent("Transform") as Transform).Position, Color.White, GameWorld.Instance.CFont));
                 Player.Scores += 5;
                 Replace();
             }
+            // Adds the new Enemybullet object to the game, when the enemy performs a shot
             else if (animationName.Contains("Shoot"))
             {
                 effect.Play();
-                shootsAmount--;
                 GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }
         }
 
+        /// <summary>
+        /// Cheks if there is a collision with PLayerBullets
+        /// </summary>
+        /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
             if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
             {
+                // Reduces the enemy health by current Playerbullet's damage level value
                 EnemyHealth -= (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).DamageLevel;
+
+                // Stops the collision when Enemy is dead
                 if (EnemyHealth < 0)
                 {
                     EnemyHealth = 0;
                     (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
                 }
+                // Makes sure that the PlayerBullet will be deleted from the game
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
             }
-           /* else if (other.GameObject.GetComponent("Enemy") is Enemy)
-            {
-                if(canMove)
-                {
-                    canMove = false;
-                    shootsAmount = GameWorld.Instance.Rnd.Next(1, 3);
-                }
-            }*/
         }
 
         public void Walk()

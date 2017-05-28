@@ -12,7 +12,7 @@ namespace ShootingGame
     abstract class Component
     {
         /// <summary>
-        /// This component's parent GameObject
+        /// The component's parent GameObject
         /// </summary>
         private GameObject gameObject;
 
@@ -33,6 +33,10 @@ namespace ShootingGame
             //Sets the parent
             this.gameObject = gameObject;
         }
+
+        /// <summary>
+        /// The Component's constructor
+        /// </summary>
         public Component()
         {
 
