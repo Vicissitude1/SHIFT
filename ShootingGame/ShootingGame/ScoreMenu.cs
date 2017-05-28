@@ -17,23 +17,85 @@ namespace ShootingGame
     /// </summary>
     class ScoreMenu
     {
+        /// <summary>
+        /// The types of keys
+        /// </summary>
         Keys[] keysToCheck = new Keys[] { Keys.A, Keys.B, Keys.C, Keys.D, Keys.E, Keys.F, Keys.G, Keys.H, Keys.I, Keys.J, Keys.K, Keys.L, Keys.M, Keys.N, Keys.O,
                                           Keys.P, Keys.Q, Keys.R, Keys.S, Keys.T, Keys.U, Keys.V, Keys.W, Keys.X, Keys.Y, Keys.Z, Keys.Back, Keys.Space };
+
+        /// <summary>
+        /// The current Keybord status
+        /// </summary>
         KeyboardState currentKeyboardState;
+
+        /// <summary>
+        /// The previous keybord status
+        /// </summary>
         KeyboardState lastKeyboardState;
+
+        /// <summary>
+        /// Checks if necassery to load the score table from data base
+        /// </summary>
         bool hasToLoadFormDB;
+
+        /// <summary>
+        /// Checks if player can insert his name
+        /// </summary>
         bool canInsertName;
+
+        /// <summary>
+        /// Checks if necassery to play button click sound
+        /// </summary>
         bool canPlaySound;
+
+        /// <summary>
+        /// The Player's name, which has to be added to the score list
+        /// </summary>
         string text;
+
+        /// <summary>
+        /// The current Player's index in the score list
+        /// </summary>
         int insertIndex;
+
+        /// <summary>
+        /// The button's sprite
+        /// </summary>
         Texture2D buttonSprite;
+
+        /// <summary>
+        /// The players list
+        /// </summary>
         List<PlayerListRow> players;
+
+        /// <summary>
+        /// The "Save" button's rectangle
+        /// </summary>
         Rectangle buttonSaveRectangle;
+
+        /// <summary>
+        /// The "Main Menu" button's rectangle
+        /// </summary>
         Rectangle buttonExitRectangle;
-        Rectangle buttonClearRectangle;
+
+        /// <summary>
+        /// The "Save" button's color
+        /// </summary>
         Color buttonSaveColor;
+
+        /// <summary>
+        /// The "Main Menu" button's color
+        /// </summary>
         Color buttonExitColor;
+
+        /// <summary>
+        /// The "Button click" sound effect
+        /// </summary>
         SoundEffect effect;
+
+        /// <summary>
+        /// The current mouse position
+        /// </summary>
         Vector2 mousePosition;
 
         /// <summary>
@@ -73,7 +135,8 @@ namespace ShootingGame
             spriteBatch.DrawString(GameWorld.Instance.CFont, "SAVE ", new Vector2(buttonSaveRectangle.X + 70, buttonSaveRectangle.Y + 15), buttonSaveColor);
             spriteBatch.Draw(buttonSprite, buttonExitRectangle, buttonExitColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "MAIN MENU", new Vector2(buttonExitRectangle.X + 40, buttonExitRectangle.Y + 15), buttonExitColor);
-
+            
+            // Shows on the screen score list
             if (players.Count > 0)
             {
                 int currentPlace = 1;
@@ -101,10 +164,12 @@ namespace ShootingGame
         {
             if (hasToLoadFormDB)
             {
+                // Loads score list from database
                 players = DataBaseClass.Instance.GetPlayersList();
-
+                // Checks if player has some scores
                 if (Player.Scores > 0)
                 {
+                    // Places the player in the score list on the corresponding place
                     if (players.Count > 0)
                     {
                         insertIndex = 0;
@@ -149,10 +214,10 @@ namespace ShootingGame
             }
             MouseState mouseState = Mouse.GetState();
             mousePosition = new Vector2(mouseState.Position.X, mouseState.Position.Y);
-
+            // Checks if one of the buttons conatins the mouse
             buttonSaveColor = buttonSaveRectangle.Contains(mousePosition) && canInsertName && text != "" ? Color.White : Color.LightGray;
             buttonExitColor = (buttonExitRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
-
+            // Checks if one of the buttons is pressed
             if (mouseState.LeftButton == ButtonState.Pressed && buttonSaveRectangle.Contains(mousePosition))
                 ButtonSavePressed();
             else if (mouseState.LeftButton == ButtonState.Pressed && buttonExitRectangle.Contains(mousePosition))
@@ -267,6 +332,11 @@ namespace ShootingGame
             text += newChar;
         }
 
+        /// <summary>
+        /// Makes sure that double click doesn't happen
+        /// </summary>
+        /// <param name="theKey"></param>
+        /// <returns></returns>
         private bool CheckKey(Keys theKey)
         {
             return lastKeyboardState.IsKeyDown(theKey) && currentKeyboardState.IsKeyUp(theKey);
@@ -277,10 +347,12 @@ namespace ShootingGame
         /// </summary>
         public void ButtonSavePressed()
         {
+            // Makes sure that player has name and some scores
             if (players[insertIndex].Name != "" && canInsertName)
             {
                 while (players.Count > 10)
                     players.RemoveAt(10);
+                // Saves score list to the data base
                 DataBaseClass.Instance.SavePlayersList(players);
                 Player.Scores = 0;
                 canInsertName = false;
@@ -293,7 +365,7 @@ namespace ShootingGame
         }
 
         /// <summary>
-        /// Performs exit to the Main Menu
+        /// Performs the exit to the Main Menu
         /// </summary>
         public void ButtonExitPressed()
         {

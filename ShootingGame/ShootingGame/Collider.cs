@@ -9,12 +9,29 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the Collider
+    /// </summary>
     class Collider : Component, IDrawable, ILoadable, IUpdateable
     {
+        /// <summary>
+        /// A reference to the colliders texture
+        /// </summary>
         Texture2D texture2D;
+
+        /// <summary>
+        /// A reference to the boxcolliders spriterenderer
+        /// </summary>
         SpriteRenderer spriteRenderer;
+
+        /// <summary>
+        /// Indicates if this collider needs to check for collisions
+        /// </summary>
         bool doCollisionCheck;
+
         List<Collider> otherColliders = new List<Collider>();
+
+        
         public bool DoCollisionCheck
         {
             set
@@ -23,11 +40,9 @@ namespace ShootingGame
             }
         }
 
-        public Collider(GameObject gameObject) : base(gameObject)
-        {
-            GameWorld.Instance.Colliders.Add(this);
-            doCollisionCheck = true;
-        }
+        /// <summary>
+        /// The colliders collisionbox
+        /// </summary>
         public Rectangle CollisionBox
         {
             get
@@ -37,6 +52,17 @@ namespace ShootingGame
                 (int)(GameObject.Transform.Position.Y + spriteRenderer.Offset.Y), spriteRenderer.Rectangle.Width,
                 spriteRenderer.Rectangle.Height);
             }
+        }
+
+
+        /// <summary>
+        /// The Collider\s constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
+        public Collider(GameObject gameObject) : base(gameObject)
+        {
+            GameWorld.Instance.Colliders.Add(this);
+            doCollisionCheck = true;
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -7,10 +7,17 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the PowerUpObjectBuilder
+    /// </summary>
     class PowerUpObjectBuilder : IBuilder
     {
         GameObject gameObject;
 
+        /// <summary>
+        /// The PowerUpObject's constructor
+        /// </summary>
+        /// <param name="position"></param>
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject(position);

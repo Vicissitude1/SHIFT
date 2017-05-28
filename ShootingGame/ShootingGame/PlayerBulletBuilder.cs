@@ -7,10 +7,17 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the PlayerBulletBuilder
+    /// </summary>
     class PlayerBulletBuilder : IBuilder
     {
         GameObject gameObject;
 
+        /// <summary>
+        /// Builds the GameObject
+        /// </summary>
+        /// <param name="position"></param>
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject(position);

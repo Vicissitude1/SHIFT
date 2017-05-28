@@ -20,16 +20,59 @@ namespace ShootingGame
     /// </summary>
     class PowerUpObject : Component, ICollisionEnter, ILoadable
     {
+        /// <summary>
+        /// The PowerUpObject's movement speed
+        /// </summary>
         int speed;
+
+        /// <summary>
+        /// The PowerUpObject's ingame timer
+        /// </summary>
         int inGameTimer;
+
+        /// <summary>
+        /// The PowerUpObject's outgame timer
+        /// </summary>
         int outGameTimer;
+
+        /// <summary>
+        /// The player's bonus value
+        /// </summary>
         int bonusValue;
+
+        /// <summary>
+        /// Checks if PowerUpObject is in game
+        /// </summary>
         bool isInGame;
+
+        /// <summary>
+        /// Checks if the PowerUpObject's time is expired
+        /// </summary>
         bool isDefeat;
+
+        /// <summary>
+        /// The type of PowerUpObject
+        /// </summary>
         PowerUpType currentPowerUp;
+
+        /// <summary>
+        /// The PowerUpObject's sound effect
+        /// </summary>
         SoundEffect effect;
+
+        /// <summary>
+        /// The PowerUpObject's translation
+        /// </summary>
         Vector2 translation;
+
+        /// <summary>
+        /// The name of bonus
+        /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// The PowerUpObject's thread
+        /// </summary>
         public Thread T { get; private set; }
 
         /// <summary>
@@ -41,7 +84,7 @@ namespace ShootingGame
             isDefeat = false;
             isInGame = false;
             inGameTimer = 0;
-            outGameTimer = 1000;
+            outGameTimer = 500;
             speed = 5;
             T = new Thread(Update);
             T.IsBackground = true;
@@ -58,6 +101,9 @@ namespace ShootingGame
             effect = content.Load<SoundEffect>("powerUp");
         }
 
+        /// <summary>
+        /// Updates the PowerUpObject's movement
+        /// </summary>
         public void Update()
         {
             while (true)
@@ -70,9 +116,12 @@ namespace ShootingGame
 
         public void Move()
         {
+            // When the PowerUpObject is hit
             if (isDefeat)
             {
+                // Gets from data base a corresponding value
                 bonusValue = DataBaseClass.Instance.GetBonusValue(currentPowerUp.ToString(), GameWorld.Instance.Rnd.Next(1,6));
+                // Gives to the player bonus
                 switch (currentPowerUp)
                 {
                     case PowerUpType.Health:
@@ -89,11 +138,10 @@ namespace ShootingGame
                         break;
                 }
                 effect.Play();
-                GameObject.Transform.Position = new Vector2(GameObject.Transform.Position.X, -100);
-                isInGame = false;
-                isDefeat = false;
-                outGameTimer = GameWorld.Instance.Rnd.Next(100, 300);
+                // Replaces the PowerUpObject
+                Replace();
             }
+            // Performs the PowerUpObject's movement when it is ingame
             else if (isInGame)
             {
                 if (GameObject.Transform.Position.Y < 150)
@@ -110,6 +158,7 @@ namespace ShootingGame
                     outGameTimer = GameWorld.Instance.Rnd.Next(100, 300);
                 }
             }
+            // Moves the PowerUpObject up if it was not hit 
             else
             {
                 if (GameObject.Transform.Position.Y > -100)
@@ -120,6 +169,7 @@ namespace ShootingGame
                 else translation = Vector2.Zero;
 
                 outGameTimer--;
+                // Replaces the PowerUpObject when the outgame timer is expired
                 if (outGameTimer <= 0)
                 {
                     isInGame = true;
@@ -130,19 +180,28 @@ namespace ShootingGame
                     Name = currentPowerUp.ToString().Substring(0, 1);
                 }
             }
+            // Performs the PowerUpObject's movement
             GameObject.Transform.Position += translation * speed;
         }
 
+        /// <summary>
+        /// Replaces the PowerUpObject when it is hit or the game is restarted
+        /// </summary>
         public void Replace()
         {
-            GameObject.Transform.Position = new Vector2(200, -100);
-            (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
+            GameObject.Transform.Position = new Vector2(100, -100);
             isInGame = false;
-            outGameTimer = 100;
+            isDefeat = false;
+            outGameTimer = 500;
         }
 
+        /// <summary>
+        /// Makes sure that the PowerUpObject is getting hit by collided player's bullet and the corresponding bullet will be deleted
+        /// </summary>
+        /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
+            // Only if the PowerUpObject is colliding with player's bullet
             if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
             {
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;

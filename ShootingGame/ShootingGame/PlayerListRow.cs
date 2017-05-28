@@ -11,7 +11,14 @@ namespace ShootingGame
     /// </summary>
     class PlayerListRow
     {
+        /// <summary>
+        /// The player's name
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The player's score
+        /// </summary>
         public int Score { get; private set; }
 
         /// <summary>

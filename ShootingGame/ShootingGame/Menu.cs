@@ -13,24 +13,78 @@ using System.Threading.Tasks;
 namespace ShootingGame
 {
     /// <summary>
-    /// Represents the Menu
+    /// Represents the Main Menu
     /// </summary>
     class Menu
     {
+        /// <summary>
+        /// The button's sprite
+        /// </summary>
         Texture2D buttonSprite;
+
+        /// <summary>
+        /// The "Button click" sound effect
+        /// </summary>
         SoundEffect effect;
+
+        /// <summary>
+        /// The "How to play" button's rectangle
+        /// </summary>
         Rectangle buttonHowRectangle;
+
+        /// <summary>
+        /// The "Start game" button's rectangle
+        /// </summary>
         Rectangle buttonStartRectangle;
+
+        /// <summary>
+        /// The "Exit" button's rectangle
+        /// </summary>
         Rectangle buttonExitRectangle;
+
+        /// <summary>
+        /// The "Score" button's rectangle
+        /// </summary>
         Rectangle buttonScoreRectangle;
+
+        /// <summary>
+        /// The "How to play" button's color
+        /// </summary>
         Color buttonHowColor;
+
+        /// <summary>
+        /// The "Start" button's color
+        /// </summary>
         Color buttonStartColor;
+
+        /// <summary>
+        /// The "Exit" button's color
+        /// </summary>
         Color buttonExitColor;
+
+        /// <summary>
+        /// The "Score list" button's color
+        /// </summary>
         Color buttonScoreColor;
+
+        /// <summary>
+        /// The mouse position
+        /// </summary>
         Vector2 mousePosition;
+
+        /// <summary>
+        /// Checks if necassery to play "Button click" sound effect
+        /// </summary>
         bool canPlaySound;
+
+        /// <summary>
+        /// Checks if game is started first time
+        /// </summary>
         bool firstStart;
 
+        /// <summary>
+        /// The Menu's construtor
+        /// </summary>
         public Menu()
         {
             buttonStartColor = buttonExitColor = buttonScoreColor = Color.LightGray;
@@ -38,6 +92,10 @@ namespace ShootingGame
             firstStart = true;
         }
 
+        /// <summary>
+        /// Loads content for the buttons (sprite, sprite rectangles and soun effect)
+        /// </summary>
+        /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
             buttonSprite = content.Load<Texture2D>("redbutton1");
@@ -48,6 +106,10 @@ namespace ShootingGame
             effect = content.Load<SoundEffect>("buttonClick");
         }
 
+        /// <summary>
+        /// Draws the buttons with their names
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void ShowMainMenu(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(GameWorld.Instance.CFont, "**MAIN MENU** ", new Vector2(500, 50), Color.DarkBlue);
@@ -61,16 +123,19 @@ namespace ShootingGame
             spriteBatch.DrawString(GameWorld.Instance.CFont, "EXIT GAME", new Vector2(buttonExitRectangle.X + 45, buttonExitRectangle.Y + 15), buttonExitColor);
         }
 
+        /// <summary>
+        /// Updates the UI
+        /// </summary>
         public void UpdateUI()
         {
             MouseState mouseState = Mouse.GetState();
             mousePosition = new Vector2(mouseState.Position.X, mouseState.Position.Y);
-
+            // Checks if one of the buttons conatins the mouse
             buttonHowColor = (buttonHowRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
             buttonScoreColor = (buttonScoreRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
             buttonStartColor = (buttonStartRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
             buttonExitColor = (buttonExitRectangle.Contains(mousePosition)) ? Color.White : Color.LightGray;
-
+            // Checks if one of the buttons is pressed
             if (mouseState.LeftButton == ButtonState.Pressed && buttonHowRectangle.Contains(mousePosition))
                 ButtonHowPressed();
             else if (mouseState.LeftButton == ButtonState.Pressed && buttonScoreRectangle.Contains(mousePosition))
@@ -83,6 +148,9 @@ namespace ShootingGame
                 canPlaySound = true;
         }
 
+        /// <summary>
+        /// Provides the drawing of the "How to play" image 
+        /// </summary>
         public void ButtonHowPressed()
         {
             if (canPlaySound)
@@ -92,6 +160,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Performs the exit from Main Menu to the Score Menu
+        /// </summary>
         public void ButtonScorePressed()
         {
             GameWorld.Instance.PlayGame = false;
@@ -103,6 +174,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Starts the game
+        /// </summary>
         public void ButtonStartPressed()
         {
             if (firstStart) firstStart = false; 
@@ -117,6 +191,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Perform the exit from the game
+        /// </summary>
         public void ButtonExitPressed()
         {
             GameWorld.Instance.Exit();

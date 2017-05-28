@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the Animation
+    /// </summary>
     class Animation
     {
         /// <summary>

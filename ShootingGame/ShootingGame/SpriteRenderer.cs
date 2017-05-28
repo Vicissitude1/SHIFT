@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the SpriteRenderer
+    /// </summary>
     class SpriteRenderer : Component, IDrawable, ILoadable
     {
         public Rectangle Rectangle { get; set; }
@@ -25,6 +28,12 @@ namespace ShootingGame
 
         Texture2D pixel;
 
+        /// <summary>
+        /// The SpriteRenderer\s constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="spriteName"></param>
+        /// <param name="layerDepth"></param>
         public SpriteRenderer(GameObject gameObject, string spriteName, float layerDepth) : base(gameObject)
         {
             this.spriteName = spriteName;

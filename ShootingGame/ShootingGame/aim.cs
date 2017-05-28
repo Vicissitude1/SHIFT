@@ -11,11 +11,18 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the Aim
+    /// </summary>
     class Aim : Component
     {
         Vector2 mouseCurrentPosition;
         public Thread T { get; private set; }
 
+        /// <summary>
+        /// The Aim\s constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public Aim(GameObject gameObject) : base(gameObject)
         {
             T = new Thread(Update);
