@@ -151,19 +151,19 @@ namespace ShootingGame
             if (shootType == WeaponType.BoltAction)
             {
                 effect = content.Load<SoundEffect>("gunshot");
-                Sprite = content.Load<Texture2D>("pistolsprite");
+                Sprite = content.Load<Texture2D>("pistolsprite1");
             }
             // Loads content for Rifle
             else if (shootType == WeaponType.SemiAuto)
             {
                 effect = content.Load<SoundEffect>("hithard");
-                Sprite = content.Load<Texture2D>("riflesprite");
+                Sprite = content.Load<Texture2D>("riflesprite1");
             }
             // Loads content for MachineGun
             else if (shootType == WeaponType.FullAuto)
             {
                 effect = content.Load<SoundEffect>("gunshot");
-                Sprite = content.Load<Texture2D>("machinegunsprite");
+                Sprite = content.Load<Texture2D>("machinegunsprite1");
             }
             effectGunCocking = content.Load<SoundEffect>("gun-cocking-03");
         }

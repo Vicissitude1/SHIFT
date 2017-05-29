@@ -106,6 +106,19 @@ namespace ShootingGame
             moveTimer = GameWorld.Instance.Rnd.Next(100, 200);
             canMove = true;
             (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
+
+            if (GameWorld.Instance.Rnd.Next(2) == 0)
+            {
+                GameObject.Transform.Position = new Vector2(-50, GameWorld.Instance.Rnd.Next(100, 400));
+                animator.PlayAnimation("WalkRight");
+
+            }
+            else
+            {
+                GameObject.Transform.Position = new Vector2(1350, GameWorld.Instance.Rnd.Next(100, 400));
+                animator.PlayAnimation("WalkLeft");
+            }
+            (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
         }
 
         /// <summary>
