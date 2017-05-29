@@ -191,10 +191,10 @@ namespace ShootingGame
         /// </summary>
         public void CreateAnimation()
         {
-            animator.CreateAnimation("WalkBack", new Animation(4, 68, 0, 35, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("WalkBack", new Animation(4, 68, 0, 35, 60, 12, Vector2.Zero));
             animator.CreateAnimation("WalkLeft", new Animation(4, 140, 0, 42, 60, 10, Vector2.Zero));
             animator.CreateAnimation("WalkRight", new Animation(4, 215, 0, 42, 60, 10, Vector2.Zero));
-            animator.CreateAnimation("WalkFront", new Animation(4, 0, 0, 35, 60, 10, Vector2.Zero));
+            animator.CreateAnimation("WalkFront", new Animation(4, 0, 0, 35, 60, 12, Vector2.Zero));
             animator.CreateAnimation("Shoot", new Animation(2, 285, 11, 35, 60, 5, Vector2.Zero));
             animator.CreateAnimation("Die", new Animation(5, 288, 0, 50, 60, 4, Vector2.Zero));
             animator.PlayAnimation("Shoot");
