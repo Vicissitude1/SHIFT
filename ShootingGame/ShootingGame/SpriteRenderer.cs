@@ -57,22 +57,22 @@ namespace ShootingGame
             else if (GameObject.GetComponent("Player") is Player)
             {
                 spriteBatch.Draw(pixel, new Rectangle(0, 570, 1300, 150), Color.LightGray);
-                spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(370, 580, Player.CurrentWeapon.Sprite.Width, Player.CurrentWeapon.Sprite.Height), Color.White);
-                spriteBatch.DrawString(GameWorld.Instance.BFont, "WEAPON: ", new Vector2(250, 580), Color.Black);
-                spriteBatch.DrawString(GameWorld.Instance.BFont, "TOTAL AMMO: " + Player.CurrentWeapon.TotalAmmo, new Vector2(250, 625), Color.Black);
+                spriteBatch.Draw(Player.CurrentWeapon.Sprite, new Rectangle(300, 630, Player.CurrentWeapon.Sprite.Width, Player.CurrentWeapon.Sprite.Height), Color.White);
+                spriteBatch.DrawString(GameWorld.Instance.BFont, "WEAPON: ", new Vector2(310, 590), Color.Black);
+                spriteBatch.DrawString(GameWorld.Instance.BFont, "TOTAL AMMO: " + Player.CurrentWeapon.TotalAmmo, new Vector2(510, 590), Color.Black);
 
                 if (Player.CurrentWeapon.IsReloading && Player.CurrentWeapon.TotalAmmo > 0)
                 {
-                    spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: RELOADING", new Vector2(250, 650), Color.Red);
-                    spriteBatch.Draw(pixel, new Rectangle(250, 670, Player.CurrentWeapon.CurrentReloadTime / 10, 5), Color.Red);
+                    spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: RELOADING", new Vector2(510, 630), Color.Red);
+                    spriteBatch.Draw(pixel, new Rectangle(510, 650, Player.CurrentWeapon.CurrentReloadTime / 10, 5), Color.Red);
                 }
                 else if (Player.CurrentWeapon.IsReloading && Player.CurrentWeapon.TotalAmmo == 0 && Player.CurrentWeapon.Ammo == 0)
                 {
-                    spriteBatch.DrawString(GameWorld.Instance.BFont, "NO MORE AMMO", new Vector2(250, 650), Color.Red);
+                    spriteBatch.DrawString(GameWorld.Instance.BFont, "NO MORE AMMO", new Vector2(510, 630), Color.Red);
                 }
                 else
                 {
-                    spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: " + Player.CurrentWeapon.Ammo, new Vector2(250, 650), Color.Black);
+                    spriteBatch.DrawString(GameWorld.Instance.BFont, "AMMO: " + Player.CurrentWeapon.Ammo, new Vector2(510, 630), Color.Black);
                     string ammo = "";
                     int i = 0;
                     while (i < Player.CurrentWeapon.Ammo)
@@ -80,15 +80,15 @@ namespace ShootingGame
                         ammo += "!";
                         i++;
                     }
-                    spriteBatch.DrawString(GameWorld.Instance.CFont, ammo, new Vector2(250, 670), Color.DarkOrange);
+                    spriteBatch.DrawString(GameWorld.Instance.CFont, ammo, new Vector2(510, 650), Color.DarkOrange);
                 }
-                spriteBatch.DrawString(GameWorld.Instance.BFont, "HEALTH: " + Player.Health, new Vector2(20, 580), Color.Black);
-                spriteBatch.DrawString(GameWorld.Instance.BFont, "SCORE: " + Player.Scores, new Vector2(20, 620), Color.Black);
-                spriteBatch.DrawString(GameWorld.Instance.BFont, " = " + GameWorld.Instance.Result, new Vector2(800, 610), Color.Black);
-                DrawBorder(spriteBatch, new Rectangle(120, 580, 101, 15), 1, Color.Black);
+                spriteBatch.DrawString(GameWorld.Instance.BFont, "HEALTH: " + Player.Health, new Vector2(20, 590), Color.Black);
+                spriteBatch.DrawString(GameWorld.Instance.BFont, "SCORE: " + Player.Scores, new Vector2(20, 630), Color.Black);
+                spriteBatch.DrawString(GameWorld.Instance.BFont, " = " + GameWorld.Instance.Result, new Vector2(950, 605), Color.Black);
+                DrawBorder(spriteBatch, new Rectangle(130, 590, 101, 15), 1, Color.Black);
                 if (Player.Health >= 30)
-                    spriteBatch.Draw(pixel, new Rectangle(120, 581, Player.Health, 13), Color.Green);
-                else spriteBatch.Draw(pixel, new Rectangle(120, 581, Player.Health, 13), Color.Red);
+                    spriteBatch.Draw(pixel, new Rectangle(130, 591, Player.Health, 13), Color.Green);
+                else spriteBatch.Draw(pixel, new Rectangle(130, 591, Player.Health, 13), Color.Red);
             }
             if (GameObject.GetComponent("PowerUpObject") is PowerUpObject)
             {

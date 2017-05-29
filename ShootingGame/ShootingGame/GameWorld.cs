@@ -289,13 +289,13 @@ namespace ShootingGame
             gameObjects.Add(director.Construct(new Vector2(600, 500)));
 
             director = new Director(new DiceBuilder());
-            GameObject d1 = director.Construct(new Vector2(650, 600));
+            GameObject d1 = director.Construct(new Vector2(800, 590));
             Dice dice1 = (Dice)d1.GetComponent("Dice");
             gameObjects.Add(d1);
-            GameObject d2 = director.Construct(new Vector2(700, 600));
+            GameObject d2 = director.Construct(new Vector2(850, 590));
             Dice dice2 = (Dice)d2.GetComponent("Dice");
             gameObjects.Add(d2);
-            GameObject d3 = director.Construct(new Vector2(750, 600));
+            GameObject d3 = director.Construct(new Vector2(900, 590));
             Dice dice3 = (Dice)d3.GetComponent("Dice");
             gameObjects.Add(d3);
             Dies.Add(dice1);
@@ -463,10 +463,10 @@ namespace ShootingGame
                     }
                 }
 
-                spriteBatch.DrawString(BFont, "RESERV: " + reserve, new Vector2(650, 660), Color.Black);
+                spriteBatch.DrawString(BFont, "RESERV: " + reserve, new Vector2(800, 650), Color.Black);
                 spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
                 spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
-                spriteBatch.Draw(Pixel, new Rectangle(650, 580, diceTimerCounter, 10), Color.Blue);
+                spriteBatch.Draw(Pixel, new Rectangle(800, 640, diceTimerCounter, 5), Color.Blue);
 
                 if (StopGame)
                 {
