@@ -463,7 +463,7 @@ namespace ShootingGame
                     }
                 }
 
-                spriteBatch.DrawString(CFont, "RESERV: " + reserve, new Vector2(650, 660), Color.Black);
+                spriteBatch.DrawString(BFont, "RESERV: " + reserve, new Vector2(650, 660), Color.Black);
                 spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
                 spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
                 spriteBatch.Draw(Pixel, new Rectangle(650, 580, diceTimerCounter, 10), Color.Blue);
