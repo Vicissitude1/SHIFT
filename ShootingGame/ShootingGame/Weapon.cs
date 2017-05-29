@@ -114,7 +114,7 @@ namespace ShootingGame
                 lock(thisLock)
                 {
                     totalAmmo = value;
-                    if (totalAmmo > 200) totalAmmo = 200;
+                    if (totalAmmo > 100) totalAmmo = 100;
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace ShootingGame
             // Loads content for Rifle
             else if (shootType == WeaponType.SemiAuto)
             {
-                effect = content.Load<SoundEffect>("hithard");
+                effect = content.Load<SoundEffect>("gunShot");
                 Sprite = content.Load<Texture2D>("riflesprite1");
             }
             // Loads content for MachineGun
