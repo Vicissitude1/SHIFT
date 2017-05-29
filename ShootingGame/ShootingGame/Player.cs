@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
+    public class Player : Component, ILoadable, IAnimateable, ICollisionStay, ICollisionEnter, ICollisionExit
     {
         static int health;
         Animator animator;

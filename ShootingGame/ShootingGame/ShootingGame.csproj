@@ -111,6 +111,8 @@
     <Compile Include="ScoreMenu.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="SpriteRenderer.cs" />
+    <Compile Include="TestDice.cs" />
+    <Compile Include="TestPlayer.cs" />
     <Compile Include="Transform.cs" />
     <Compile Include="Weapon.cs" />
   </ItemGroup>

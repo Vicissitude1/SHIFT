@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    enum WeaponType { BoltAction, SemiAuto, FullAuto}
+    public enum WeaponType { BoltAction, SemiAuto, FullAuto}
 
-    class Weapon
+    public class Weapon
     {
         int maxAmmo;
         WeaponType shootType;

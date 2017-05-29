@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    abstract class Component
+    public abstract class Component
     {
         private GameObject gameObject;
 

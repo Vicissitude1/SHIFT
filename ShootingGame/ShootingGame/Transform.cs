@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Transform : Component
+    public class Transform : Component
     {
         Vector2 position;
 

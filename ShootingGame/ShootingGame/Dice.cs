@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ShootingGame
 {
-    class Dice : Component, ILoadable, IUpdateable
+    public class Dice : Component, ILoadable, IUpdateable
     {
         private Animator animator;
         public int Ammo { get; set; }
