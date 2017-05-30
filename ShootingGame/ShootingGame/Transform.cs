@@ -9,6 +9,9 @@ namespace ShootingGame
 {
     public class Transform : Component
     {
+        /// <summary>
+        /// The transform's position
+        /// </summary>
         Vector2 position;
 
         public Vector2 Position
@@ -23,6 +26,12 @@ namespace ShootingGame
                 position = value;
             }
         }
+
+        /// <summary>
+        /// The constructor of the transform
+        /// </summary>
+        /// <param name="gameObject">Parent object</param>
+        /// <param name="position">The transform's position</param>
         public Transform(GameObject gameObject, Vector2 position) : base(gameObject)
         {
             this.position = position;

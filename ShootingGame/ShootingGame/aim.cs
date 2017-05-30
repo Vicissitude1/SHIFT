@@ -11,17 +11,34 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the Aim
+    /// </summary>
     class Aim : Component
     {
+        /// <summary>
+        /// Mouse's position
+        /// </summary>
         Vector2 mouseCurrentPosition;
+
+        /// <summary>
+        /// The Aim's thread
+        /// </summary>
         public Thread T { get; private set; }
 
+        /// <summary>
+        /// The Aim's constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public Aim(GameObject gameObject) : base(gameObject)
         {
             T = new Thread(Update);
             T.IsBackground = true;
         }
 
+        /// <summary>
+        /// Updates the Aim's functioanility
+        /// </summary>
         public void Update()
         {
             while(true)
@@ -32,6 +49,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Performs the Aim's movement
+        /// </summary>
         public void Move()
         {
             if (Mouse.GetState().Position.Y <= 450)

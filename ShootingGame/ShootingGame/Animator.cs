@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the Animator
+    /// </summary>
     class Animator : Component, IUpdateable
     {
         /// <summary>
@@ -38,6 +41,10 @@ namespace ShootingGame
 
         public string animationName;
 
+        /// <summary>
+        /// The Animator\s constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public Animator(GameObject gameObject) : base(gameObject)
         {
             fps = 5;

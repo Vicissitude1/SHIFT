@@ -9,14 +9,40 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the EnemyBullet
+    /// </summary>
     class EnemyBullet : Component
     {
+        /// <summary>
+        /// The EnemyBullet's movement speed
+        /// </summary>
         int speed;
+
+        /// <summary>
+        /// The EnemyBullet's translation
+        /// </summary>
         Vector2 translation;
+
+        /// <summary>
+        /// The Enemybullet's aim position
+        /// </summary>
         Vector2 aimPosition;
+
+        /// <summary>
+        /// The EnemyBullet thread
+        /// </summary>
         public Thread T { get; set; }
+
+        /// <summary>
+        /// Checks if the EnemyBullet has to be deleted
+        /// </summary>
         public bool IsRealesed { get; set; }
 
+        /// <summary>
+        /// The EnemyBullet's constructor
+        /// </summary>
+        /// <param name="gameObject"></param>
         public EnemyBullet(GameObject gameObject) : base(gameObject)
         {
             speed = 8;
@@ -29,27 +55,30 @@ namespace ShootingGame
             T.Start();
         }
 
+        /// <summary>
+        /// Updates the EnemyBullet functionality
+        /// </summary>
         public void Update()
         {
             while (true)
                 Move();
         }
 
+        /// <summary>
+        /// Performs the EnemyBullet's movement
+        /// </summary>
         public void Move()
         {
-            if (IsRealesed)
-            {
-                GameWorld.Instance.ObjectsToRemove.Add(GameObject);
-                T.Abort();
-            }
-            if (GameWorld.Instance.StopGame)
-                speed = 20;
+            // Aborts the thread, so it has to be deleted from the game
+            if (IsRealesed) T.Abort();
+            // Makes the movement speed faster when the game is over
+            if (GameWorld.Instance.StopGame) speed = 20;
             Thread.Sleep(30);
+            // Changes the EnemyBullet size according to the position
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.2f - 400 / GameObject.Transform.Position.Y / 3;
             GameObject.Transform.Position += translation * speed;
-
+            // makes sure that EnemyBullet will not move down, if Y-position is more than 550
             if (GameObject.Transform.Position.Y > 550)
-            //if (GameObject.Transform.Position.Y > 550 || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
                 IsRealesed = true;
         }
     }
