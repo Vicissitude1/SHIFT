@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShootingGame", "ShootingGam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighNLowTest", "UnitTestProject1\HighNLowTest.csproj", "{C1DF1B69-7A6C-484A-B8BF-0EDEDD84D00C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeaponTest", "WeaponTest\WeaponTest.csproj", "{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,18 @@ Global
 		{C1DF1B69-7A6C-484A-B8BF-0EDEDD84D00C}.Release|x64.Build.0 = Release|Any CPU
 		{C1DF1B69-7A6C-484A-B8BF-0EDEDD84D00C}.Release|x86.ActiveCfg = Release|Any CPU
 		{C1DF1B69-7A6C-484A-B8BF-0EDEDD84D00C}.Release|x86.Build.0 = Release|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Debug|x64.Build.0 = Debug|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Debug|x86.Build.0 = Debug|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Release|x64.ActiveCfg = Release|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Release|x64.Build.0 = Release|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Release|x86.ActiveCfg = Release|Any CPU
+		{55FE6EE1-6550-49D4-A0B1-9FFB8B03526E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
