@@ -12,7 +12,7 @@ namespace ShootingGame
     /// <summary>
     /// Represents the Collider
     /// </summary>
-    class Collider : Component, IDrawable, ILoadable, IUpdateable
+    public class Collider : Component, IDrawable, ILoadable, IUpdateable
     {
         /// <summary>
         /// A reference to the colliders texture

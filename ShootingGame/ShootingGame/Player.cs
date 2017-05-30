@@ -16,7 +16,7 @@ namespace ShootingGame
     /// <summary>
     /// Represents the Player
     /// </summary>
-    class Player : Component, ILoadable, IAnimateable, ICollisionEnter
+    public class Player : Component, ILoadable, IAnimateable, ICollisionEnter
     {
         /// <summary>
         /// The Player's health
