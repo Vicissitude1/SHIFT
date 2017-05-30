@@ -9,7 +9,7 @@ namespace ShootingGame
     /// <summary>
     /// Represents the PlayerListRow
     /// </summary>
-    class PlayerListRow
+    public class PlayerListRow
     {
         /// <summary>
         /// The player's name

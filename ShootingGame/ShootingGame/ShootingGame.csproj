@@ -100,7 +100,9 @@
     <Compile Include="Animator.cs" />
     <Compile Include="EnemyBullet.cs" />
     <Compile Include="Builder\EnemyBulletBuilder.cs" />
+    <Compile Include="IDataBaseClass.cs" />
     <Compile Include="Menu.cs" />
+    <Compile Include="MockDataBaseClass.cs" />
     <Compile Include="PlayerBullet.cs" />
     <Compile Include="Builder\PlayerBulletBuilder.cs" />
     <Compile Include="Dice.cs" />

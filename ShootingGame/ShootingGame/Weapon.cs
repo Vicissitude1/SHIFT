@@ -27,11 +27,6 @@ namespace ShootingGame
         WeaponType shootType;
 
         /// <summary>
-        /// Max possible ammo
-        /// </summary>
-        int maxAmmo;
-
-        /// <summary>
         /// Shooting timer for Machinegun (FullAuto) 
         /// </summary>
         int autoShootTimer;
@@ -52,11 +47,6 @@ namespace ShootingGame
         bool canShoot;
 
         /// <summary>
-        /// Checks if necassery to play  gun cocking sound effect
-        /// </summary>
-        bool canPlayGunCockingSound;
-
-        /// <summary>
         /// The object that is going to be locked
         /// </summary>
         object thisLock = new object();
@@ -73,6 +63,16 @@ namespace ShootingGame
         SoundEffect effectGunCocking;
 
         /// <summary>
+        /// Checks if necassery to play  gun cocking sound effect
+        /// </summary>
+        public bool CanPlayGunCockingSound { get; set; }
+
+        /// <summary>
+        /// Max possible ammo
+        /// </summary>
+        public int MaxAmmo { get; private set; }
+
+        /// <summary>
         /// Checks if weapon is reloading
         /// </summary>
         public bool IsReloading { get; private set; }
@@ -85,7 +85,7 @@ namespace ShootingGame
         /// <summary>
         /// The weapos ammo
         /// </summary>
-        public int Ammo { get; private set; }
+        public int Ammo { get; set; }
 
         /// <summary>
         /// The bullets damage level
@@ -100,7 +100,7 @@ namespace ShootingGame
         /// <summary>
         /// The weapon's current reloading time
         /// </summary>
-        public int CurrentReloadTime { get; private set; }
+        public int CurrentReloadTime { get; set; }
 
         public int TotalAmmo
         {
@@ -131,14 +131,14 @@ namespace ShootingGame
         {
             this.Name = name;
             this.TotalAmmo = 0;
-            this.maxAmmo = this.Ammo = maxAmmo;
+            this.MaxAmmo = this.Ammo = maxAmmo;
             this.DamageLevel = damageLevel;
             this.reloadTime = this.CurrentReloadTime = reloadTime;
             this.shootType = shootType;
             IsReloading = false;
             autoShootTimer = 0;
             canShoot = false;
-            canPlayGunCockingSound = true;
+            CanPlayGunCockingSound = true;
         }
 
         /// <summary>
@@ -218,20 +218,20 @@ namespace ShootingGame
         public void Reload()
         {
             // Plays gun cocking sound effect
-            if(CurrentReloadTime < reloadTime/2 && canPlayGunCockingSound)
+            if(CurrentReloadTime < reloadTime/2 && CanPlayGunCockingSound)
             {
                 effectGunCocking.Play();
-                canPlayGunCockingSound = false;
+                CanPlayGunCockingSound = false;
             }
             // Removes ammo from total ammo (reserve) in the weapon
             if (CurrentReloadTime <= 0)
             {
                 lock(thisLock)
                 {
-                    if (maxAmmo <= totalAmmo)
+                    if (MaxAmmo <= totalAmmo)
                     {
-                        Ammo = maxAmmo;
-                        totalAmmo -= maxAmmo;
+                        Ammo = MaxAmmo;
+                        totalAmmo -= MaxAmmo;
                     }
                     else
                     {
@@ -241,7 +241,7 @@ namespace ShootingGame
                 }  
                 CurrentReloadTime = reloadTime;
                 IsReloading = false;
-                canPlayGunCockingSound = true;
+                CanPlayGunCockingSound = true;
             }
             else CurrentReloadTime -= 20;   
         }
@@ -252,12 +252,12 @@ namespace ShootingGame
         public void RestartWeapon()
         {
             TotalAmmo = 0;
-            Ammo = maxAmmo;
+            Ammo = MaxAmmo;
             CurrentReloadTime = reloadTime;
             IsReloading = false;
             canShoot = false;
             autoShootTimer = 0;
-            canPlayGunCockingSound = true;
+            CanPlayGunCockingSound = true;
         }
     }
 }
