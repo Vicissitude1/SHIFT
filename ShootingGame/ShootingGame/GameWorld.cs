@@ -22,8 +22,11 @@ namespace ShootingGame
         /// </summary>
         Director director;
 
+        public bool IsTesting { get; set; } = false;
 
-        private int reserve;
+        public int Reserve { get; set; }
+
+        public int Current { get; set; }
         
         /// <summary>
         /// The list of the gameobjects
@@ -463,7 +466,7 @@ namespace ShootingGame
                     }
                 }
 
-                spriteBatch.DrawString(BFont, "RESERV: " + reserve, new Vector2(800, 650), Color.Black);
+                spriteBatch.DrawString(BFont, "RESERV: " + Reserve, new Vector2(800, 650), Color.Black);
                 spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
                 spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
                 spriteBatch.Draw(Pixel, new Rectangle(800, 640, diceTimerCounter, 5), Color.Blue);
@@ -640,37 +643,38 @@ namespace ShootingGame
         public void High()
         {
             HasPressed = true;
-            int current;
-
-            current = Result;
-            Result = 0;
-            foreach (Dice dice in Dies)
+            Current = 0;
+            if (!IsTesting)
             {
-                CurrentDice = RollDices();
-                dice.UpdateDice(CurrentDice);
-            }
-
-            if (current < Result)
-            {
-                Player.CurrentWeapon.TotalAmmo += current + reserve;
-                if (reserve > 0)
+                Current = Result;
+                Result = 0;
+                foreach (Dice dice in Dies)
                 {
-                    reserve = 0;
+                    CurrentDice = RollDices();
+                    dice.UpdateDice(CurrentDice);
+                }
+            }
+            if (Current < Result)
+            {
+                Player.CurrentWeapon.TotalAmmo += Current + Reserve;
+                if (Reserve > 0)
+                {
+                    Reserve = 0;
                 }
 
             }
-            if (current > Result)
+            if (Current > Result)
             {
-                reserve += current;
+                Reserve += Current;
             }
         }
 
         public void Low()
         {
             HasPressed = true;
-            int current;
+            Current = 0;
 
-            current = Result;
+            Current = Result;
             Result = 0;
             foreach (Dice dice in Dies)
             {
@@ -678,17 +682,17 @@ namespace ShootingGame
                 dice.UpdateDice(CurrentDice);
             }
 
-            if (current > Result)
+            if (Current > Result)
             {
-                Player.CurrentWeapon.TotalAmmo += current + reserve;
-                if (reserve > 0)
+                Player.CurrentWeapon.TotalAmmo += Current + Reserve;
+                if (Reserve > 0)
                 {
-                    reserve = 0;
+                    Reserve = 0;
                 }
             }
-            if (current < Result)
+            if (Current < Result)
             {
-                reserve += current;
+                Reserve += Current;
             }
         }
 
