@@ -63,12 +63,20 @@ namespace HighNLowTest
 
 
         [TestMethod]
-        public void TestPlayerInputHigh()
+        public void TestHighIsCorrect()
         {
-            TestPlayer f = new TestPlayer();
-            string input = f.PlayerInput("h");
-            Assert.AreEqual("h", input);
+            GameWorld.Instance.IsTesting = true;
+            TestDice td = new TestDice();
+            GameWorld.Instance.Result = 12;
+            GameWorld.Instance.Reserve = 0;
+            GameWorld.Instance.Current = GameWorld.Instance.Result;
+            GameWorld.Instance.Result = 0;
 
+            GameWorld.Instance.CurrentDice = td.Roll(4) + td.Roll(5) + td.Roll(6);
+            GameWorld.Instance.Result = GameWorld.Instance.CurrentDice;
+            GameWorld.Instance.High();
+            bool result = GameWorld.Instance.CurrentDice == Player.CurrentWeapon.TotalAmmo;
+            Assert.IsTrue(result);
         }
         [TestMethod]
         public void TestPlayerInputLow()
