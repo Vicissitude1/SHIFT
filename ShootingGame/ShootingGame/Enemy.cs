@@ -315,7 +315,7 @@ namespace ShootingGame
                     counter++;
                     break;
             }
-            GameObject.Transform.Position += translation * speed;
+            //GameObject.Transform.Position += translation * speed;
         }
     }
 }
