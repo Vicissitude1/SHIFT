@@ -91,7 +91,7 @@ namespace ShootingGame
         /// <summary>
         /// The current Player's weapon
         /// </summary>
-        public static Weapon CurrentWeapon { get; private set; }
+        public static Weapon CurrentWeapon { get; set; }
 
         /// <summary>
         /// The Player's thread

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeaponTest", "WeaponTest\We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBaseTest", "DataBaseTest\DataBaseTest.csproj", "{9209308E-B368-42E4-B604-7C4FCC0C30F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerUnitTest", "PlayerUnitTest\PlayerUnitTest.csproj", "{015FCA02-1125-41A6-924D-B7208E718CEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,18 @@ Global
 		{9209308E-B368-42E4-B604-7C4FCC0C30F8}.Release|x64.Build.0 = Release|Any CPU
 		{9209308E-B368-42E4-B604-7C4FCC0C30F8}.Release|x86.ActiveCfg = Release|Any CPU
 		{9209308E-B368-42E4-B604-7C4FCC0C30F8}.Release|x86.Build.0 = Release|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Debug|x64.Build.0 = Debug|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Debug|x86.Build.0 = Debug|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Release|x64.ActiveCfg = Release|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Release|x64.Build.0 = Release|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Release|x86.ActiveCfg = Release|Any CPU
+		{015FCA02-1125-41A6-924D-B7208E718CEF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
