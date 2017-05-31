@@ -8,19 +8,26 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Threading;
 using Microsoft.Xna.Framework.Input;
+using ShootingGame.Interfaces;
 
 namespace ShootingGame
 {
-    public class Dice : Component, ILoadable, IUpdateable
+    public class Dice : Component, ILoadable, IUpdateable, IDice
     {
         private Animator animator;
+        private bool isTesting = false;
         public int Ammo { get; set; }
-        private int result = GameWorld.Instance.Result;
+
+        //private int result = GameWorld.Instance.Result;
         private int currentDice;
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
-            GameWorld.Instance.UpPressed = Keyboard.GetState();
+            if (!isTesting)
+            {
+                GameWorld.Instance.UpPressed = Keyboard.GetState();
+            }
+            
             currentDice = Roll();
             GameWorld.Instance.Result += currentDice;
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 0.7f;
@@ -35,7 +42,7 @@ namespace ShootingGame
         public int Roll()
         {
             int roll = GameWorld.Instance.Rnd.Next(1, 7);
-
+            
             return roll;
         }
 

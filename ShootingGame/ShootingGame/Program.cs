@@ -15,7 +15,11 @@ namespace ShootingGame
         static void Main()
         {
             using (var game = GameWorld.Instance)
+            {
+                game.Setup();
                 game.Run();
+            }
+                
         }
     }
 #endif

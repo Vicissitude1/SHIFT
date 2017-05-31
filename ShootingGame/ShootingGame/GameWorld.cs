@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Audio;
 using System;
 using Microsoft.Xna.Framework.Media;
 using System.Threading;
+using ShootingGame.Interfaces;
 
 namespace ShootingGame
 {
@@ -27,7 +28,7 @@ namespace ShootingGame
         public int Reserve { get; set; }
 
         public int Current { get; set; }
-        
+
         /// <summary>
         /// The list of the gameobjects
         /// </summary>
@@ -115,7 +116,7 @@ namespace ShootingGame
         public KeyboardState UpPressed { get; set; }
         private KeyboardState downPressed;
         public bool HasPressed { get; set; } = false;
-        internal List<Dice> Dies { get; set; }
+        public List<IDice> Dies { get; set; }
         public int DiceResult { get; set; }
 
         /// <summary>
@@ -205,7 +206,7 @@ namespace ShootingGame
             get
             {
                 lock (scores)
-                   return scores;
+                    return scores;
             }
         }
 
@@ -215,8 +216,8 @@ namespace ShootingGame
         {
             get
             {
-                lock(enemyBulletsPositions)
-                return enemyBulletsPositions;
+                lock (enemyBulletsPositions)
+                    return enemyBulletsPositions;
             }
         }
 
@@ -224,6 +225,22 @@ namespace ShootingGame
         /// The GameWorld's constructor
         /// </summary>
         private GameWorld()
+        {
+            scoreMenu = new ScoreMenu();
+            gameObjects = new List<GameObject>();
+            objectsToRemove = new List<GameObject>();
+            colliders = new List<Collider>();
+            collidersToRemove = new List<Collider>();
+            scores = new List<Score>();
+            tempScores = new List<Score>();
+            scoresToRemove = new List<Score>();
+            Dies = new List<IDice>();
+            ObjectsToAdd = new List<GameObject>();
+            enemyBulletsPositions = new List<Vector2>();
+            tempEnemyBulletsPositions = new List<Vector2>();
+        }
+
+        public void Setup()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -247,18 +264,7 @@ namespace ShootingGame
             CanAddPlayerBullet = false;
             StopGame = true;
             menu = new Menu();
-            scoreMenu = new ScoreMenu();
-            gameObjects = new List<GameObject>();
-            objectsToRemove = new List<GameObject>();
-            colliders = new List<Collider>();
-            collidersToRemove = new List<Collider>();
-            scores = new List<Score>();
-            tempScores = new List<Score>();
-            scoresToRemove = new List<Score>();
-            Dies = new List<Dice>();
-            ObjectsToAdd = new List<GameObject>();
-            enemyBulletsPositions = new List<Vector2>();
-            tempEnemyBulletsPositions = new List<Vector2>();
+
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
             DataBaseClass.Instance.CreateTables();
@@ -268,16 +274,16 @@ namespace ShootingGame
             // Adds the GameObjects to the game
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 200)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
-            
+
             /*
             for (int i = 0; i < 2; i++)
             {
@@ -326,7 +332,7 @@ namespace ShootingGame
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
-  
+
             menu.LoadContent(Content);
             scoreMenu.LoadContent(Content);
 
@@ -373,7 +379,7 @@ namespace ShootingGame
 
             // TODO: Add your update logic here
 
-            if(Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
+            if (Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
             {
                 PlayGame = false;
                 StopGame = true;
@@ -408,8 +414,8 @@ namespace ShootingGame
                     go.Update();
                 }
                 // Checks if player rolls the dice
-                if(!StopGame && canRollDice)
-                UpdateDiceUI();
+                if (!StopGame && canRollDice)
+                    UpdateDiceUI();
 
                 // Checks if player made a shot
                 UpdatePlayerShot();
@@ -490,7 +496,7 @@ namespace ShootingGame
         public void UpdateLists()
         {
             // Removes scores from list scores to tempscores, it gives more time to access to the list scores
-            lock(scores)
+            lock (scores)
             {
                 if (scores.Count > 0)
                 {
@@ -548,7 +554,7 @@ namespace ShootingGame
                 }
                 collidersToRemove.Clear();
             }
-            
+
         }
 
         /// <summary>
@@ -630,30 +636,22 @@ namespace ShootingGame
             }
             downPressed = k;
         }
-
-        public int RollDices()
-        {
-
-            DiceResult = Rnd.Next(1, 7);
-            Result += DiceResult;
-
-            return DiceResult;
-        }
+        
 
         public void High()
         {
             HasPressed = true;
             Current = 0;
-            if (!IsTesting)
+
+            Current = Result;
+            Result = 0;
+            foreach (Dice dice in Dies)
             {
-                Current = Result;
-                Result = 0;
-                foreach (Dice dice in Dies)
-                {
-                    CurrentDice = RollDices();
-                    dice.UpdateDice(CurrentDice);
-                }
+                CurrentDice = dice.Roll();
+                Result += CurrentDice;
+                dice.UpdateDice(CurrentDice);
             }
+
             if (Current < Result)
             {
                 Player.CurrentWeapon.TotalAmmo += Current + Reserve;
@@ -678,7 +676,8 @@ namespace ShootingGame
             Result = 0;
             foreach (Dice dice in Dies)
             {
-                CurrentDice = RollDices();
+                CurrentDice = dice.Roll();
+                Result += CurrentDice;
                 dice.UpdateDice(CurrentDice);
             }
 
@@ -701,7 +700,7 @@ namespace ShootingGame
         /// </summary>
         public void DiceTimer()
         {
-            while(true)
+            while (true)
             {
                 Thread.Sleep(50);
                 if (diceTimerCounter > 0) diceTimerCounter--;

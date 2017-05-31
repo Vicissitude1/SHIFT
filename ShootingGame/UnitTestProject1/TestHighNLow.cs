@@ -2,6 +2,8 @@
 using ShootingGame;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using ShootingGame.Interfaces;
 
 namespace HighNLowTest
 {
@@ -11,6 +13,7 @@ namespace HighNLowTest
         [TestMethod]
         public void TestRollOneToSix()
         {
+            GameWorld.Instance.IsTesting = true;
             Vector2 position = new Vector2(0,0);
             GameObject go = new GameObject(position);
             Dice d = new Dice(go);
@@ -23,12 +26,13 @@ namespace HighNLowTest
         [TestMethod]
         public void TestThreeDies()
         {
+            GameWorld.Instance.IsTesting = true;
             Vector2 position = new Vector2(0, 0);
             GameObject go = new GameObject(position);
             Dice d = new Dice(go);
-            int a = GameWorld.Instance.RollDices();
-            int b = GameWorld.Instance.RollDices();
-            int c = GameWorld.Instance.RollDices();
+            int a = d.Roll();
+            int b = d.Roll();
+            int c = d.Roll();
             bool result = a + b + c >= 3 && a + b + c <= 18;
             Assert.IsTrue(result);
         }
@@ -36,13 +40,18 @@ namespace HighNLowTest
         [TestMethod]
         public void TestIfHigher()
         {
-            TestDice t = new TestDice();
-            int a = t.Roll(2);
-            int b = t.Roll(4);
-            int c = t.Roll(6);
-            int d = t.Roll(1);
-            int e = t.Roll(3);
-            int f = t.Roll(5);
+            TestDice t1 = new TestDice(2);
+            TestDice t2 = new TestDice(4);
+            TestDice t3 = new TestDice(6);
+            TestDice t4 = new TestDice(1);
+            TestDice t5 = new TestDice(3);
+            TestDice t6 = new TestDice(5);
+            int a = t1.Roll();
+            int b = t2.Roll();
+            int c = t3.Roll();
+            int d = t4.Roll();
+            int e = t5.Roll();
+            int f = t6.Roll();
             bool result = a + b + c > d + e + f;
             Assert.IsTrue(result);
         }
@@ -50,13 +59,18 @@ namespace HighNLowTest
         [TestMethod]
         public void TestIfLower()
         {
-            TestDice t = new TestDice();
-            int a = t.Roll(1);
-            int b = t.Roll(3);
-            int c = t.Roll(5);
-            int d = t.Roll(2);
-            int e = t.Roll(4);
-            int f = t.Roll(6);
+            TestDice t1 = new TestDice(2);
+            TestDice t2 = new TestDice(4);
+            TestDice t3 = new TestDice(6);
+            TestDice t4 = new TestDice(1);
+            TestDice t5 = new TestDice(3);
+            TestDice t6 = new TestDice(5);
+            int a = t1.Roll();
+            int b = t2.Roll();
+            int c = t3.Roll();
+            int d = t4.Roll();
+            int e = t5.Roll();
+            int f = t6.Roll();
             bool result = a + b + c < d + e + f;
             Assert.IsTrue(result);
         }
@@ -65,18 +79,18 @@ namespace HighNLowTest
         [TestMethod]
         public void TestHighIsCorrect()
         {
-            GameWorld.Instance.IsTesting = true;
-            TestDice td = new TestDice();
-            GameWorld.Instance.Result = 12;
-            GameWorld.Instance.Reserve = 0;
-            GameWorld.Instance.Current = GameWorld.Instance.Result;
-            GameWorld.Instance.Result = 0;
-
-            GameWorld.Instance.CurrentDice = td.Roll(4) + td.Roll(5) + td.Roll(6);
-            GameWorld.Instance.Result = GameWorld.Instance.CurrentDice;
+            GameWorld.Instance.Dies = new List<IDice>() { new TestDice(2) };
+            TestDice td1 = new TestDice(6);
+            GameWorld.Instance.Dies.Add(td1);
+            TestDice td2 = new TestDice(6);
+            GameWorld.Instance.Dies.Add(td2);
+            //Vector2 position = new Vector2(0, 0);
+            //GameObject go = new GameObject(position);
+            //Player p = new Player(go);
+            Player.CurrentWeapon = new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction);
             GameWorld.Instance.High();
-            bool result = GameWorld.Instance.CurrentDice == Player.CurrentWeapon.TotalAmmo;
-            Assert.IsTrue(result);
+            int result = Player.CurrentWeapon.TotalAmmo;
+            Assert.AreEqual(12, result);
         }
         [TestMethod]
         public void TestPlayerInputLow()
@@ -88,9 +102,9 @@ namespace HighNLowTest
         [TestMethod]
         public void TestPlayerInputSame()
         {
-            TestDice t = new TestDice();
-            int a = t.Roll(5);
-            int b = t.Roll(5);
+            TestDice t = new TestDice(3);
+            int a = t.Roll();
+            int b = t.Roll();
             bool result = a == b;
             Assert.IsTrue(result);
         }
