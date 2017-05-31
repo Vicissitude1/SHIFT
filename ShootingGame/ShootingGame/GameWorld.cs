@@ -81,6 +81,7 @@ namespace ShootingGame
         /// The grass image
         /// </summary>
         Texture2D grass;
+        Texture2D forest;
 
         /// <summary>
         /// Referance to the Main Menu
@@ -297,7 +298,8 @@ namespace ShootingGame
             background = Content.Load<Texture2D>("sand");
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
-  
+            forest = Content.Load<Texture2D>("forest");
+
             menu.LoadContent(Content);
             scoreMenu.LoadContent(Content);
 
@@ -412,9 +414,10 @@ namespace ShootingGame
             {
                 spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
                 spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
-                spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
-                spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
-                spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
+                spriteBatch.Draw(forest, new Rectangle(-10, 50, forest.Width, forest.Height), Color.White);
+                //spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
+                //spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
+                //spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
 
                 // Draws the gameObjects
                 foreach (GameObject go in gameObjects)
