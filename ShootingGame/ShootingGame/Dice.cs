@@ -15,14 +15,14 @@ namespace ShootingGame
     {
         private Animator animator;
         public int Ammo { get; set; }
-        private int result = GameWorld.Instance.Result;
+        private int result = DiceControl.Result;
         private int currentDice;
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
-            GameWorld.Instance.UpPressed = Keyboard.GetState();
+            DiceControl.UpPressed = Keyboard.GetState();
             currentDice = Roll();
-            GameWorld.Instance.Result += currentDice;
+            DiceControl.Result += currentDice;
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 0.7f;
         }
 
@@ -78,7 +78,7 @@ namespace ShootingGame
 
         public void Update()
         {
-            if (GameWorld.Instance.HasPressed == false)
+            if (DiceControl.HasPressed == false)
             {
                 UpdateDice(currentDice);
             }

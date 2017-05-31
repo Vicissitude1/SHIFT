@@ -98,6 +98,7 @@
     <Compile Include="Builder\AimBuilder.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Animator.cs" />
+    <Compile Include="DiceControl.cs" />
     <Compile Include="EnemyBullet.cs" />
     <Compile Include="Builder\EnemyBulletBuilder.cs" />
     <Compile Include="IDataBaseClass.cs" />
