@@ -8,6 +8,7 @@ namespace ShootingGame.Interfaces
 {
     public interface IDice
     {
-         int Roll();
+        int Roll();
+        void UpdateDice(int n);
     }
 }

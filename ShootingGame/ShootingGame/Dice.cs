@@ -19,13 +19,13 @@ namespace ShootingGame
         public int Ammo { get; set; }
         private int result = DiceControl.Result;
         private int currentDice;
+        
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
             DiceControl.UpPressed = Keyboard.GetState();
             currentDice = Roll();
             DiceControl.Result += currentDice;
-            (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 0.7f;
         }
 
         public void LoadContent(ContentManager content)
@@ -36,7 +36,7 @@ namespace ShootingGame
 
         public int Roll()
         {
-            int roll = GameWorld.Instance.Rnd.Next(1, 7);
+            int roll = DiceControl.R.Next(1, 7);
             
             return roll;
         }
