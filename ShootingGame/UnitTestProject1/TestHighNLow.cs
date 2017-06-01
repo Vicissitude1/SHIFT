@@ -13,7 +13,6 @@ namespace HighNLowTest
         [TestMethod]
         public void TestRollOneToSix()
         {
-            GameWorld.Instance.IsTesting = true;
             Vector2 position = new Vector2(0,0);
             GameObject go = new GameObject(position);
             Dice d = new Dice(go);
@@ -26,7 +25,6 @@ namespace HighNLowTest
         [TestMethod]
         public void TestThreeDies()
         {
-            GameWorld.Instance.IsTesting = true;
             Vector2 position = new Vector2(0, 0);
             GameObject go = new GameObject(position);
             Dice d = new Dice(go);
@@ -79,16 +77,16 @@ namespace HighNLowTest
         [TestMethod]
         public void TestHighIsCorrect()
         {
-            GameWorld.Instance.Dies = new List<IDice>() { new TestDice(2) };
-            TestDice td1 = new TestDice(6);
-            GameWorld.Instance.Dies.Add(td1);
-            TestDice td2 = new TestDice(6);
-            GameWorld.Instance.Dies.Add(td2);
+            //GameWorld.Instance.Dies = new List<IDice>() { new TestDice(2) };
+            //TestDice td1 = new TestDice(6);
+            //GameWorld.Instance.Dies.Add(td1);
+            //TestDice td2 = new TestDice(6);
+            //GameWorld.Instance.Dies.Add(td2);
             //Vector2 position = new Vector2(0, 0);
             //GameObject go = new GameObject(position);
             //Player p = new Player(go);
             Player.CurrentWeapon = new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction);
-            GameWorld.Instance.High();
+            //GameWorld.Instance.High();
             int result = Player.CurrentWeapon.TotalAmmo;
             Assert.AreEqual(12, result);
         }

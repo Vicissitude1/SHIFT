@@ -94,7 +94,7 @@ namespace ShootingGame
         /// </summary>
         ScoreMenu scoreMenu;
 
-        internal List<Dice> Dies { get; set; }
+        internal List<IDice> Dies { get; set; }
 
         DiceControl diceControl;
 
@@ -209,7 +209,6 @@ namespace ShootingGame
             tempScores = new List<Score>();
             scoresToRemove = new List<Score>();
             Dies = new List<IDice>();
-            ObjectsToAdd = new List<GameObject>();
             enemyBulletsPositions = new List<Vector2>();
             tempEnemyBulletsPositions = new List<Vector2>();
         }
@@ -246,7 +245,7 @@ namespace ShootingGame
             scores = new List<Score>();
             tempScores = new List<Score>();
             scoresToRemove = new List<Score>();
-            Dies = new List<Dice>();
+            Dies = new List<IDice>();
             enemyBulletsPositions = new List<Vector2>();
             tempEnemyBulletsPositions = new List<Vector2>();
             Pixel = new Texture2D(GraphicsDevice, 1, 1);

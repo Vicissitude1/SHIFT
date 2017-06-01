@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ShootingGame.Interfaces;
 
 namespace ShootingGame
 {
@@ -33,7 +34,7 @@ namespace ShootingGame
 
         public static bool HasPressed { get; set; } = false;
 
-        internal List<Dice> Dies { get; set; }
+        internal List<IDice> Dies { get; set; }
 
         public int DiceResult { get; set; }
 
@@ -47,7 +48,7 @@ namespace ShootingGame
 
         public int Current { get; set; }
 
-        public DiceControl(List<Dice> dies)
+        public DiceControl(List<IDice> dies)
         {
             Dies = dies;
             canRollDice = true;
@@ -124,7 +125,8 @@ namespace ShootingGame
                 Result = 0;
                 foreach (Dice dice in Dies)
                 {
-                    CurrentDice = RollDices();
+                    CurrentDice = dice.Roll();
+                    Result += CurrentDice;
                     dice.UpdateDice(CurrentDice);
                 }
             }
@@ -152,7 +154,8 @@ namespace ShootingGame
             Result = 0;
             foreach (Dice dice in Dies)
             {
-                CurrentDice = RollDices();
+                CurrentDice = dice.Roll();
+                Result += CurrentDice;
                 dice.UpdateDice(CurrentDice);
             }
 
