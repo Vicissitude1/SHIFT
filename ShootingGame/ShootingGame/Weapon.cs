@@ -42,11 +42,6 @@ namespace ShootingGame
         int reloadTime;
 
         /// <summary>
-        /// Checks if weapon can shoot
-        /// </summary>
-        bool canShoot;
-
-        /// <summary>
         /// The object that is going to be locked
         /// </summary>
         object thisLock = new object();
@@ -63,6 +58,11 @@ namespace ShootingGame
         SoundEffect effectGunCocking;
 
         /// <summary>
+        /// Checks if weapon can shoot
+        /// </summary>
+        public bool CanShoot { get; set; }
+
+        /// <summary>
         /// Checks if necassery to play  gun cocking sound effect
         /// </summary>
         public bool CanPlayGunCockingSound { get; set; }
@@ -75,7 +75,7 @@ namespace ShootingGame
         /// <summary>
         /// Checks if weapon is reloading
         /// </summary>
-        public bool IsReloading { get; private set; }
+        public bool IsReloading { get; set; }
 
         /// <summary>
         /// The weapon's name
@@ -137,7 +137,7 @@ namespace ShootingGame
             this.shootType = shootType;
             IsReloading = false;
             autoShootTimer = 0;
-            canShoot = false;
+            CanShoot = false;
             CanPlayGunCockingSound = true;
         }
 
@@ -179,12 +179,12 @@ namespace ShootingGame
             // Starts the reloading if there is no more ammo in the weapon
             else if (Ammo <= 0 && !IsReloading)
             {
-                canShoot = false;
+                CanShoot = false;
                 IsReloading = true;
                 Reload();
             }
             // Checks UI, if necassery to perform shooting
-            else if (mouseState.LeftButton == ButtonState.Pressed && canShoot && !IsReloading)
+            else if (mouseState.LeftButton == ButtonState.Pressed && CanShoot && !IsReloading)
             {
                 // Performs shooting if Gun or Rifle
                 if (shootType == WeaponType.BoltAction || shootType == WeaponType.SemiAuto)
@@ -193,7 +193,7 @@ namespace ShootingGame
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
                     effect.Play();
-                    canShoot = false;
+                    CanShoot = false;
                 }
                 // Performs shooting if Machinegun
                 else if (shootType == WeaponType.FullAuto)
@@ -209,7 +209,7 @@ namespace ShootingGame
                     }
                 }
             }
-            else if (mouseState.LeftButton == ButtonState.Released) canShoot = true;
+            else if (mouseState.LeftButton == ButtonState.Released) CanShoot = true;
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace ShootingGame
             Ammo = MaxAmmo;
             CurrentReloadTime = reloadTime;
             IsReloading = false;
-            canShoot = false;
+            CanShoot = false;
             autoShootTimer = 0;
             CanPlayGunCockingSound = true;
         }

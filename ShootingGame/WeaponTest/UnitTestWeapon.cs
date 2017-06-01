@@ -156,5 +156,18 @@ namespace WeaponTest
             bool result = w.CanPlayGunCockingSound;
             Assert.IsTrue(result);
         }
+        /*
+        [TestMethod]
+        public void TestMethodUpdateWeaponStatus()
+        {
+            Weapon w = new Weapon("GUN", 7, 25, 500, WeaponType.BoltAction);
+            w.CanPlayGunCockingSound = false;
+            w.Ammo = 0;
+            w.IsReloading = true;
+            w.CanShoot = true;
+            w.UpdateWeaponStatus();
+            bool result = w.CanShoot;
+            Assert.IsFalse(result);
+        }*/
     }
 }
