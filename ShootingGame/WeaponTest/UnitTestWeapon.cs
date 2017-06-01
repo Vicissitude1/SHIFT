@@ -156,18 +156,83 @@ namespace WeaponTest
             bool result = w.CanPlayGunCockingSound;
             Assert.IsTrue(result);
         }
-        /*
+        
         [TestMethod]
-        public void TestMethodUpdateWeaponStatus()
+        public void TestMethodUpdateWeaponStatusCheckCanShoot()
         {
             Weapon w = new Weapon("GUN", 7, 25, 500, WeaponType.BoltAction);
             w.CanPlayGunCockingSound = false;
             w.Ammo = 0;
-            w.IsReloading = true;
+            w.IsReloading = false;
             w.CanShoot = true;
             w.UpdateWeaponStatus();
             bool result = w.CanShoot;
             Assert.IsFalse(result);
-        }*/
+        }
+
+        [TestMethod]
+        public void TestMethodUpdateWeaponStatusCheckIsReloading()
+        {
+            Weapon w = new Weapon("GUN", 7, 25, 500, WeaponType.BoltAction);
+            w.CanPlayGunCockingSound = false;
+            w.Ammo = 0;
+            w.IsReloading = false;
+            w.CanShoot = true;
+            w.UpdateWeaponStatus();
+            bool result = w.IsReloading;
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void TestMethodStartReloading()
+        {
+            Weapon w = new Weapon("GUN", 7, 25, 500, WeaponType.BoltAction);
+            w.CurrentReloadTime = 20;
+            w.CanPlayGunCockingSound = false;
+            w.Ammo = 0;
+            w.TotalAmmo = 1;
+            w.IsReloading = true;
+            w.UpdateWeaponStatus();
+            int result = w.CurrentReloadTime;
+            Assert.AreEqual(0, result);
+        }
+
+        [TestMethod]
+        public void TestMethodStartReloadingIfTotalAmmoIs0()
+        {
+            Weapon w = new Weapon("GUN", 7, 25, 500, WeaponType.BoltAction);
+            w.CurrentReloadTime = 20;
+            w.CanPlayGunCockingSound = false;
+            w.Ammo = 0;
+            w.TotalAmmo = 0;
+            w.IsReloading = true;
+            w.UpdateWeaponStatus();
+            int result = w.CurrentReloadTime;
+            Assert.AreEqual(20, result);
+        }
+
+        [TestMethod]
+        public void TestMethodRestartWeapon()
+        {
+            Weapon w = new Weapon("GUN", 7, 25, 500, WeaponType.BoltAction);
+            w.TotalAmmo = 1;
+            w.Ammo = 0;
+            w.CurrentReloadTime = 0;
+            w.IsReloading = true;
+            w.CanShoot = true;
+            w.CanPlayGunCockingSound = false;
+            w.RestartWeapon();
+            int totalAmmo = w.TotalAmmo;
+            int ammo = w.Ammo;
+            int currentReloadTime = w.CurrentReloadTime;
+            bool isReloading = w.IsReloading;
+            bool canShoot = w.CanShoot;
+            bool CanPlaySound = w.CanPlayGunCockingSound;
+            Assert.AreEqual(0, totalAmmo);
+            Assert.AreEqual(7, ammo);
+            Assert.AreEqual(500, currentReloadTime);
+            Assert.IsFalse(canShoot);
+            Assert.IsTrue(CanPlaySound);
+        }
     }
 }

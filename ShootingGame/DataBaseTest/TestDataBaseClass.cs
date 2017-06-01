@@ -45,6 +45,7 @@ namespace DataBaseTest
             int resultScore1 = newPlayers[0].Score;
             string resultName2 = newPlayers[1].Name;
             int resultScore2 = newPlayers[1].Score;
+            Assert.IsNotNull(newPlayers);
             Assert.AreEqual("player1", resultName1);
             Assert.AreEqual(100, resultScore1);
             Assert.AreEqual("player2", resultName2);
@@ -59,6 +60,7 @@ namespace DataBaseTest
             string resultName1 = weapons[0].Name;
             string resultName2 = weapons[1].Name;
             string resultName3 = weapons[2].Name;
+            Assert.IsNotNull(weapons);
             Assert.AreEqual("GUN", resultName1);
             Assert.AreEqual("RIFLE", resultName2);
             Assert.AreEqual("MACHINEGUN", resultName3);

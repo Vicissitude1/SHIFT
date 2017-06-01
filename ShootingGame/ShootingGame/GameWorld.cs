@@ -531,7 +531,6 @@ namespace ShootingGame
                 }
                 collidersToRemove.Clear();
             }
-
         }
 
         /// <summary>
