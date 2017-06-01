@@ -25,7 +25,6 @@ namespace ShootingGame
             DiceControl.UpPressed = Keyboard.GetState();
             currentDice = Roll();
             DiceControl.Result += currentDice;
-            (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 0.7f;
         }
 
         public void LoadContent(ContentManager content)
@@ -43,12 +42,12 @@ namespace ShootingGame
 
         public void CreateAnimation()
         {
-            animator.CreateAnimation("ShowOne", new Animation(1, 0, 0, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowTwo", new Animation(1, 0, 1, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowThree", new Animation(1, 0, 2, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowFour", new Animation(1, 0, 3, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowFive", new Animation(1, 0, 4, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowSix", new Animation(1, 0, 5, 64, 64, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowOne", new Animation(1, 0, 0, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowTwo", new Animation(1, 0, 1, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowThree", new Animation(1, 0, 2, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowFour", new Animation(1, 46, 0, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowFive", new Animation(1, 46, 1, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowSix", new Animation(1, 46, 2, 46, 46, 1, Vector2.Zero));
             animator.PlayAnimation("ShowSix");
         }
 
