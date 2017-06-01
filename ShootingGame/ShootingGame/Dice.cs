@@ -19,6 +19,7 @@ namespace ShootingGame
         public int Ammo { get; set; }
         private int result = DiceControl.Result;
         private int currentDice;
+        
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
@@ -35,7 +36,7 @@ namespace ShootingGame
 
         public int Roll()
         {
-            int roll = GameWorld.Instance.Rnd.Next(1, 7);
+            int roll = DiceControl.R.Next(1, 7);
             
             return roll;
         }

@@ -10,12 +10,26 @@ namespace HighNLowTest
     [TestClass]
     public class TestHighNLow
     {
+        GameObject go;
+        Vector2 position;
+        Dice d;
+        DiceControl dc;
+        
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            position = new Vector2(0, 0);
+            go = new GameObject(position);
+            d = new Dice(go);
+            dc = new DiceControl(DiceControl.Dies);
+            DiceControl.Dies = new List<IDice>();
+        }
+
         [TestMethod]
         public void TestRollOneToSix()
         {
-            Vector2 position = new Vector2(0,0);
-            GameObject go = new GameObject(position);
-            Dice d = new Dice(go);
+            
             int a = d.Roll();
             bool result = a >= 1 && a <= 6;
             Assert.IsTrue(result);
@@ -25,9 +39,6 @@ namespace HighNLowTest
         [TestMethod]
         public void TestThreeDies()
         {
-            Vector2 position = new Vector2(0, 0);
-            GameObject go = new GameObject(position);
-            Dice d = new Dice(go);
             int a = d.Roll();
             int b = d.Roll();
             int c = d.Roll();
@@ -57,12 +68,12 @@ namespace HighNLowTest
         [TestMethod]
         public void TestIfLower()
         {
-            TestDice t1 = new TestDice(2);
-            TestDice t2 = new TestDice(4);
-            TestDice t3 = new TestDice(6);
-            TestDice t4 = new TestDice(1);
-            TestDice t5 = new TestDice(3);
-            TestDice t6 = new TestDice(5);
+            TestDice t1 = new TestDice(1);
+            TestDice t2 = new TestDice(3);
+            TestDice t3 = new TestDice(5);
+            TestDice t4 = new TestDice(2);
+            TestDice t5 = new TestDice(4);
+            TestDice t6 = new TestDice(6);
             int a = t1.Roll();
             int b = t2.Roll();
             int c = t3.Roll();
@@ -77,70 +88,69 @@ namespace HighNLowTest
         [TestMethod]
         public void TestHighIsCorrect()
         {
-            //GameWorld.Instance.Dies = new List<IDice>() { new TestDice(2) };
-            //TestDice td1 = new TestDice(6);
-            //GameWorld.Instance.Dies.Add(td1);
-            //TestDice td2 = new TestDice(6);
-            //GameWorld.Instance.Dies.Add(td2);
-            //Vector2 position = new Vector2(0, 0);
-            //GameObject go = new GameObject(position);
-            //Player p = new Player(go);
+            TestDice td1 = new TestDice(6);
+            DiceControl.Dies.Add(td1);
+            TestDice td2 = new TestDice(6);
+            DiceControl.Dies.Add(td2);
+            TestDice td3 = new TestDice(6);
+            DiceControl.Dies.Add(td3);
+            dc.Reserve = 0;
+            DiceControl.Result = 12;
             Player.CurrentWeapon = new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction);
-            //GameWorld.Instance.High();
+            dc.High();
             int result = Player.CurrentWeapon.TotalAmmo;
             Assert.AreEqual(12, result);
         }
+
         [TestMethod]
-        public void TestPlayerInputLow()
+        public void TestHighIsIncorrect()
         {
-            TestPlayer f = new TestPlayer();
-            string input = f.PlayerInput("l");
-            Assert.AreEqual("l", input);
+            TestDice td1 = new TestDice(1);
+            DiceControl.Dies.Add(td1);
+            TestDice td2 = new TestDice(1);
+            DiceControl.Dies.Add(td2);
+            TestDice td3 = new TestDice(1);
+            DiceControl.Dies.Add(td3);
+            dc.Reserve = 0;
+            DiceControl.Result = 12;
+            Player.CurrentWeapon = new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction);
+            dc.High();
+            int result = dc.Reserve;
+            Assert.AreEqual(12, result);
         }
+
+        public void TestLowIsCorrect()
+        {
+            TestDice td1 = new TestDice(1);
+            DiceControl.Dies.Add(td1);
+            TestDice td2 = new TestDice(1);
+            DiceControl.Dies.Add(td2);
+            TestDice td3 = new TestDice(1);
+            DiceControl.Dies.Add(td3);
+            dc.Reserve = 0;
+            DiceControl.Result = 12;
+            Player.CurrentWeapon = new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction);
+            dc.Low();
+            int result = Player.CurrentWeapon.TotalAmmo;
+            Assert.AreEqual(12, result);
+        }
+
         [TestMethod]
-        public void TestPlayerInputSame()
+        public void TestLowIsIncorrect()
         {
-            TestDice t = new TestDice(3);
-            int a = t.Roll();
-            int b = t.Roll();
-            bool result = a == b;
-            Assert.IsTrue(result);
+            TestDice td1 = new TestDice(6);
+            DiceControl.Dies.Add(td1);
+            TestDice td2 = new TestDice(6);
+            DiceControl.Dies.Add(td2);
+            TestDice td3 = new TestDice(6);
+            DiceControl.Dies.Add(td3);
+            dc.Reserve = 0;
+            DiceControl.Result = 12;
+            Player.CurrentWeapon = new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction);
+            dc.Low();
+            int result = dc.Reserve;
+            Assert.AreEqual(12, result);
         }
-        //[TestMethod]
-        //public void TestPlayerIsRightHigh()
-        //{
-        //    Vector2 position = new Vector2(0, 0);
-        //    GameObject go = new GameObject(position);
-        //    Player t = new Player(go);
-        //    bool result = t.IsRight(2, "h");
-        //    Assert.IsTrue(result);
-        //}
-        //[TestMethod]
-        //public void TestPlayerIsRightLow()
-        //{
-        //    Vector2 position = new Vector2(0, 0);
-        //    GameObject go = new GameObject(position);
-        //    Player t = new Player(go);
-        //    bool result = t.IsRight(2, "l");
-        //    Assert.IsTrue(result);
-        //}
-        //[TestMethod]
-        //public void TestPlayerIsWrongHigh()
-        //{
-        //    Vector2 position = new Vector2(0, 0);
-        //    GameObject go = new GameObject(position);
-        //    Player t = new Player(go);
-        //    bool result = t.IsRight(2, "h");
-        //    Assert.IsFalse(result);
-        //}
-        //[TestMethod]
-        //public void TestPlayerIsWrongLow()
-        //{
-        //    Vector2 position = new Vector2(0, 0);
-        //    GameObject go = new GameObject(position);
-        //    Player t = new Player(go);
-        //    bool result = t.IsRight(2, "l");
-        //    Assert.IsFalse(result);
-        //}
+        
     }
 }

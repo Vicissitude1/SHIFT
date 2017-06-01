@@ -11,7 +11,7 @@ using ShootingGame.Interfaces;
 
 namespace ShootingGame
 {
-    class DiceControl
+    public class DiceControl
     {
         /// <summary>
         /// The dice timer thread
@@ -34,7 +34,7 @@ namespace ShootingGame
 
         public static bool HasPressed { get; set; } = false;
 
-        internal List<IDice> Dies { get; set; }
+        public static List<IDice> Dies { get; set; }
 
         public int DiceResult { get; set; }
 
@@ -48,6 +48,8 @@ namespace ShootingGame
 
         public int Current { get; set; }
 
+        public static Random R { get; set; } = new Random();
+
         public DiceControl(List<IDice> dies)
         {
             Dies = dies;
@@ -55,12 +57,12 @@ namespace ShootingGame
             diceTimerCounter = 0;
             diceTimerThread = new Thread(Update);
             diceTimerThread.IsBackground = true;
-            diceTimerThread.Start();        
+            diceTimerThread.Start();
         }
 
         public void Update()
         {
-            while(true)
+            while (true)
             {
                 // Checks if player rolls the dice
                 if (!GameWorld.Instance.StopGame && canRollDice)
@@ -106,30 +108,19 @@ namespace ShootingGame
             downPressed = k;
         }
 
-        public int RollDices()
-        {
-
-            DiceResult = GameWorld.Instance.Rnd.Next(1, 7);
-            Result += DiceResult;
-
-            return DiceResult;
-        }
-
         public void High()
         {
             HasPressed = true;
             Current = 0;
-            if (!IsTesting)
+            Current = Result;
+            Result = 0;
+            foreach (IDice dice in Dies)
             {
-                Current = Result;
-                Result = 0;
-                foreach (Dice dice in Dies)
-                {
-                    CurrentDice = dice.Roll();
-                    Result += CurrentDice;
-                    dice.UpdateDice(CurrentDice);
-                }
+                CurrentDice = dice.Roll();
+                Result += CurrentDice;
+                dice.UpdateDice(CurrentDice);
             }
+
             if (Current < Result)
             {
                 Player.CurrentWeapon.TotalAmmo += Current + Reserve;
@@ -152,7 +143,7 @@ namespace ShootingGame
 
             Current = Result;
             Result = 0;
-            foreach (Dice dice in Dies)
+            foreach (IDice dice in Dies)
             {
                 CurrentDice = dice.Roll();
                 Result += CurrentDice;

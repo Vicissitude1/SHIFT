@@ -17,5 +17,10 @@ namespace ShootingGame
         {
             return value;
         }
+
+        public void UpdateDice(int n)
+        {
+            
+        }
     }
 }
