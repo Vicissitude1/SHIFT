@@ -24,7 +24,7 @@ namespace ShootingGame
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject(position);
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "dice", 0));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "thedice", 0));
             gameObject.AddComponent(new Dice(gameObject));
             gameObject.AddComponent(new Animator(gameObject));
         }
