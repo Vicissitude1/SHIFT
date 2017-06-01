@@ -73,7 +73,7 @@ namespace ShootingGame
         /// <param name="gameObject"></param>
         public Enemy(GameObject gameObject) : base(gameObject)
         {
-            speed = 1;
+            speed = 2;
             EnemyHealth = 100;
             T = new Thread(Update);
             T.IsBackground = true;
