@@ -181,41 +181,24 @@ namespace ShootingGame
                 if (Keyboard.GetState().IsKeyDown(Keys.D1))
                 {
                     selectedWeaponIndex = 0;
-                    // Makes possible to change weapon only if it is not selected already
-                    if (currentWeaponIndex != selectedWeaponIndex)
-                    {
-                        canChangeWeapon = false;
-                        effect.Play();
-                        PlayAnimation = false;
-                    }
+                    CheckWeaponSelection();    
                 }
                 // Checks if rifle is selected (button 2 is preassed)
                 else if (Keyboard.GetState().IsKeyDown(Keys.D2))
                 {
                     selectedWeaponIndex = 1;
-                    // Makes possible to change weapon only if it is not selected already
-                    if (currentWeaponIndex != selectedWeaponIndex)
-                    {
-                        canChangeWeapon = false;
-                        effect.Play();
-                        PlayAnimation = false;
-                    }
+                    CheckWeaponSelection();
                 }
                 // Checks if machinegun is selected (button 3 is preassed) 
                 else if (Keyboard.GetState().IsKeyDown(Keys.D3))
                 {
                     selectedWeaponIndex = 2;
-                    // Makes possible to change weapon only if it is not selected already
-                    if (currentWeaponIndex != selectedWeaponIndex)
-                    {
-                        canChangeWeapon = false;
-                        effect.Play();
-                        PlayAnimation = false;
-                    }
+                    CheckWeaponSelection();
                 }
                 // Checks if player is shooting
                 if (CanStartShoot)
                 CurrentWeapon.UpdateWeaponStatus();
+
                 // Plays an animation, corresponding to the status of the selected weapon 
                 if (currentWeaponIndex == 0)
                 {
@@ -231,12 +214,25 @@ namespace ShootingGame
                 {
                     if (PlayAnimation) animator.PlayAnimation("MachineGunShoot");
                     else animator.PlayAnimation("MachineGunIdle");
-                }
-                
+                }     
             }
             else ChangeWeapon();
             //Moves the player's gameobject
             GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
+        }
+
+        /// <summary>
+        /// Checks if selected weapon is not current weapon
+        /// </summary>
+        public void CheckWeaponSelection()
+        {
+            // Makes possible to change weapon only if it is not selected already
+            if (currentWeaponIndex != selectedWeaponIndex)
+            {
+                canChangeWeapon = false;
+                effect.Play();
+                PlayAnimation = false;
+            }
         }
 
         /// <summary>
@@ -341,6 +337,7 @@ namespace ShootingGame
                     currentWeaponIndex = selectedWeaponIndex;
                     CurrentWeapon = weapons[currentWeaponIndex];
                     isChanged = true;
+
                     if (currentWeaponIndex == 0) animator.PlayAnimation("GunIdle");
                     else if (currentWeaponIndex == 1) animator.PlayAnimation("RifleIdle");
                     else if (currentWeaponIndex == 2) animator.PlayAnimation("MachineGunIdle");
