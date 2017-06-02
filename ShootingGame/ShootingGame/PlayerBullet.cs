@@ -66,7 +66,7 @@ namespace ShootingGame
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
             animationDone = false;
-            aimPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+            aimPosition = new Vector2(Mouse.GetState().Position.X - 20, Mouse.GetState().Position.Y);
             T = new Thread(Update);
             T.IsBackground = true;
             T.Start();

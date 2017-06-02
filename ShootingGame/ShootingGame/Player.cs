@@ -218,7 +218,7 @@ namespace ShootingGame
             }
             else ChangeWeapon();
             //Moves the player's gameobject
-            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
+            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 50, GameObject.Transform.Position.Y);
         }
 
         /// <summary>
@@ -258,12 +258,12 @@ namespace ShootingGame
         /// </summary>
         public void CreateAnimation()
         {
-            animator.CreateAnimation("GunIdle", new Animation(1, 20, 0, 60, 90, 1, Vector2.Zero));
-            animator.CreateAnimation("GunShoot", new Animation(6, 20, 1, 62, 90, 30, Vector2.Zero));
-            animator.CreateAnimation("RifleIdle", new Animation(1, 132, 0, 67, 70, 1, Vector2.Zero));
-            animator.CreateAnimation("RifleShoot", new Animation(3, 132, 0, 67, 70, 20, Vector2.Zero));
-            animator.CreateAnimation("MachineGunIdle", new Animation(1, 225, 0, 90, 110, 1, Vector2.Zero));
-            animator.CreateAnimation("MachineGunShoot", new Animation(3, 225, 1, 96, 110, 20, Vector2.Zero));
+            animator.CreateAnimation("GunIdle", new Animation(1, 30, 0, 92, 120, 1, Vector2.Zero));
+            animator.CreateAnimation("GunShoot", new Animation(3, 30, 1, 92, 120, 20, Vector2.Zero));
+            animator.CreateAnimation("RifleIdle", new Animation(1, 157, 0, 92, 120, 1, Vector2.Zero));
+            animator.CreateAnimation("RifleShoot", new Animation(3, 157, 1, 92, 120, 20, Vector2.Zero));
+            animator.CreateAnimation("MachineGunIdle", new Animation(1, 295, 0, 92, 120, 1, Vector2.Zero));
+            animator.CreateAnimation("MachineGunShoot", new Animation(3, 295, 1, 92, 120, 20, Vector2.Zero));
             //Plays an aniamtion to make sure that we have an animation to play
             animator.PlayAnimation("GunIdle");
         }
@@ -316,7 +316,7 @@ namespace ShootingGame
             if (isChanged)
             {
                 // Stops the weapon changing when the Y-position less than 500
-                if(GameObject.Transform.Position.Y <= 500)
+                if(GameObject.Transform.Position.Y <= 470)
                 {
                     isChanged = false;
                     canChangeWeapon = true;

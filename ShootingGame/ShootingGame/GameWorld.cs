@@ -276,7 +276,7 @@ namespace ShootingGame
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(new Vector2(600, 500)));
+            gameObjects.Add(director.Construct(new Vector2(600, 470)));
 
             director = new Director(new DiceBuilder());
             GameObject d1 = director.Construct(new Vector2(800, 590));
@@ -428,7 +428,7 @@ namespace ShootingGame
             spriteBatch.Begin();
             if (PlayGame)
             {
-                spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
+                spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1300, 100), Color.LightBlue);
                 spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
                 spriteBatch.Draw(forest, new Rectangle(-10, 50, forest.Width, forest.Height), Color.White);
                 //spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
@@ -541,7 +541,7 @@ namespace ShootingGame
             if (CanAddPlayerBullet)
             {
                 director = new Director(new PlayerBulletBuilder());
-                GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X, 470));
+                GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X - 7, 470));
                 go.LoadContent(Content);
                 gameObjects.Add(go);
                 CanAddPlayerBullet = false;
