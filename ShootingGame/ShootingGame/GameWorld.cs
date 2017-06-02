@@ -311,7 +311,7 @@ namespace ShootingGame
             CFont = Content.Load<SpriteFont>("CFont"); // 16
             DFont = Content.Load<SpriteFont>("DFont"); // 24
             //background = Content.Load<Texture2D>("DesertCity");
-            background = Content.Load<Texture2D>("sand");
+            background = Content.Load<Texture2D>("thefield");
             sky = Content.Load<Texture2D>("sky");
             grass = Content.Load<Texture2D>("grass");
             forest = Content.Load<Texture2D>("forest");
