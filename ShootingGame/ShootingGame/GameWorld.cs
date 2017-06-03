@@ -250,7 +250,7 @@ namespace ShootingGame
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
             DataBaseClass.Instance.CreateTables();
-            /*
+            
             // Adds the GameObjects to the game
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
@@ -260,7 +260,7 @@ namespace ShootingGame
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
-            */
+            
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
 
@@ -498,7 +498,10 @@ namespace ShootingGame
                 if (go.GetComponent("EnemyBullet") is EnemyBullet)
                 {
                     if (!((go.GetComponent("EnemyBullet") as EnemyBullet).T.IsAlive))
+                    {
+                        EnemyBulletPool.ReleaseObject(go);
                         objectsToRemove.Add(go);
+                    }
                 }
                 else if (go.GetComponent("PlayerBullet") is PlayerBullet)
                 {
@@ -513,6 +516,7 @@ namespace ShootingGame
                 {
                     if ((go.GetComponent("PlayerBullet") is PlayerBullet) || (go.GetComponent("EnemyBullet") is EnemyBullet))
                         collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+
                     gameObjects.Remove(go);
                 }
                 objectsToRemove.Clear();
@@ -562,9 +566,16 @@ namespace ShootingGame
             {
                 foreach (Vector2 position in tempEnemyBulletsPositions)
                 {
+                    /*
                     director = new Director(new EnemyBulletBuilder());
                     GameObject go = director.Construct(position);
                     go.LoadContent(Content);
+                    gameObjects.Add(go);*/
+
+                    GameObject go = EnemyBulletPool.Create(position, Content);
+                    if (!((go.GetComponent("EnemyBullet") as EnemyBullet).T.IsAlive))
+                        (go.GetComponent("EnemyBullet") as EnemyBullet).RestartThread(position);
+                    colliders.Add((go.GetComponent("Collider") as Collider));
                     gameObjects.Add(go);
                 }
                 tempEnemyBulletsPositions.Clear();

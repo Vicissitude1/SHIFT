@@ -81,5 +81,18 @@ namespace ShootingGame
             if (GameObject.Transform.Position.Y > 550)
                 IsRealesed = true;
         }
+
+        public void RestartThread(Vector2 position)
+        {
+            speed = 8;
+            IsRealesed = false;
+            aimPosition = new Vector2(Mouse.GetState().Position.X, 560);
+            GameObject.Transform.Position = position;
+            translation = aimPosition - GameObject.Transform.Position;
+            translation.Normalize();
+            T = new Thread(Update);
+            T.IsBackground = true;
+            T.Start();
+        }
     }
 }

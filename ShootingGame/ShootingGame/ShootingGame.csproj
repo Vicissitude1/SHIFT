@@ -101,6 +101,7 @@
     <Compile Include="DiceControl.cs" />
     <Compile Include="EnemyBullet.cs" />
     <Compile Include="Builder\EnemyBulletBuilder.cs" />
+    <Compile Include="EnemyBulletPool.cs" />
     <Compile Include="IDataBaseClass.cs" />
     <Compile Include="Interfaces\IDice.cs" />
     <Compile Include="Menu.cs" />

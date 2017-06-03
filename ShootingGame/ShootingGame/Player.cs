@@ -290,7 +290,7 @@ namespace ShootingGame
                     // Reduces the Player's health by 1
                     Health--;
                     // Stops the Game, when the Player's health = 0
-                    if (health == 0)
+                    if (health <= 0)
                     {
                         GameWorld.Instance.StopGame = true;
                         CanStartShoot = false;
