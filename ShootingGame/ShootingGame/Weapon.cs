@@ -218,12 +218,12 @@ namespace ShootingGame
         public void Reload()
         {
             // Plays gun cocking sound effect
-            if(CurrentReloadTime < reloadTime/2 && CanPlayGunCockingSound)
+            if(CurrentReloadTime < reloadTime/1.3 && CanPlayGunCockingSound)
             {
                 effectGunCocking.Play();
                 CanPlayGunCockingSound = false;
             }
-            // Removes ammo from total ammo (reserve) in the weapon
+            // Subtracts ammo from total ammo (reserve) to the current ammo
             if (CurrentReloadTime <= 0)
             {
                 lock(thisLock)

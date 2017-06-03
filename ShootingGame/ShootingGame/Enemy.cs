@@ -216,8 +216,8 @@ namespace ShootingGame
             // Adds the new Enemybullet object to the game, when the enemy performs a shot
             else if (animationName.Contains("Shoot"))
             {
-                effect.Play();
                 GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
+                effect.Play();
             }
         }
 
