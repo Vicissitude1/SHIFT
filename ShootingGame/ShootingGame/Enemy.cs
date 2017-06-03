@@ -181,7 +181,7 @@ namespace ShootingGame
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            effect = content.Load<SoundEffect>("rifleshot");
+            effect = content.Load<SoundEffect>("gunshot");
             animator = (Animator)GameObject.GetComponent("Animator");
             CreateAnimation();
         }
@@ -229,17 +229,20 @@ namespace ShootingGame
         {
             if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
             {
-                // Reduces the enemy health by current Playerbullet's damage level value
-                EnemyHealth -= (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).DamageLevel;
-
-                // Stops the collision when Enemy is dead
-                if (EnemyHealth < 0)
+                if((other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).AimPosition.Y + 80 > GameObject.Transform.Position.Y)
                 {
-                    EnemyHealth = 0;
-                    (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
-                }
+                    // Reduces the enemy health by current Playerbullet's damage level value
+                    EnemyHealth -= (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).DamageLevel;
+
+                    // Stops the collision when Enemy is dead
+                    if (EnemyHealth < 0)
+                    {
+                        EnemyHealth = 0;
+                        (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
+                    }
                 // Makes sure that the PlayerBullet will be deleted from the game
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
+                }    
             }
         }
 

@@ -156,7 +156,7 @@ namespace ShootingGame
             // Loads content for Rifle
             else if (shootType == WeaponType.SemiAuto)
             {
-                effect = content.Load<SoundEffect>("gunShot");
+                effect = content.Load<SoundEffect>("rifleshot");
                 Sprite = content.Load<Texture2D>("riflesprite1");
             }
             // Loads content for MachineGun

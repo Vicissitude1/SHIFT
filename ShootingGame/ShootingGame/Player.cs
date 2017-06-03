@@ -336,6 +336,7 @@ namespace ShootingGame
                 {
                     currentWeaponIndex = selectedWeaponIndex;
                     CurrentWeapon = weapons[currentWeaponIndex];
+                    CurrentWeapon.CanShoot = false;
                     isChanged = true;
 
                     if (currentWeaponIndex == 0) animator.PlayAnimation("GunIdle");

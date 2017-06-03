@@ -31,14 +31,14 @@ namespace ShootingGame
         Vector2 translation;
 
         /// <summary>
-        /// The PlayerBullet's aim position
-        /// </summary>
-        Vector2 aimPosition;
-
-        /// <summary>
         /// The reference to the PlayerBullet's animator
         /// </summary>
         Animator animator;
+
+        /// <summary>
+        /// The PlayerBullet's aim position
+        /// </summary>
+        public Vector2 AimPosition { get; private set; }
 
         /// <summary>
         /// The PlayerBullet's damage level
@@ -66,7 +66,7 @@ namespace ShootingGame
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
             animationDone = false;
-            aimPosition = new Vector2(Mouse.GetState().Position.X - 20, Mouse.GetState().Position.Y);
+            AimPosition = new Vector2(Mouse.GetState().Position.X - 20, Mouse.GetState().Position.Y);
             T = new Thread(Update);
             T.IsBackground = true;
             T.Start();
@@ -102,7 +102,7 @@ namespace ShootingGame
             // Makes sure that the Playerbullet has to be deleted when the game is finished
             if (GameWorld.Instance.StopGame)
             {
-                if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y <= aimPosition.Y)
+                if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y <= AimPosition.Y)
                 {
                     speed = 0;
                     animationDone = true;
@@ -118,7 +118,7 @@ namespace ShootingGame
             }
             
             // Checks if the PlayerBullet reached to the aim
-            else if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y < aimPosition.Y)
+            else if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y < AimPosition.Y)
             {
                 IsRealesed = true;
             }

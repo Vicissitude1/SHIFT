@@ -79,9 +79,8 @@ namespace ShootingGame
         Texture2D sky;
 
         /// <summary>
-        /// The grass image
+        /// The forest image
         /// </summary>
-        Texture2D grass;
         Texture2D forest;
 
         /// <summary>
@@ -251,7 +250,7 @@ namespace ShootingGame
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
             DataBaseClass.Instance.CreateTables();
-            
+            /*
             // Adds the GameObjects to the game
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
@@ -261,7 +260,7 @@ namespace ShootingGame
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
-
+            */
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
 
@@ -310,10 +309,8 @@ namespace ShootingGame
             BFont = Content.Load<SpriteFont>("BFont"); // 12
             CFont = Content.Load<SpriteFont>("CFont"); // 16
             DFont = Content.Load<SpriteFont>("DFont"); // 24
-            //background = Content.Load<Texture2D>("DesertCity");
             background = Content.Load<Texture2D>("thefield");
             sky = Content.Load<Texture2D>("sky");
-            grass = Content.Load<Texture2D>("grass");
             forest = Content.Load<Texture2D>("forest");
 
             menu.LoadContent(Content);
@@ -431,9 +428,6 @@ namespace ShootingGame
                 spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1300, 100), Color.LightBlue);
                 spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
                 spriteBatch.Draw(forest, new Rectangle(-10, 50, forest.Width, forest.Height), Color.White);
-                //spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
-                //spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
-                //spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
 
                 // Draws the gameObjects
                 foreach (GameObject go in gameObjects)
