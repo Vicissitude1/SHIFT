@@ -23,7 +23,7 @@ namespace ShootingGame
         bool isSpawned;
         bool canMove;
         int moveTimer;
-        int shootsAmount;
+        int shotsAmount;
         Direction currentDirection;
         SoundEffect effect;
         public int EnemyHealth { get; set; }
@@ -38,7 +38,7 @@ namespace ShootingGame
             T.IsBackground = true;
             canMove = true;
             moveTimer = GameWorld.Instance.Rnd.Next(100, 300);
-            shootsAmount = 2;
+            shotsAmount = 2;
             if (GameObject.Transform.Position.X < 90)
                 currentDirection = Direction.Right;
             else currentDirection = Direction.Left;
@@ -59,7 +59,7 @@ namespace ShootingGame
         {
             isSpawned = true;
             EnemyHealth = 100;
-            moveTimer = GameWorld.Instance.Rnd.Next(100, 200);
+            moveTimer = GameWorld.Instance.Rnd.Next(100, 300);
             canMove = true;
             if (GameWorld.Instance.Rnd.Next(2) == 0)
             {
@@ -89,9 +89,9 @@ namespace ShootingGame
             {
                 if(isSpawned)
                 {
-                    if (GameObject.Transform.Position.X > 100 && currentDirection == Direction.Right)
+                    if (GameObject.Transform.Position.X > 200 && currentDirection == Direction.Right)
                         isSpawned = false;
-                    else if (GameObject.Transform.Position.X < 1100 && currentDirection == Direction.Left)
+                    else if (GameObject.Transform.Position.X < 1000 && currentDirection == Direction.Left)
                         isSpawned = false;
                 }
 
@@ -112,14 +112,14 @@ namespace ShootingGame
                         animator.PlayAnimation("WalkBack");
                         break;
                     case Direction.Left:
-                        if (GameObject.Transform.Position.X < 100 && !isSpawned)
+                        if (GameObject.Transform.Position.X < 100)
                             currentDirection = Direction.Right;
                         translation = Vector2.Zero;
                         translation += new Vector2(-1, 0);
                         animator.PlayAnimation("WalkLeft");
                         break;
                     default:
-                        if (GameObject.Transform.Position.X > 1200 && !isSpawned)
+                        if (GameObject.Transform.Position.X > 1200)
                             currentDirection = Direction.Left;
                         translation = Vector2.Zero;
                         translation += new Vector2(1, 0);
@@ -131,7 +131,7 @@ namespace ShootingGame
                 if (moveTimer == 0)
                 {
                     canMove = false;
-                    shootsAmount = GameWorld.Instance.Rnd.Next(1,3);
+                    shotsAmount = GameWorld.Instance.Rnd.Next(1,3);
                 }        
             }
             else
@@ -139,11 +139,11 @@ namespace ShootingGame
                 translation = Vector2.Zero;
                 animator.PlayAnimation("Shoot");
 
-                if (shootsAmount == 0)
+                if (shotsAmount == 0)
                 {
                     UpdateDirection();
                     canMove = true;
-                    moveTimer = GameWorld.Instance.Rnd.Next(20, 60);
+                    moveTimer = GameWorld.Instance.Rnd.Next(30, 80);
                 }
             }
 
@@ -219,7 +219,7 @@ namespace ShootingGame
             else if (animationName.Contains("Shoot"))
             {
                 effect.Play();
-                shootsAmount--;
+                shotsAmount--;
                 GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }
         }
@@ -243,10 +243,10 @@ namespace ShootingGame
             }
             else if (other.GameObject.GetComponent("Enemy") is Enemy)
             {
-                if(canMove)
+                if(canMove && !isSpawned)
                 {
                     canMove = false;
-                    shootsAmount = GameWorld.Instance.Rnd.Next(1, 3);
+                    shotsAmount = GameWorld.Instance.Rnd.Next(1, 3);
                 }
             }
         }
