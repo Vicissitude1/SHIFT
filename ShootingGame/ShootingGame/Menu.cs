@@ -22,6 +22,8 @@ namespace ShootingGame
         /// </summary>
         Texture2D buttonSprite;
 
+        Texture2D borderSprite;
+
         /// <summary>
         /// The crosshair's sprite
         /// </summary>
@@ -105,6 +107,7 @@ namespace ShootingGame
         {
             buttonSprite = content.Load<Texture2D>("buttonsprite");
             crosshair = content.Load<Texture2D>("SHIFT Crosshair Shoot");
+            borderSprite = content.Load<Texture2D>("border");
             buttonHowRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
             buttonScoreRectangle = new Rectangle(1000, 300, buttonSprite.Width, buttonSprite.Height);
             buttonStartRectangle = new Rectangle(1000, 400, buttonSprite.Width, buttonSprite.Height);
@@ -118,7 +121,7 @@ namespace ShootingGame
         /// <param name="spriteBatch"></param>
         public void ShowMainMenu(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Instance.DFont, "** MAIN MENU ** ", new Vector2(550, 20), Color.DarkBlue);
+            spriteBatch.DrawString(GameWorld.Instance.DFont, "** MAIN MENU ** ", new Vector2(550, 50), Color.DarkBlue);
             spriteBatch.Draw(buttonSprite, buttonHowRectangle, buttonHowColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "HOW TO PLAY", new Vector2(buttonHowRectangle.X + 25, buttonHowRectangle.Y + 15), buttonHowColor);
             spriteBatch.Draw(buttonSprite, buttonScoreRectangle, buttonScoreColor);
@@ -129,7 +132,11 @@ namespace ShootingGame
             spriteBatch.DrawString(GameWorld.Instance.CFont, "EXIT GAME", new Vector2(buttonExitRectangle.X + 45, buttonExitRectangle.Y + 15), buttonExitColor);
 
             if (firstStart)
-                spriteBatch.Draw(crosshair, new Rectangle(450, 300, crosshair.Width, crosshair.Height), Color.White);
+            {
+                spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(100, 200, 800, 410), Color.DarkGray);
+                spriteBatch.Draw(borderSprite, new Rectangle(140, 250, borderSprite.Width, borderSprite.Height), Color.White);
+
+            }
             else
             {
                 spriteBatch.DrawString(GameWorld.Instance.CFont, "   During Gameplay:", new Vector2(100, 180), Color.DarkRed);
