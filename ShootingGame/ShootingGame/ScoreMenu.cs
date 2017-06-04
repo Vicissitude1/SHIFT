@@ -355,6 +355,7 @@ namespace ShootingGame
                 // Saves score list to the data base
                 DataBaseClass.Instance.SavePlayersList(players);
                 Player.Scores = 0;
+                text = "";
                 canInsertName = false;
                 if (canPlaySound)
                 {
@@ -370,7 +371,8 @@ namespace ShootingGame
         public void ButtonExitPressed()
         {
             canInsertName = false;
-            hasToLoadFormDB = true;  
+            hasToLoadFormDB = true;
+            text = "";
             if(canPlaySound)
             {
                 effect.Play();
