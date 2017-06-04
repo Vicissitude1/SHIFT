@@ -7,19 +7,30 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the EnemyBuilder
+    /// </summary>
     class EnemyBuilder : IBuilder
     {
         GameObject gameObject;
 
+        /// <summary>
+        /// Builds the GameObject
+        /// </summary>
+        /// <param name="position"></param>
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject(position);
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "Soldier", 0.5f));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "Soldier1", 0.5f));
             gameObject.AddComponent(new Animator(gameObject));
             gameObject.AddComponent(new Enemy(gameObject));
             gameObject.AddComponent(new Collider(gameObject));
         }
 
+        /// <summary>
+        /// Returns the GameObject
+        /// </summary>
+        /// <returns></returns>
         public GameObject GetResult()
         {
             return gameObject;

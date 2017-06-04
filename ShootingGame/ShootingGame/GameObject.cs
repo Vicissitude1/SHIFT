@@ -9,10 +9,21 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the GameObject
+    /// </summary>
     public class GameObject : Component
     {
+        /// <summary>
+        /// The GameObject's transform
+        /// </summary>
         Transform transform;
+
+        /// <summary>
+        /// A List that contains all components on this GameObject
+        /// </summary>
         List<Component> components;
+
         public Transform Transform
         {
             get
@@ -25,6 +36,9 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// The GameObject's constructor
+        /// </summary>
         public GameObject(Vector2 position)
         {
             components = new List<Component>();
@@ -33,11 +47,20 @@ namespace ShootingGame
             AddComponent(transform);
         }
 
+        /// <summary>
+        /// Adds a component to the GameObject
+        /// </summary>
+        /// <param name="component">The component to add</param>
         public void AddComponent(Component component)
         {
             components.Add(component);
         }
 
+        /// <summary>
+        /// Returns the specified component if it exists
+        /// </summary>
+        /// <param name="component">The component to find</param>
+        /// <returns></returns>
         public Component GetComponent(string component)
         {
             foreach (Component c in components)
@@ -48,6 +71,10 @@ namespace ShootingGame
             return null;
         }
 
+        /// <summary>
+        /// Loads the GameObject's content, this is where we load sounds, sprites etc.
+        /// </summary>
+        /// <param name="content">The Content form the GameWorld</param>
         public void LoadContent(ContentManager content)
         {
             foreach (Component component in components)
@@ -59,8 +86,12 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Updates all the GameObject's components
+        /// </summary>
         public void Update()
         {
+            //Updates all updatable components
             foreach (Component component in components)
             {
                 if (component is IUpdateable)
@@ -70,6 +101,10 @@ namespace ShootingGame
             }
         }
 
+        /// <summary>
+        /// Draws the GameObject
+        /// </summary>
+        /// <param name="spriteBatch">The spritebatch from our GameWorld</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (Component component in components)
@@ -80,6 +115,11 @@ namespace ShootingGame
                 }
             }
         }
+
+        /// <summary>
+        /// Executed when an animation has finished playing
+        /// </summary>
+        /// <param name="animationName">The name of the animation</param>
         public void OnAnimationDone(string animationName)
         {
             foreach (Component component in components)
@@ -91,6 +131,7 @@ namespace ShootingGame
                 }
             }
         }
+
         public void OnCollisionStay(Collider other)
         {
             foreach (Component component in components)
@@ -114,6 +155,7 @@ namespace ShootingGame
                 }
             }
         }
+
         public void OnCollisionEnter(Collider other)
         {
             foreach (Component component in components)

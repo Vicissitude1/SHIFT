@@ -7,10 +7,20 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the EnemyBulletBuilder
+    /// </summary>
     class EnemyBulletBuilder : IBuilder
     {
+        /// <summary>
+        /// The GameObject to build
+        /// </summary>
         GameObject gameObject;
 
+        /// <summary>
+        /// Builds the GameObject
+        /// </summary>
+        /// <param name="position"></param>
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject(position);
@@ -20,6 +30,10 @@ namespace ShootingGame
             gameObject.AddComponent(new Collider(gameObject));
         }
 
+        /// <summary>
+        /// Returns the GameObject
+        /// </summary>
+        /// <returns></returns>
         public GameObject GetResult()
         {
             return gameObject;

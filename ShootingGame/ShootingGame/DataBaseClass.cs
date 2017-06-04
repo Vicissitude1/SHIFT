@@ -8,8 +8,14 @@ using System.IO;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the DataBaseClass
+    /// </summary>
     class DataBaseClass
     {
+        /// <summary>
+        /// The singletone pattern
+        /// </summary>
         static DataBaseClass instance;
 
         public static DataBaseClass Instance
@@ -17,10 +23,14 @@ namespace ShootingGame
             get { return instance ?? (instance = new DataBaseClass()); }
         }
 
+        /// <summary>
+        /// The DataBaseClass's constructor
+        /// </summary>
         private DataBaseClass()
         { }
+
         /// <summary>
-        /// Creates database file and table
+        /// Creates database file with tables, if it doesn't exist
         /// </summary>
         public void CreateTables()
         {
@@ -71,6 +81,10 @@ namespace ShootingGame
             }*/
         }
         
+        /// <summary>
+        /// Returns the score list from database
+        /// </summary>
+        /// <returns></returns>
         public List<PlayerListRow> GetPlayersList()
         {
             List<PlayerListRow> players = new List<PlayerListRow>();
@@ -94,6 +108,10 @@ namespace ShootingGame
             return players;
         }
 
+        /// <summary>
+        /// Saves the score list to data base
+        /// </summary>
+        /// <param name="players"></param>
         public void SavePlayersList(List<PlayerListRow> players)
         {
             try
@@ -115,7 +133,7 @@ namespace ShootingGame
             catch (SQLiteException ex)
             {  }
         }
-
+        /*
         public void ClearPlayersList()
         {
             try
@@ -129,8 +147,12 @@ namespace ShootingGame
             }
             catch (SQLiteException ex)
             { }
-        }
+        }*/
 
+        /// <summary>
+        /// Returns the weapon list from data base
+        /// </summary>
+        /// <returns></returns>
         public Weapon[] GetWeapons()
         {
             Weapon[] weapons = new Weapon[3];
@@ -157,6 +179,12 @@ namespace ShootingGame
             return weapons;
         }
 
+        /// <summary>
+        /// Returns the bonus value from power ups list from data base corresponding to the current type of the power up
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public int GetBonusValue(string name, int id)
         {
             int bonusValue = 0;

@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
+    /// <summary>
+    /// Represents the Component
+    /// </summary>
     public abstract class Component
     {
+        /// <summary>
+        /// The component's parent GameObject
+        /// </summary>
         private GameObject gameObject;
 
         public GameObject GameObject
@@ -17,10 +23,20 @@ namespace ShootingGame
                 return gameObject;
             }
         }
+
+        /// <summary>
+        /// The components constructor
+        /// </summary>
+        /// <param name="gameObject">The parent GameObject</param>
         public Component(GameObject gameObject)
         {
+            //Sets the parent
             this.gameObject = gameObject;
         }
+
+        /// <summary>
+        /// The Component's constructor
+        /// </summary>
         public Component()
         {
 
