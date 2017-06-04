@@ -96,7 +96,7 @@ namespace ShootingGame
 
             DrawBorder(spriteBatch, new Rectangle(10, 580, 240, 100), 2, Color.DarkBlue);
             DrawBorder(spriteBatch, new Rectangle(280, 580, 440, 100), 2, Color.DarkGreen);
-            DrawBorder(spriteBatch, new Rectangle(750, 580, 260, 100), 2, Color.DarkRed);
+            DrawBorder(spriteBatch, new Rectangle(750, 580, 270, 100), 2, Color.DarkRed);
         }
 
         public void LoadContent(ContentManager content)
