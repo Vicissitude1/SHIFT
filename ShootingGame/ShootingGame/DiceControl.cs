@@ -175,7 +175,7 @@ namespace ShootingGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Instance.BFont, " = " + Result, new Vector2(950, 605), Color.Black);
+            spriteBatch.DrawString(GameWorld.Instance.CFont, " = " + Result, new Vector2(950, 605), Color.DarkGoldenrod);
             spriteBatch.DrawString(GameWorld.Instance.BFont, "RESERV: " + Reserve, new Vector2(800, 650), Color.Black);
             spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(800, 640, diceTimerCounter, 5), Color.Blue);
         }

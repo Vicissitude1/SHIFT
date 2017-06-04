@@ -45,7 +45,7 @@ namespace ShootingGame
         /// <param name="gameObject"></param>
         public EnemyBullet(GameObject gameObject) : base(gameObject)
         {
-            speed = 8;
+            speed = 10;
             IsRealesed = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, 560);
             translation = aimPosition - GameObject.Transform.Position;
@@ -72,7 +72,8 @@ namespace ShootingGame
             // Aborts the thread, so it has to be deleted from the game
             if (IsRealesed) T.Abort();
             // Makes the movement speed faster when the game is over
-            if (GameWorld.Instance.StopGame) speed = 20;
+            if (GameWorld.Instance.StopGame) speed = 50;
+
             Thread.Sleep(30);
             // Changes the EnemyBullet size according to the position
             (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 1.2f - 400 / GameObject.Transform.Position.Y / 3;

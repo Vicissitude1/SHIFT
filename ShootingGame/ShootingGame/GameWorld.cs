@@ -446,8 +446,8 @@ namespace ShootingGame
 
                 diceControl.Draw(spriteBatch);
 
-                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
-                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
+                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.DarkSlateGray);
+                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.DarkSlateGray);
                 if (StopGame)
                 {
                     spriteBatch.DrawString(DFont, "GAME OVER!", new Vector2(530, 170), Color.DarkMagenta);
@@ -574,8 +574,10 @@ namespace ShootingGame
 
                     GameObject go = EnemyBulletPool.Create(position, Content);
                     if (!((go.GetComponent("EnemyBullet") as EnemyBullet).T.IsAlive))
+                    {
                         (go.GetComponent("EnemyBullet") as EnemyBullet).RestartThread(position);
-                    colliders.Add((go.GetComponent("Collider") as Collider));
+                        colliders.Add((go.GetComponent("Collider") as Collider));
+                    }
                     gameObjects.Add(go);
                 }
                 tempEnemyBulletsPositions.Clear();

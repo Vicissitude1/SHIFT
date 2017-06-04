@@ -62,7 +62,7 @@ namespace ShootingGame
         /// <param name="gameObject"></param>
         public PlayerBullet(GameObject gameObject) : base(gameObject)
         {
-            speed = 10;
+            speed = 12;
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
             animationDone = false;

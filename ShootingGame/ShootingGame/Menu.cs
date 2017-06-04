@@ -22,6 +22,9 @@ namespace ShootingGame
         /// </summary>
         Texture2D buttonSprite;
 
+        /// <summary>
+        /// The "The border guard" sprite
+        /// </summary>
         Texture2D borderSprite;
 
         /// <summary>
@@ -121,7 +124,7 @@ namespace ShootingGame
         /// <param name="spriteBatch"></param>
         public void ShowMainMenu(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Instance.DFont, "** MAIN MENU ** ", new Vector2(550, 50), Color.DarkBlue);
+            spriteBatch.DrawString(GameWorld.Instance.DFont, "** MAIN MENU ** ", new Vector2(550, 50), Color.DarkGreen);
             spriteBatch.Draw(buttonSprite, buttonHowRectangle, buttonHowColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "HOW TO PLAY", new Vector2(buttonHowRectangle.X + 25, buttonHowRectangle.Y + 15), buttonHowColor);
             spriteBatch.Draw(buttonSprite, buttonScoreRectangle, buttonScoreColor);
@@ -133,7 +136,7 @@ namespace ShootingGame
 
             if (firstStart)
             {
-                spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(100, 200, 800, 410), Color.DarkGray);
+                spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(100, 200, 800, 410), Color.DarkSlateGray);
                 spriteBatch.Draw(borderSprite, new Rectangle(140, 250, borderSprite.Width, borderSprite.Height), Color.White);
 
             }

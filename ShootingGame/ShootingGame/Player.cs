@@ -251,6 +251,7 @@ namespace ShootingGame
             foreach (Weapon w in weapons)
                 w.RestartWeapon();
             CurrentWeapon = weapons[currentWeaponIndex];
+            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 50, 470);
         }
 
         /// <summary>
