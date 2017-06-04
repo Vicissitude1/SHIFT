@@ -36,11 +36,6 @@ namespace ShootingGame
         /// Checks if Enemy can move
         /// </summary>
         bool canMove;
-
-        /// <summary>
-        /// The Enemy's movement timer
-        /// </summary>
-        int moveTimer;
         
         /// <summary>
         /// The Enemy's shot sound effect
@@ -78,7 +73,6 @@ namespace ShootingGame
             T = new Thread(Update);
             T.IsBackground = true;
             canMove = true;
-            moveTimer = GameWorld.Instance.Rnd.Next(100, 300);
             randomHolder = GameWorld.Instance.Rnd.Next(0, 4);
             counter += GameWorld.Instance.Rnd.Next(1, 21);
         }
@@ -103,7 +97,6 @@ namespace ShootingGame
         {
             EnemyHealth = 100;
             counter = 0;
-            moveTimer = GameWorld.Instance.Rnd.Next(100, 200);
             canMove = true;
             (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
 
