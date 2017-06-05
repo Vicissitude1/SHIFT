@@ -74,11 +74,6 @@ namespace ShootingGame
         Texture2D background;
 
         /// <summary>
-        /// The sky image
-        /// </summary>
-        Texture2D sky;
-
-        /// <summary>
         /// The forest image
         /// </summary>
         Texture2D forest;
@@ -310,7 +305,6 @@ namespace ShootingGame
             CFont = Content.Load<SpriteFont>("CFont"); // 16
             DFont = Content.Load<SpriteFont>("DFont"); // 24
             background = Content.Load<Texture2D>("thefield");
-            sky = Content.Load<Texture2D>("sky");
             forest = Content.Load<Texture2D>("forest");
 
             menu.LoadContent(Content);
