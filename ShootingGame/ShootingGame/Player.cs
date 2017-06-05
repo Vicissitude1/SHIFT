@@ -100,7 +100,7 @@ namespace ShootingGame
 
         public static int Health
         {
-            get { return health;}
+            get { return health; }
             set
             {
                 lock (thisLock)
@@ -118,7 +118,7 @@ namespace ShootingGame
         /// <param name="gameObject"></param>
         public Player(GameObject gameObject) : base(gameObject)
         {
-            // gets the array with weapons from data base
+            // gets the array with weapons from database
             weapons = DataBaseClass.Instance.GetWeapons();
             /*
             weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction),
@@ -162,7 +162,7 @@ namespace ShootingGame
         /// </summary>
         public void Update()
         {
-            while(true)
+            while (true)
             {
                 Thread.Sleep(20);
                 if (GameWorld.Instance.PlayGame && !GameWorld.Instance.StopGame)
@@ -181,7 +181,7 @@ namespace ShootingGame
                 if (Keyboard.GetState().IsKeyDown(Keys.D1))
                 {
                     selectedWeaponIndex = 0;
-                    CheckWeaponSelection();    
+                    CheckWeaponSelection();
                 }
                 // Checks if rifle is selected (button 2 is preassed)
                 else if (Keyboard.GetState().IsKeyDown(Keys.D2))
@@ -197,7 +197,7 @@ namespace ShootingGame
                 }
                 // Checks if player is shooting
                 if (CanStartShoot)
-                CurrentWeapon.UpdateWeaponStatus();
+                    CurrentWeapon.UpdateWeaponStatus();
 
                 // Plays an animation, corresponding to the status of the selected weapon 
                 if (currentWeaponIndex == 0)
@@ -214,7 +214,7 @@ namespace ShootingGame
                 {
                     if (PlayAnimation) animator.PlayAnimation("MachineGunShoot");
                     else animator.PlayAnimation("MachineGunIdle");
-                }     
+                }
             }
             else ChangeWeapon();
             //Moves the player's gameobject
@@ -308,7 +308,7 @@ namespace ShootingGame
         public void ChangeWeapon()
         {
             // Makes sure that player cannot shoot
-            if(canShoot) canShoot = false;
+            if (canShoot) canShoot = false;
             // Makes sure that animation will not play
             if (PlayAnimation) PlayAnimation = false;
 
@@ -317,7 +317,7 @@ namespace ShootingGame
             if (isChanged)
             {
                 // Stops the weapon changing when the Y-position less than 500
-                if(GameObject.Transform.Position.Y <= 470)
+                if (GameObject.Transform.Position.Y <= 470)
                 {
                     isChanged = false;
                     canChangeWeapon = true;
@@ -333,7 +333,7 @@ namespace ShootingGame
             else
             {
                 // Performs the changing weapon, corresponding to the UI
-                if(GameObject.Transform.Position.Y > 600)
+                if (GameObject.Transform.Position.Y > 600)
                 {
                     currentWeaponIndex = selectedWeaponIndex;
                     CurrentWeapon = weapons[currentWeaponIndex];

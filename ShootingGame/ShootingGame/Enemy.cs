@@ -36,7 +36,7 @@ namespace ShootingGame
         /// Checks if Enemy can move
         /// </summary>
         bool canMove;
-        
+
         /// <summary>
         /// The Enemy's shot sound effect
         /// </summary>
@@ -82,11 +82,11 @@ namespace ShootingGame
         /// </summary>
         public void Update()
         {
-            while(true)
+            while (true)
             {
                 Thread.Sleep(20);
                 if (GameWorld.Instance.PlayGame && !GameWorld.Instance.StopGame)
-                Move();
+                    Move();
             }
         }
 
@@ -217,14 +217,14 @@ namespace ShootingGame
         }
 
         /// <summary>
-        /// Cheks if there is a collision with PLayerBullets
+        /// Cheks if there is a collision with PlayerBullets
         /// </summary>
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
             if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
             {
-                if((other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).AimPosition.Y + 80 > GameObject.Transform.Position.Y)
+                if ((other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).AimPosition.Y + 80 > GameObject.Transform.Position.Y)
                 {
                     // Reduces the enemy health by current Playerbullet's damage level value
                     EnemyHealth -= (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).DamageLevel;
@@ -237,7 +237,7 @@ namespace ShootingGame
                     }
                 // Makes sure that the PlayerBullet will be deleted from the game
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
-                }    
+                }
             }
         }
 

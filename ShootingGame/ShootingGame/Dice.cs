@@ -14,17 +14,29 @@ namespace ShootingGame
 {
     public class Dice : Component, ILoadable, IUpdateable, IDice
     {
+
         private Animator animator;
-        private bool isTesting = false;
-        public int Ammo { get; set; }
+
+        /// <summary>
+        /// The Result of all three dies.
+        /// </summary>
         private int result = DiceControl.Result;
+
+        /// <summary>
+        /// The number of the current dice
+        /// </summary>
         private int currentDice;
-        
+
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
+            //Keyboard state used for checking if the button is being pressed down.
             DiceControl.UpPressed = Keyboard.GetState();
+
+            //The value of current die is a random number from 1 to 6 on each dice.
             currentDice = Roll();
+
+            // The current dice number is added to the result
             DiceControl.Result += currentDice;
         }
 
@@ -34,13 +46,20 @@ namespace ShootingGame
             CreateAnimation();
         }
 
+        /// <summary>
+        /// A method for rolling a six-sided die.
+        /// </summary>
+        /// <returns></returns>
         public int Roll()
         {
             int roll = DiceControl.R.Next(1, 7);
-            
+
             return roll;
         }
 
+        /// <summary>
+        /// Creates different pictures for the dice.
+        /// </summary>
         public void CreateAnimation()
         {
             animator.CreateAnimation("ShowOne", new Animation(1, 0, 0, 46, 46, 1, Vector2.Zero));
@@ -52,6 +71,10 @@ namespace ShootingGame
             animator.PlayAnimation("ShowSix");
         }
 
+        /// <summary>
+        /// Updates the pictures of the dice to match their values.
+        /// </summary>
+        /// <param name="d"></param>
         public void UpdateDice(int d)
         {
             switch (d)
@@ -77,7 +100,10 @@ namespace ShootingGame
             }
         }
 
-
+        /// <summary>
+        /// Updates the dies' pictures until High or Low is guessed. As not to use CPU power on constantly
+        /// updating their animations in 60 fps.
+        /// </summary>
         public void Update()
         {
             if (DiceControl.HasPressed == false)
