@@ -305,7 +305,7 @@ namespace ShootingGame
                     }
                 }
                 // Makes sure that EnemyBullet has to be deleted from the game
-                (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
+                (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsReleased = true;
             }
         }
 
