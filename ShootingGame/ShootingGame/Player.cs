@@ -59,9 +59,10 @@ namespace ShootingGame
         int speed;
 
         /// <summary>
-        /// The object that is going to be locked
+        /// The objects that are going to be locked
         /// </summary>
         static object thisLock = new object();
+        static object thisLock2 = new object();
 
         /// <summary>
         /// The weapon array
@@ -76,7 +77,7 @@ namespace ShootingGame
         /// <summary>
         /// The Plyer's scores
         /// </summary>
-        public static int Scores { get; set; }
+        static int scores;
 
         /// <summary>
         /// Checks if Player can start shoot
@@ -100,7 +101,7 @@ namespace ShootingGame
 
         public static int Health
         {
-            get { return health; }
+            get { lock (thisLock) { return health; } }
             set
             {
                 lock (thisLock)
@@ -110,6 +111,12 @@ namespace ShootingGame
                     else if (health > 100) health = 100;
                 }
             }
+        }
+
+        public static int Scores
+        {
+            get { lock (thisLock2) { return scores; } }
+            set { lock (thisLock2) { scores = value; } }
         }
 
         /// <summary>
