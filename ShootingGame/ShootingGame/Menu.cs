@@ -23,9 +23,9 @@ namespace ShootingGame
         Texture2D buttonSprite;
 
         /// <summary>
-        /// The "The border guard" sprite
+        /// The "SHIFT" sprite
         /// </summary>
-        Texture2D borderSprite;
+        Texture2D shiftSprite;
 
         /// <summary>
         /// The crosshair's sprite
@@ -110,7 +110,7 @@ namespace ShootingGame
         {
             buttonSprite = content.Load<Texture2D>("buttonsprite");
             crosshair = content.Load<Texture2D>("SHIFT Crosshair Shoot");
-            borderSprite = content.Load<Texture2D>("border");
+            shiftSprite = content.Load<Texture2D>("shiftmenu");
             buttonHowRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
             buttonScoreRectangle = new Rectangle(1000, 300, buttonSprite.Width, buttonSprite.Height);
             buttonStartRectangle = new Rectangle(1000, 400, buttonSprite.Width, buttonSprite.Height);
@@ -137,7 +137,7 @@ namespace ShootingGame
             if (firstStart)
             {
                 spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(100, 200, 800, 410), Color.DarkSlateGray);
-                spriteBatch.Draw(borderSprite, new Rectangle(140, 250, borderSprite.Width, borderSprite.Height), Color.White);
+                spriteBatch.Draw(shiftSprite, new Rectangle(170, 220, shiftSprite.Width, shiftSprite.Height), Color.White);
 
             }
             else
