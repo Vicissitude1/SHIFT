@@ -10,7 +10,7 @@ namespace ShootingGame
     {
         public bool TableIsCreated { get; set; }
 
-        public List<PlayerListRow> players { get; set; } = new List<PlayerListRow>();
+        public List<PlayerListRow> Players { get; set; } = new List<PlayerListRow>();
 
         
         public void CreateTables()
@@ -27,13 +27,13 @@ namespace ShootingGame
 
         public void SavePlayersList(List<PlayerListRow> players)
         {
-            this.players.Clear();
-            this.players.AddRange(players);
+            Players.Clear();
+            Players.AddRange(players);
         }
 
         public List<PlayerListRow> GetPlayersList()
         {
-            return players;
+            return Players;
         }
 
         public Weapon[] GetWeapons()

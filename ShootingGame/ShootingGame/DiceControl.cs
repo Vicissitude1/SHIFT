@@ -26,7 +26,7 @@ namespace ShootingGame
         /// <summary>
         /// The dice roll timer
         /// </summary>
-        int diceTimerCounter;
+        int diceTimer;
 
         /// <summary>
         /// Keyboard State for guessing High
@@ -74,7 +74,7 @@ namespace ShootingGame
         {
             Dies = dies;
             canRollDice = true;
-            diceTimerCounter = 0;
+            diceTimer = 0;
             diceTimerThread = new Thread(Update);
             diceTimerThread.IsBackground = true;
             diceTimerThread.Start();
@@ -104,7 +104,7 @@ namespace ShootingGame
                 {
                     High();
                     canRollDice = false;
-                    diceTimerCounter = 130;
+                    diceTimer = 130;
                 }
 
             }
@@ -120,7 +120,7 @@ namespace ShootingGame
                 {
                     Low();
                     canRollDice = false;
-                    diceTimerCounter = 130;
+                    diceTimer = 130;
                 }
 
             }
@@ -209,7 +209,7 @@ namespace ShootingGame
         /// </summary>
         public void UpdateDiceTimer()
         {
-            if (diceTimerCounter > 0) diceTimerCounter--;
+            if (diceTimer > 0) diceTimer--;
             else if (!canRollDice) canRollDice = true;
         }
 
@@ -217,7 +217,7 @@ namespace ShootingGame
         {
             spriteBatch.DrawString(GameWorld.Instance.CFont, " = " + Result, new Vector2(950, 605), Color.DarkGoldenrod);
             spriteBatch.DrawString(GameWorld.Instance.BFont, "RESERVE: " + Reserve, new Vector2(800, 650), Color.Black);
-            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(800, 640, diceTimerCounter, 5), Color.Blue);
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(800, 640, diceTimer, 5), Color.Blue);
         }
     }
 }

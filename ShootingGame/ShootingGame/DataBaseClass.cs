@@ -23,6 +23,9 @@ namespace ShootingGame
             get { return instance ?? (instance = new DataBaseClass()); }
         }
 
+        /// <summary>
+        /// Checks if created (is used in the mockdatabaseclass)
+        /// </summary>
         public bool TableIsCreated { get; set; }
 
         /// <summary>
