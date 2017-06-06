@@ -23,9 +23,9 @@ namespace ShootingGame
         Texture2D buttonSprite;
 
         /// <summary>
-        /// The "The border guard" sprite
+        /// The "SHIFT" sprite
         /// </summary>
-        Texture2D borderSprite;
+        Texture2D shiftSprite;
 
         /// <summary>
         /// The crosshair's sprite
@@ -110,7 +110,7 @@ namespace ShootingGame
         {
             buttonSprite = content.Load<Texture2D>("buttonsprite");
             crosshair = content.Load<Texture2D>("SHIFT Crosshair Shoot");
-            borderSprite = content.Load<Texture2D>("border");
+            shiftSprite = content.Load<Texture2D>("shiftmenu");
             buttonHowRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);
             buttonScoreRectangle = new Rectangle(1000, 300, buttonSprite.Width, buttonSprite.Height);
             buttonStartRectangle = new Rectangle(1000, 400, buttonSprite.Width, buttonSprite.Height);
@@ -124,7 +124,7 @@ namespace ShootingGame
         /// <param name="spriteBatch"></param>
         public void ShowMainMenu(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Instance.DFont, "** MAIN MENU ** ", new Vector2(550, 50), Color.DarkGreen);
+            spriteBatch.DrawString(GameWorld.Instance.DFont, "** MAIN MENU ** ", new Vector2(550, 50), Color.DarkSlateGray);
             spriteBatch.Draw(buttonSprite, buttonHowRectangle, buttonHowColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "HOW TO PLAY", new Vector2(buttonHowRectangle.X + 25, buttonHowRectangle.Y + 15), buttonHowColor);
             spriteBatch.Draw(buttonSprite, buttonScoreRectangle, buttonScoreColor);
@@ -137,7 +137,8 @@ namespace ShootingGame
             if (firstStart)
             {
                 spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(100, 200, 800, 410), Color.DarkSlateGray);
-                spriteBatch.Draw(borderSprite, new Rectangle(140, 250, borderSprite.Width, borderSprite.Height), Color.White);
+                //DrawBorder(spriteBatch, new Rectangle(100, 200, 800, 410), 5, Color.DarkSlateGray);
+                spriteBatch.Draw(shiftSprite, new Rectangle(170, 220, shiftSprite.Width, shiftSprite.Height), Color.White);
 
             }
             else
@@ -240,6 +241,18 @@ namespace ShootingGame
                 effect.Play();
                 canPlaySound = false;
             }
+        }
+
+        public void DrawBorder(SpriteBatch spriteBatch, Rectangle rectangleToDraw, int thicknessOfBorder, Color borderColor)
+        {
+            // Draw top line
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(rectangleToDraw.X, rectangleToDraw.Y, rectangleToDraw.Width, thicknessOfBorder), borderColor);
+            // Draw left line
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(rectangleToDraw.X - thicknessOfBorder, rectangleToDraw.Y, thicknessOfBorder, rectangleToDraw.Height), borderColor);
+            // Draw right line
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle((rectangleToDraw.X + rectangleToDraw.Width - thicknessOfBorder), rectangleToDraw.Y, thicknessOfBorder, rectangleToDraw.Height), borderColor);
+            // Draw bottom line
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(rectangleToDraw.X, rectangleToDraw.Y + rectangleToDraw.Height - thicknessOfBorder, rectangleToDraw.Width, thicknessOfBorder), borderColor);
         }
     }
 }

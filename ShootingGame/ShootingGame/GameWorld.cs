@@ -524,7 +524,7 @@ namespace ShootingGame
             if (CanAddPlayerBullet)
             {
                 director = new Director(new PlayerBulletBuilder());
-                GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X - 7, 470));
+                GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X - 5, 470));
                 go.LoadContent(Content);
                 gameObjects.Add(go);
                 CanAddPlayerBullet = false;
