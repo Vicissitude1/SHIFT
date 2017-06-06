@@ -124,7 +124,7 @@ namespace ShootingGame
         /// <param name="spriteBatch"></param>
         public void ShowMainMenu(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(GameWorld.Instance.DFont, "** MAIN MENU ** ", new Vector2(550, 50), Color.DarkGreen);
+            spriteBatch.DrawString(GameWorld.Instance.DFont, "** MAIN MENU ** ", new Vector2(550, 50), Color.DarkSlateGray);
             spriteBatch.Draw(buttonSprite, buttonHowRectangle, buttonHowColor);
             spriteBatch.DrawString(GameWorld.Instance.CFont, "HOW TO PLAY", new Vector2(buttonHowRectangle.X + 25, buttonHowRectangle.Y + 15), buttonHowColor);
             spriteBatch.Draw(buttonSprite, buttonScoreRectangle, buttonScoreColor);
@@ -137,6 +137,7 @@ namespace ShootingGame
             if (firstStart)
             {
                 spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(100, 200, 800, 410), Color.DarkSlateGray);
+                //DrawBorder(spriteBatch, new Rectangle(100, 200, 800, 410), 5, Color.DarkSlateGray);
                 spriteBatch.Draw(shiftSprite, new Rectangle(170, 220, shiftSprite.Width, shiftSprite.Height), Color.White);
 
             }
@@ -240,6 +241,18 @@ namespace ShootingGame
                 effect.Play();
                 canPlaySound = false;
             }
+        }
+
+        public void DrawBorder(SpriteBatch spriteBatch, Rectangle rectangleToDraw, int thicknessOfBorder, Color borderColor)
+        {
+            // Draw top line
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(rectangleToDraw.X, rectangleToDraw.Y, rectangleToDraw.Width, thicknessOfBorder), borderColor);
+            // Draw left line
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(rectangleToDraw.X - thicknessOfBorder, rectangleToDraw.Y, thicknessOfBorder, rectangleToDraw.Height), borderColor);
+            // Draw right line
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle((rectangleToDraw.X + rectangleToDraw.Width - thicknessOfBorder), rectangleToDraw.Y, thicknessOfBorder, rectangleToDraw.Height), borderColor);
+            // Draw bottom line
+            spriteBatch.Draw(GameWorld.Instance.Pixel, new Rectangle(rectangleToDraw.X, rectangleToDraw.Y + rectangleToDraw.Height - thicknessOfBorder, rectangleToDraw.Width, thicknessOfBorder), borderColor);
         }
     }
 }
