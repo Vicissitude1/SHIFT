@@ -66,7 +66,7 @@ namespace ShootingGame
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
             animationDone = false;
-            AimPosition = new Vector2(Mouse.GetState().Position.X - 20, Mouse.GetState().Position.Y);
+            AimPosition = new Vector2(Mouse.GetState().Position.X - 8, Mouse.GetState().Position.Y + 10);
             T = new Thread(Update);
             T.IsBackground = true;
             T.Start();
@@ -114,6 +114,7 @@ namespace ShootingGame
             else if (IsRealesed)
             {
                 speed = GameObject.Transform.Position.Y < 120 ? 0 : 1;
+                //speed = 0;
                 animator.PlayAnimation("Expl");
             }
             
@@ -139,8 +140,8 @@ namespace ShootingGame
         /// </summary>
         public void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 15, 15, 1, Vector2.Zero));
-            animator.CreateAnimation("Expl", new Animation(3, 19, 0, 16, 20, 15, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 10, 10, 1, Vector2.Zero));
+            animator.CreateAnimation("Expl", new Animation(3, 19, 0, 18, 18, 20, Vector2.Zero));
             animator.PlayAnimation("Idle");
         }
 
