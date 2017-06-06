@@ -16,7 +16,6 @@ namespace ShootingGame
         {
             using (var game = GameWorld.Instance)
             {
-                game.Setup();
                 game.Run();
             }
                 

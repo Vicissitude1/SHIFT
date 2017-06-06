@@ -22,7 +22,7 @@ namespace ShootingGame
         /// Referance to the Director class
         /// </summary>
         Director director;
-        
+
         /// <summary>
         /// The list of the gameobjects
         /// </summary>
@@ -64,7 +64,7 @@ namespace ShootingGame
         List<Vector2> enemyBulletsPositions;
 
         /// <summary>
-        /// The list of positions of new EnemyBollets used in the game loop
+        /// The list of positions of new EnemyBullets used in the game loop
         /// </summary>
         List<Vector2> tempEnemyBulletsPositions;
 
@@ -88,13 +88,19 @@ namespace ShootingGame
         /// </summary>
         ScoreMenu scoreMenu;
 
+        /// <summary>
+        /// List of Dice under the IDice interface.
+        /// </summary>
         internal List<IDice> Dies { get; set; }
 
+        /// <summary>
+        /// Referance to DiceControl
+        /// </summary>
         DiceControl diceControl;
 
 
         /// <summary>
-        /// Checks if necassery to replace some GameObjects when the game is restarted
+        /// Checks if necessary to replace some GameObjects when the game is restarted
         /// </summary>
         public bool ReplaceObjects { get; set; }
 
@@ -194,21 +200,6 @@ namespace ShootingGame
         /// </summary>
         private GameWorld()
         {
-            scoreMenu = new ScoreMenu();
-            gameObjects = new List<GameObject>();
-            objectsToRemove = new List<GameObject>();
-            colliders = new List<Collider>();
-            collidersToRemove = new List<Collider>();
-            scores = new List<Score>();
-            tempScores = new List<Score>();
-            scoresToRemove = new List<Score>();
-            Dies = new List<IDice>();
-            enemyBulletsPositions = new List<Vector2>();
-            tempEnemyBulletsPositions = new List<Vector2>();
-        }
-
-        public void Setup()
-        {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferWidth = 1300;
@@ -245,7 +236,7 @@ namespace ShootingGame
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
             DataBaseClass.Instance.CreateTables();
-            
+
             // Adds the GameObjects to the game
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
@@ -255,7 +246,7 @@ namespace ShootingGame
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
 
