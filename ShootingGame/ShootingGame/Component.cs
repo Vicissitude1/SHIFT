@@ -9,7 +9,7 @@ namespace ShootingGame
     /// <summary>
     /// Represents the Component
     /// </summary>
-    abstract class Component
+    public abstract class Component
     {
         /// <summary>
         /// The component's parent GameObject

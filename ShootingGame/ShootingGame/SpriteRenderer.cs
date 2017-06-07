@@ -84,8 +84,7 @@ namespace ShootingGame
                 }
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "HEALTH: " + Player.Health, new Vector2(20, 590), Color.Black);
                 spriteBatch.DrawString(GameWorld.Instance.BFont, "SCORE: " + Player.Scores, new Vector2(20, 630), Color.Black);
-                spriteBatch.DrawString(GameWorld.Instance.BFont, " = " + GameWorld.Instance.Result, new Vector2(950, 605), Color.Black);
-                DrawBorder(spriteBatch, new Rectangle(130, 590, 101, 15), 1, Color.Black);
+                DrawBorder(spriteBatch, new Rectangle(130, 590, 101, 15), 1, Color.DarkSlateGray);
                 if (Player.Health >= 30)
                     spriteBatch.Draw(pixel, new Rectangle(130, 591, Player.Health, 13), Color.Green);
                 else spriteBatch.Draw(pixel, new Rectangle(130, 591, Player.Health, 13), Color.Red);
@@ -94,6 +93,10 @@ namespace ShootingGame
             {
                 spriteBatch.DrawString(GameWorld.Instance.CFont, (GameObject.GetComponent("PowerUpObject") as PowerUpObject).Name, new Vector2(GameObject.Transform.Position.X + 17, GameObject.Transform.Position.Y + 10), Color.Yellow);
             }
+
+            DrawBorder(spriteBatch, new Rectangle(10, 580, 240, 100), 2, Color.DarkBlue);
+            DrawBorder(spriteBatch, new Rectangle(280, 580, 440, 100), 2, Color.DarkGreen);
+            DrawBorder(spriteBatch, new Rectangle(750, 580, 270, 100), 2, Color.DarkRed);
         }
 
         public void LoadContent(ContentManager content)

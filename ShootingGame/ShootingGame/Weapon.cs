@@ -14,22 +14,17 @@ namespace ShootingGame
     /// <summary>
     /// Types of weapon
     /// </summary>
-    enum WeaponType { BoltAction, SemiAuto, FullAuto}
+    public enum WeaponType { BoltAction, SemiAuto, FullAuto}
 
     /// <summary>
     /// Represents the Weapon
     /// </summary>
-    class Weapon
+    public class Weapon
     {
         /// <summary>
         /// Type of weapon
         /// </summary>
         WeaponType shootType;
-
-        /// <summary>
-        /// Max possible ammo
-        /// </summary>
-        int maxAmmo;
 
         /// <summary>
         /// Shooting timer for Machinegun (FullAuto) 
@@ -45,16 +40,6 @@ namespace ShootingGame
         /// Reloading time
         /// </summary>
         int reloadTime;
-
-        /// <summary>
-        /// Checks if weapon can shoot
-        /// </summary>
-        bool canShoot;
-
-        /// <summary>
-        /// Checks if necassery to play  gun cocking sound effect
-        /// </summary>
-        bool canPlayGunCockingSound;
 
         /// <summary>
         /// The object that is going to be locked
@@ -73,9 +58,24 @@ namespace ShootingGame
         SoundEffect effectGunCocking;
 
         /// <summary>
+        /// Checks if weapon can shoot
+        /// </summary>
+        public bool CanShoot { get; set; }
+
+        /// <summary>
+        /// Checks if necassery to play  gun cocking sound effect
+        /// </summary>
+        public bool CanPlayGunCockingSound { get; set; }
+
+        /// <summary>
+        /// Max possible ammo
+        /// </summary>
+        public int MaxAmmo { get; private set; }
+
+        /// <summary>
         /// Checks if weapon is reloading
         /// </summary>
-        public bool IsReloading { get; private set; }
+        public bool IsReloading { get; set; }
 
         /// <summary>
         /// The weapon's name
@@ -85,7 +85,7 @@ namespace ShootingGame
         /// <summary>
         /// The weapos ammo
         /// </summary>
-        public int Ammo { get; private set; }
+        public int Ammo { get; set; }
 
         /// <summary>
         /// The bullets damage level
@@ -100,7 +100,7 @@ namespace ShootingGame
         /// <summary>
         /// The weapon's current reloading time
         /// </summary>
-        public int CurrentReloadTime { get; private set; }
+        public int CurrentReloadTime { get; set; }
 
         public int TotalAmmo
         {
@@ -131,14 +131,14 @@ namespace ShootingGame
         {
             this.Name = name;
             this.TotalAmmo = 0;
-            this.maxAmmo = this.Ammo = maxAmmo;
+            this.MaxAmmo = this.Ammo = maxAmmo;
             this.DamageLevel = damageLevel;
             this.reloadTime = this.CurrentReloadTime = reloadTime;
             this.shootType = shootType;
             IsReloading = false;
             autoShootTimer = 0;
-            canShoot = false;
-            canPlayGunCockingSound = true;
+            CanShoot = false;
+            CanPlayGunCockingSound = true;
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace ShootingGame
             // Loads content for Rifle
             else if (shootType == WeaponType.SemiAuto)
             {
-                effect = content.Load<SoundEffect>("gunShot");
+                effect = content.Load<SoundEffect>("rifleshot");
                 Sprite = content.Load<Texture2D>("riflesprite1");
             }
             // Loads content for MachineGun
@@ -179,12 +179,12 @@ namespace ShootingGame
             // Starts the reloading if there is no more ammo in the weapon
             else if (Ammo <= 0 && !IsReloading)
             {
-                canShoot = false;
+                CanShoot = false;
                 IsReloading = true;
                 Reload();
             }
             // Checks UI, if necassery to perform shooting
-            else if (mouseState.LeftButton == ButtonState.Pressed && canShoot && !IsReloading)
+            else if (mouseState.LeftButton == ButtonState.Pressed && CanShoot && !IsReloading)
             {
                 // Performs shooting if Gun or Rifle
                 if (shootType == WeaponType.BoltAction || shootType == WeaponType.SemiAuto)
@@ -193,7 +193,7 @@ namespace ShootingGame
                     Ammo--;
                     GameWorld.Instance.CanAddPlayerBullet = true;
                     effect.Play();
-                    canShoot = false;
+                    CanShoot = false;
                 }
                 // Performs shooting if Machinegun
                 else if (shootType == WeaponType.FullAuto)
@@ -209,7 +209,7 @@ namespace ShootingGame
                     }
                 }
             }
-            else if (mouseState.LeftButton == ButtonState.Released) canShoot = true;
+            else if (mouseState.LeftButton == ButtonState.Released) CanShoot = true;
         }
 
         /// <summary>
@@ -218,20 +218,20 @@ namespace ShootingGame
         public void Reload()
         {
             // Plays gun cocking sound effect
-            if(CurrentReloadTime < reloadTime/2 && canPlayGunCockingSound)
+            if(CurrentReloadTime < reloadTime/1.3 && CanPlayGunCockingSound)
             {
                 effectGunCocking.Play();
-                canPlayGunCockingSound = false;
+                CanPlayGunCockingSound = false;
             }
-            // Removes ammo from total ammo (reserve) in the weapon
+            // Subtracts ammo from total ammo (reserve) to the current ammo
             if (CurrentReloadTime <= 0)
             {
                 lock(thisLock)
                 {
-                    if (maxAmmo <= totalAmmo)
+                    if (MaxAmmo <= totalAmmo)
                     {
-                        Ammo = maxAmmo;
-                        totalAmmo -= maxAmmo;
+                        Ammo = MaxAmmo;
+                        totalAmmo -= MaxAmmo;
                     }
                     else
                     {
@@ -241,7 +241,7 @@ namespace ShootingGame
                 }  
                 CurrentReloadTime = reloadTime;
                 IsReloading = false;
-                canPlayGunCockingSound = true;
+                CanPlayGunCockingSound = true;
             }
             else CurrentReloadTime -= 20;   
         }
@@ -252,12 +252,12 @@ namespace ShootingGame
         public void RestartWeapon()
         {
             TotalAmmo = 0;
-            Ammo = maxAmmo;
+            Ammo = MaxAmmo;
             CurrentReloadTime = reloadTime;
             IsReloading = false;
-            canShoot = false;
+            CanShoot = false;
             autoShootTimer = 0;
-            canPlayGunCockingSound = true;
+            CanPlayGunCockingSound = true;
         }
     }
 }

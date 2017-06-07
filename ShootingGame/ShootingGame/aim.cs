@@ -54,11 +54,12 @@ namespace ShootingGame
         /// </summary>
         public void Move()
         {
-            if (Mouse.GetState().Position.Y <= 450)
-                mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
-            else mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, 450);
+            mouseCurrentPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
 
-            GameObject.Transform.Position = new Vector2(mouseCurrentPosition.X - 50, mouseCurrentPosition.Y - 50);
+            if (mouseCurrentPosition.Y > 450)
+                mouseCurrentPosition.Y = 450;
+              
+                GameObject.Transform.Position = new Vector2(mouseCurrentPosition.X - 49, mouseCurrentPosition.Y - 50);
         }
     }
 }

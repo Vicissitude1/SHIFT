@@ -31,14 +31,14 @@ namespace ShootingGame
         Vector2 translation;
 
         /// <summary>
-        /// The PlayerBullet's aim position
-        /// </summary>
-        Vector2 aimPosition;
-
-        /// <summary>
         /// The reference to the PlayerBullet's animator
         /// </summary>
         Animator animator;
+
+        /// <summary>
+        /// The PlayerBullet's aim position
+        /// </summary>
+        public Vector2 AimPosition { get; private set; }
 
         /// <summary>
         /// The PlayerBullet's damage level
@@ -62,11 +62,11 @@ namespace ShootingGame
         /// <param name="gameObject"></param>
         public PlayerBullet(GameObject gameObject) : base(gameObject)
         {
-            speed = 10;
+            speed = 12;
             DamageLevel = Player.CurrentWeapon.DamageLevel;
             IsRealesed = false;
             animationDone = false;
-            aimPosition = new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y);
+            AimPosition = new Vector2(Mouse.GetState().Position.X - 8, Mouse.GetState().Position.Y + 10);
             T = new Thread(Update);
             T.IsBackground = true;
             T.Start();
@@ -102,7 +102,7 @@ namespace ShootingGame
             // Makes sure that the Playerbullet has to be deleted when the game is finished
             if (GameWorld.Instance.StopGame)
             {
-                if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y <= aimPosition.Y)
+                if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y <= AimPosition.Y)
                 {
                     speed = 0;
                     animationDone = true;
@@ -114,11 +114,12 @@ namespace ShootingGame
             else if (IsRealesed)
             {
                 speed = GameObject.Transform.Position.Y < 120 ? 0 : 1;
+                //speed = 0;
                 animator.PlayAnimation("Expl");
             }
             
             // Checks if the PlayerBullet reached to the aim
-            else if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y < aimPosition.Y)
+            else if (GameObject.Transform.Position.Y < 120 || GameObject.Transform.Position.Y < AimPosition.Y)
             {
                 IsRealesed = true;
             }
@@ -139,8 +140,8 @@ namespace ShootingGame
         /// </summary>
         public void CreateAnimation()
         {
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 15, 15, 1, Vector2.Zero));
-            animator.CreateAnimation("Expl", new Animation(3, 19, 0, 16, 20, 15, Vector2.Zero));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 10, 10, 1, Vector2.Zero));
+            animator.CreateAnimation("Expl", new Animation(3, 19, 0, 18, 18, 20, Vector2.Zero));
             animator.PlayAnimation("Idle");
         }
 

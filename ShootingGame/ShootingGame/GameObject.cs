@@ -12,7 +12,7 @@ namespace ShootingGame
     /// <summary>
     /// Represents the GameObject
     /// </summary>
-    class GameObject : Component
+    public class GameObject : Component
     {
         /// <summary>
         /// The GameObject's transform

@@ -38,11 +38,6 @@ namespace ShootingGame
         bool canMove;
 
         /// <summary>
-        /// The Enemy's movement timer
-        /// </summary>
-        int moveTimer;
-        
-        /// <summary>
         /// The Enemy's shot sound effect
         /// </summary>
         SoundEffect effect;
@@ -73,12 +68,11 @@ namespace ShootingGame
         /// <param name="gameObject"></param>
         public Enemy(GameObject gameObject) : base(gameObject)
         {
-            speed = 1;
+            speed = 2;
             EnemyHealth = 100;
             T = new Thread(Update);
             T.IsBackground = true;
             canMove = true;
-            moveTimer = GameWorld.Instance.Rnd.Next(100, 300);
             randomHolder = GameWorld.Instance.Rnd.Next(0, 4);
             counter += GameWorld.Instance.Rnd.Next(1, 21);
         }
@@ -88,11 +82,11 @@ namespace ShootingGame
         /// </summary>
         public void Update()
         {
-            while(true)
+            while (true)
             {
                 Thread.Sleep(20);
                 if (GameWorld.Instance.PlayGame && !GameWorld.Instance.StopGame)
-                Move();
+                    Move();
             }
         }
 
@@ -103,7 +97,6 @@ namespace ShootingGame
         {
             EnemyHealth = 100;
             counter = 0;
-            moveTimer = GameWorld.Instance.Rnd.Next(100, 200);
             canMove = true;
             (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = true;
 
@@ -181,7 +174,7 @@ namespace ShootingGame
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            effect = content.Load<SoundEffect>("rifleshot");
+            effect = content.Load<SoundEffect>("gunshot");
             animator = (Animator)GameObject.GetComponent("Animator");
             CreateAnimation();
         }
@@ -196,7 +189,7 @@ namespace ShootingGame
             animator.CreateAnimation("WalkRight", new Animation(4, 215, 0, 42, 60, 10, Vector2.Zero));
             animator.CreateAnimation("WalkFront", new Animation(4, 0, 0, 35, 60, 12, Vector2.Zero));
             animator.CreateAnimation("Shoot", new Animation(2, 285, 11, 35, 60, 5, Vector2.Zero));
-            animator.CreateAnimation("Die", new Animation(5, 288, 0, 50, 60, 4, Vector2.Zero));
+            animator.CreateAnimation("Die", new Animation(3, 288, 2, 50, 60, 4, Vector2.Zero));
             animator.PlayAnimation("Shoot");
         }
 
@@ -216,30 +209,35 @@ namespace ShootingGame
             // Adds the new Enemybullet object to the game, when the enemy performs a shot
             else if (animationName.Contains("Shoot"))
             {
+                Vector2 bulletPosition = new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y);
+
+                GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(bulletPosition.X + 10, bulletPosition.Y + 15));
                 effect.Play();
-                GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(GameObject.Transform.Position.X + 5, GameObject.Transform.Position.Y + 10));
             }
         }
 
         /// <summary>
-        /// Cheks if there is a collision with PLayerBullets
+        /// Cheks if there is a collision with PlayerBullets
         /// </summary>
         /// <param name="other"></param>
         public void OnCollisionEnter(Collider other)
         {
             if (other.GameObject.GetComponent("PlayerBullet") is PlayerBullet)
             {
-                // Reduces the enemy health by current Playerbullet's damage level value
-                EnemyHealth -= (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).DamageLevel;
-
-                // Stops the collision when Enemy is dead
-                if (EnemyHealth < 0)
+                if ((other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).AimPosition.Y + 80 > GameObject.Transform.Position.Y)
                 {
-                    EnemyHealth = 0;
-                    (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
-                }
+                    // Reduces the enemy health by current Playerbullet's damage level value
+                    EnemyHealth -= (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).DamageLevel;
+
+                    // Stops the collision when Enemy is dead
+                    if (EnemyHealth < 0)
+                    {
+                        EnemyHealth = 0;
+                        (GameObject.GetComponent("Collider") as Collider).DoCollisionCheck = false;
+                    }
                 // Makes sure that the PlayerBullet will be deleted from the game
                 (other.GameObject.GetComponent("PlayerBullet") as PlayerBullet).IsRealesed = true;
+                }
             }
         }
 
@@ -315,7 +313,6 @@ namespace ShootingGame
                     counter++;
                     break;
             }
-            GameObject.Transform.Position += translation * speed;
         }
     }
 }

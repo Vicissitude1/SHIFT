@@ -73,14 +73,39 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Aim.cs" />
     <Compile Include="Builder\AimBuilder.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Animator.cs" />
+    <Compile Include="DiceControl.cs" />
     <Compile Include="EnemyBullet.cs" />
     <Compile Include="Builder\EnemyBulletBuilder.cs" />
+    <Compile Include="EnemyBulletPool.cs" />
+    <Compile Include="IDataBaseClass.cs" />
+    <Compile Include="Interfaces\IDice.cs" />
     <Compile Include="Menu.cs" />
+    <Compile Include="MockDataBaseClass.cs" />
     <Compile Include="PlayerBullet.cs" />
     <Compile Include="Builder\PlayerBulletBuilder.cs" />
     <Compile Include="Dice.cs" />
@@ -111,6 +136,7 @@
     <Compile Include="ScoreMenu.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="SpriteRenderer.cs" />
+    <Compile Include="TestDice.cs" />
     <Compile Include="Transform.cs" />
     <Compile Include="Weapon.cs" />
   </ItemGroup>

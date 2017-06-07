@@ -8,22 +8,36 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Threading;
 using Microsoft.Xna.Framework.Input;
+using ShootingGame.Interfaces;
 
 namespace ShootingGame
 {
-    class Dice : Component, ILoadable, IUpdateable
+    public class Dice : Component, ILoadable, IUpdateable, IDice
     {
+
         private Animator animator;
-        public int Ammo { get; set; }
-        private int result = GameWorld.Instance.Result;
+
+        /// <summary>
+        /// The Result of all three dies.
+        /// </summary>
+        private int result = DiceControl.Result;
+
+        /// <summary>
+        /// The number of the current dice
+        /// </summary>
         private int currentDice;
+
 
         public Dice(GameObject gameObject) : base(gameObject)
         {
-            GameWorld.Instance.UpPressed = Keyboard.GetState();
+            //Keyboard state used for checking if the button is being pressed down.
+            DiceControl.UpPressed = Keyboard.GetState();
+
+            //The value of current die is a random number from 1 to 6 on each dice.
             currentDice = Roll();
-            GameWorld.Instance.Result += currentDice;
-            (GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Scale = 0.7f;
+
+            // The current dice number is added to the result
+            DiceControl.Result += currentDice;
         }
 
         public void LoadContent(ContentManager content)
@@ -32,24 +46,35 @@ namespace ShootingGame
             CreateAnimation();
         }
 
+        /// <summary>
+        /// A method for rolling a six-sided die.
+        /// </summary>
+        /// <returns></returns>
         public int Roll()
         {
-            int roll = GameWorld.Instance.Rnd.Next(1, 7);
+            int roll = DiceControl.R.Next(1, 7);
 
             return roll;
         }
 
+        /// <summary>
+        /// Creates different pictures for the dice.
+        /// </summary>
         public void CreateAnimation()
         {
-            animator.CreateAnimation("ShowOne", new Animation(1, 0, 0, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowTwo", new Animation(1, 0, 1, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowThree", new Animation(1, 0, 2, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowFour", new Animation(1, 0, 3, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowFive", new Animation(1, 0, 4, 64, 64, 1, Vector2.Zero));
-            animator.CreateAnimation("ShowSix", new Animation(1, 0, 5, 64, 64, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowOne", new Animation(1, 0, 0, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowTwo", new Animation(1, 0, 1, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowThree", new Animation(1, 0, 2, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowFour", new Animation(1, 46, 0, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowFive", new Animation(1, 46, 1, 46, 46, 1, Vector2.Zero));
+            animator.CreateAnimation("ShowSix", new Animation(1, 46, 2, 46, 46, 1, Vector2.Zero));
             animator.PlayAnimation("ShowSix");
         }
 
+        /// <summary>
+        /// Updates the pictures of the dice to match their values.
+        /// </summary>
+        /// <param name="d"></param>
         public void UpdateDice(int d)
         {
             switch (d)
@@ -75,10 +100,13 @@ namespace ShootingGame
             }
         }
 
-
+        /// <summary>
+        /// Updates the dies' pictures until High or Low is guessed. As not to use CPU power on constantly
+        /// updating their animations in 60 fps.
+        /// </summary>
         public void Update()
         {
-            if (GameWorld.Instance.HasPressed == false)
+            if (DiceControl.HasPressed == false)
             {
                 UpdateDice(currentDice);
             }

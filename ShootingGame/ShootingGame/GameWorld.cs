@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Audio;
 using System;
 using Microsoft.Xna.Framework.Media;
 using System.Threading;
+using ShootingGame.Interfaces;
 
 namespace ShootingGame
 {
@@ -22,9 +23,6 @@ namespace ShootingGame
         /// </summary>
         Director director;
 
-
-        private int reserve;
-        
         /// <summary>
         /// The list of the gameobjects
         /// </summary>
@@ -66,7 +64,7 @@ namespace ShootingGame
         List<Vector2> enemyBulletsPositions;
 
         /// <summary>
-        /// The list of positions of new EnemyBollets used in the game loop
+        /// The list of positions of new EnemyBullets used in the game loop
         /// </summary>
         List<Vector2> tempEnemyBulletsPositions;
 
@@ -76,14 +74,9 @@ namespace ShootingGame
         Texture2D background;
 
         /// <summary>
-        /// The sky image
+        /// The forest image
         /// </summary>
-        Texture2D sky;
-
-        /// <summary>
-        /// The grass image
-        /// </summary>
-        Texture2D grass;
+        Texture2D forest;
 
         /// <summary>
         /// Referance to the Main Menu
@@ -96,27 +89,18 @@ namespace ShootingGame
         ScoreMenu scoreMenu;
 
         /// <summary>
-        /// The dice timer thread
+        /// List of Dice under the IDice interface.
         /// </summary>
-        Thread diceTimerThread;
+        internal List<IDice> Dies { get; set; }
 
         /// <summary>
-        /// Checks if player can roll the dice
+        /// Referance to DiceControl
         /// </summary>
-        bool canRollDice;
+        DiceControl diceControl;
+
 
         /// <summary>
-        /// The dice roll timer
-        /// </summary>
-        int diceTimerCounter;
-        public KeyboardState UpPressed { get; set; }
-        private KeyboardState downPressed;
-        public bool HasPressed { get; set; } = false;
-        internal List<Dice> Dies { get; set; }
-        public int DiceResult { get; set; }
-
-        /// <summary>
-        /// Checks if necassery to replace some GameObjects when the game is restarted
+        /// Checks if necessary to replace some GameObjects when the game is restarted
         /// </summary>
         public bool ReplaceObjects { get; set; }
 
@@ -180,10 +164,6 @@ namespace ShootingGame
         /// </summary>
         public Random Rnd { get; private set; }
 
-        internal List<GameObject> ObjectsToAdd { get; set; }
-
-        public int Result { get; set; }
-
         internal List<Collider> Colliders
         {
             get
@@ -202,18 +182,16 @@ namespace ShootingGame
             get
             {
                 lock (scores)
-                   return scores;
+                    return scores;
             }
         }
-
-        public int CurrentDice { get; set; }
 
         public List<Vector2> EnemyBulletsPositions
         {
             get
             {
-                lock(enemyBulletsPositions)
-                return enemyBulletsPositions;
+                lock (enemyBulletsPositions)
+                    return enemyBulletsPositions;
             }
         }
 
@@ -252,26 +230,23 @@ namespace ShootingGame
             scores = new List<Score>();
             tempScores = new List<Score>();
             scoresToRemove = new List<Score>();
-            Dies = new List<Dice>();
-            ObjectsToAdd = new List<GameObject>();
+            Dies = new List<IDice>();
             enemyBulletsPositions = new List<Vector2>();
             tempEnemyBulletsPositions = new List<Vector2>();
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
             DataBaseClass.Instance.CreateTables();
-            diceTimerThread = new Thread(DiceTimer);
-            canRollDice = true;
-            diceTimerCounter = 0;
+            
             // Adds the GameObjects to the game
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 200)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 300)));
-            
+
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
             
@@ -286,7 +261,7 @@ namespace ShootingGame
             director = new Director(new AimBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200)));
             director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(new Vector2(600, 500)));
+            gameObjects.Add(director.Construct(new Vector2(600, 470)));
 
             director = new Director(new DiceBuilder());
             GameObject d1 = director.Construct(new Vector2(800, 590));
@@ -301,6 +276,7 @@ namespace ShootingGame
             Dies.Add(dice1);
             Dies.Add(dice2);
             Dies.Add(dice3);
+            diceControl = new DiceControl(Dies);
 
             base.Initialize();
         }
@@ -319,11 +295,9 @@ namespace ShootingGame
             BFont = Content.Load<SpriteFont>("BFont"); // 12
             CFont = Content.Load<SpriteFont>("CFont"); // 16
             DFont = Content.Load<SpriteFont>("DFont"); // 24
-            //background = Content.Load<Texture2D>("DesertCity");
-            background = Content.Load<Texture2D>("sand");
-            sky = Content.Load<Texture2D>("sky");
-            grass = Content.Load<Texture2D>("grass");
-  
+            background = Content.Load<Texture2D>("thefield");
+            forest = Content.Load<Texture2D>("forest");
+
             menu.LoadContent(Content);
             scoreMenu.LoadContent(Content);
 
@@ -344,8 +318,6 @@ namespace ShootingGame
                 else if (go.GetComponent("PowerUpObject") is PowerUpObject)
                     (go.GetComponent("PowerUpObject") as PowerUpObject).T.Start();
             }
-            diceTimerThread.IsBackground = true;
-            diceTimerThread.Start();
         }
 
         /// <summary>
@@ -370,7 +342,7 @@ namespace ShootingGame
 
             // TODO: Add your update logic here
 
-            if(Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
+            if (Keyboard.GetState().IsKeyDown(Keys.M) && PlayGame)
             {
                 PlayGame = false;
                 StopGame = true;
@@ -395,7 +367,6 @@ namespace ShootingGame
                     }
                     Player.CanStartShoot = true;
                     ReplaceObjects = false;
-                    diceTimerCounter = 0;
                 }
                 if (this.IsMouseVisible) this.IsMouseVisible = false;
 
@@ -404,9 +375,6 @@ namespace ShootingGame
                 {
                     go.Update();
                 }
-                // Checks if player rolls the dice
-                if(!StopGame && canRollDice)
-                UpdateDiceUI();
 
                 // Checks if player made a shot
                 UpdatePlayerShot();
@@ -442,11 +410,9 @@ namespace ShootingGame
             spriteBatch.Begin();
             if (PlayGame)
             {
-                spriteBatch.Draw(sky, new Rectangle(0, 0, 1300, 100), Color.White);
+                spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1300, 100), Color.LightBlue);
                 spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
-                spriteBatch.Draw(grass, new Rectangle(0, 65, 300, 70), Color.White);
-                spriteBatch.Draw(grass, new Rectangle(500, 65, 300, 70), Color.White);
-                spriteBatch.Draw(grass, new Rectangle(1000, 65, 300, 70), Color.White);
+                spriteBatch.Draw(forest, new Rectangle(-10, 50, forest.Width, forest.Height), Color.White);
 
                 // Draws the gameObjects
                 foreach (GameObject go in gameObjects)
@@ -463,11 +429,10 @@ namespace ShootingGame
                     }
                 }
 
-                spriteBatch.DrawString(BFont, "RESERV: " + reserve, new Vector2(800, 650), Color.Black);
-                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.Black);
-                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.Black);
-                spriteBatch.Draw(Pixel, new Rectangle(800, 640, diceTimerCounter, 5), Color.Blue);
+                diceControl.Draw(spriteBatch);
 
+                spriteBatch.DrawString(BFont, "[M] - exit to the MAIN MENU", new Vector2(1100, 620), Color.DarkSlateGray);
+                spriteBatch.DrawString(BFont, "[Esc] - exit game", new Vector2(1100, 650), Color.DarkSlateGray);
                 if (StopGame)
                 {
                     spriteBatch.DrawString(DFont, "GAME OVER!", new Vector2(530, 170), Color.DarkMagenta);
@@ -487,7 +452,7 @@ namespace ShootingGame
         public void UpdateLists()
         {
             // Removes scores from list scores to tempscores, it gives more time to access to the list scores
-            lock(scores)
+            lock (scores)
             {
                 if (scores.Count > 0)
                 {
@@ -518,7 +483,10 @@ namespace ShootingGame
                 if (go.GetComponent("EnemyBullet") is EnemyBullet)
                 {
                     if (!((go.GetComponent("EnemyBullet") as EnemyBullet).T.IsAlive))
+                    {
+                        EnemyBulletPool.ReleaseObject(go);
                         objectsToRemove.Add(go);
+                    }
                 }
                 else if (go.GetComponent("PlayerBullet") is PlayerBullet)
                 {
@@ -533,6 +501,7 @@ namespace ShootingGame
                 {
                     if ((go.GetComponent("PlayerBullet") is PlayerBullet) || (go.GetComponent("EnemyBullet") is EnemyBullet))
                         collidersToRemove.Add(go.GetComponent("Collider") as Collider);
+
                     gameObjects.Remove(go);
                 }
                 objectsToRemove.Clear();
@@ -545,7 +514,6 @@ namespace ShootingGame
                 }
                 collidersToRemove.Clear();
             }
-            
         }
 
         /// <summary>
@@ -556,7 +524,7 @@ namespace ShootingGame
             if (CanAddPlayerBullet)
             {
                 director = new Director(new PlayerBulletBuilder());
-                GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X, 470));
+                GameObject go = director.Construct(new Vector2(Mouse.GetState().Position.X - 5, 470));
                 go.LoadContent(Content);
                 gameObjects.Add(go);
                 CanAddPlayerBullet = false;
@@ -583,125 +551,21 @@ namespace ShootingGame
             {
                 foreach (Vector2 position in tempEnemyBulletsPositions)
                 {
+                    /*
                     director = new Director(new EnemyBulletBuilder());
                     GameObject go = director.Construct(position);
                     go.LoadContent(Content);
+                    gameObjects.Add(go);*/
+
+                    GameObject go = EnemyBulletPool.Create(position, Content);
+                    if (!((go.GetComponent("EnemyBullet") as EnemyBullet).T.IsAlive))
+                    {
+                        (go.GetComponent("EnemyBullet") as EnemyBullet).RestartThread(position);
+                        colliders.Add((go.GetComponent("Collider") as Collider));
+                    }
                     gameObjects.Add(go);
                 }
                 tempEnemyBulletsPositions.Clear();
-            }
-        }
-
-        public void UpdateDiceUI()
-        {
-            KeyboardState k = Keyboard.GetState();
-            if (k.IsKeyDown(Keys.Up))
-            {
-                if (!UpPressed.IsKeyDown(Keys.Up))
-                {
-                    High();
-                    canRollDice = false;
-                    diceTimerCounter = 130;
-                }
-
-            }
-            else if (UpPressed.IsKeyDown(Keys.Up))
-            {
-
-            }
-            UpPressed = k;
-
-            if (k.IsKeyDown(Keys.Down))
-            {
-                if (!downPressed.IsKeyDown(Keys.Down))
-                {
-                    Low();
-                    canRollDice = false;
-                    diceTimerCounter = 130;
-                }
-
-            }
-            else if (downPressed.IsKeyDown(Keys.Down))
-            {
-
-            }
-            downPressed = k;
-        }
-
-        public int RollDices()
-        {
-
-            DiceResult = Rnd.Next(1, 7);
-            Result += DiceResult;
-
-            return DiceResult;
-        }
-
-        public void High()
-        {
-            HasPressed = true;
-            int current;
-
-            current = Result;
-            Result = 0;
-            foreach (Dice dice in Dies)
-            {
-                CurrentDice = RollDices();
-                dice.UpdateDice(CurrentDice);
-            }
-
-            if (current < Result)
-            {
-                Player.CurrentWeapon.TotalAmmo += current + reserve;
-                if (reserve > 0)
-                {
-                    reserve = 0;
-                }
-
-            }
-            if (current > Result)
-            {
-                reserve += current;
-            }
-        }
-
-        public void Low()
-        {
-            HasPressed = true;
-            int current;
-
-            current = Result;
-            Result = 0;
-            foreach (Dice dice in Dies)
-            {
-                CurrentDice = RollDices();
-                dice.UpdateDice(CurrentDice);
-            }
-
-            if (current > Result)
-            {
-                Player.CurrentWeapon.TotalAmmo += current + reserve;
-                if (reserve > 0)
-                {
-                    reserve = 0;
-                }
-            }
-            if (current < Result)
-            {
-                reserve += current;
-            }
-        }
-
-        /// <summary>
-        /// Updates the dice timer, the timer starts every time, when player rolls the dice
-        /// </summary>
-        public void DiceTimer()
-        {
-            while(true)
-            {
-                Thread.Sleep(50);
-                if (diceTimerCounter > 0) diceTimerCounter--;
-                else if (!canRollDice) canRollDice = true;
             }
         }
     }

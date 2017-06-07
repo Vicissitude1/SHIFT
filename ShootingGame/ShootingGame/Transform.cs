@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShootingGame
 {
-    class Transform : Component
+    public class Transform : Component
     {
         /// <summary>
         /// The transform's position

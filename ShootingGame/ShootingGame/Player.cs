@@ -16,7 +16,7 @@ namespace ShootingGame
     /// <summary>
     /// Represents the Player
     /// </summary>
-    class Player : Component, ILoadable, IAnimateable, ICollisionEnter
+    public class Player : Component, ILoadable, IAnimateable, ICollisionEnter
     {
         /// <summary>
         /// The Player's health
@@ -59,9 +59,10 @@ namespace ShootingGame
         int speed;
 
         /// <summary>
-        /// The object that is going to be locked
+        /// The objects that are going to be locked
         /// </summary>
         static object thisLock = new object();
+        static object thisLock2 = new object();
 
         /// <summary>
         /// The weapon array
@@ -76,7 +77,7 @@ namespace ShootingGame
         /// <summary>
         /// The Plyer's scores
         /// </summary>
-        public static int Scores { get; set; }
+        static int scores;
 
         /// <summary>
         /// Checks if Player can start shoot
@@ -91,7 +92,7 @@ namespace ShootingGame
         /// <summary>
         /// The current Player's weapon
         /// </summary>
-        public static Weapon CurrentWeapon { get; private set; }
+        public static Weapon CurrentWeapon { get; set; }
 
         /// <summary>
         /// The Player's thread
@@ -100,7 +101,7 @@ namespace ShootingGame
 
         public static int Health
         {
-            get { return health;}
+            get { lock (thisLock) { return health; } }
             set
             {
                 lock (thisLock)
@@ -112,13 +113,19 @@ namespace ShootingGame
             }
         }
 
+        public static int Scores
+        {
+            get { lock (thisLock2) { return scores; } }
+            set { lock (thisLock2) { scores = value; } }
+        }
+
         /// <summary>
         /// The Player's constructor
         /// </summary>
         /// <param name="gameObject"></param>
         public Player(GameObject gameObject) : base(gameObject)
         {
-            // gets the array with weapons from data base
+            // gets the array with weapons from database
             weapons = DataBaseClass.Instance.GetWeapons();
             /*
             weapons = new Weapon[] { new Weapon("GUN", 7, 20, 1000, WeaponType.BoltAction),
@@ -162,7 +169,7 @@ namespace ShootingGame
         /// </summary>
         public void Update()
         {
-            while(true)
+            while (true)
             {
                 Thread.Sleep(20);
                 if (GameWorld.Instance.PlayGame && !GameWorld.Instance.StopGame)
@@ -181,41 +188,24 @@ namespace ShootingGame
                 if (Keyboard.GetState().IsKeyDown(Keys.D1))
                 {
                     selectedWeaponIndex = 0;
-                    // Makes possible to change weapon only if it is not selected already
-                    if (currentWeaponIndex != selectedWeaponIndex)
-                    {
-                        canChangeWeapon = false;
-                        effect.Play();
-                        PlayAnimation = false;
-                    }
+                    CheckWeaponSelection();
                 }
                 // Checks if rifle is selected (button 2 is preassed)
                 else if (Keyboard.GetState().IsKeyDown(Keys.D2))
                 {
                     selectedWeaponIndex = 1;
-                    // Makes possible to change weapon only if it is not selected already
-                    if (currentWeaponIndex != selectedWeaponIndex)
-                    {
-                        canChangeWeapon = false;
-                        effect.Play();
-                        PlayAnimation = false;
-                    }
+                    CheckWeaponSelection();
                 }
                 // Checks if machinegun is selected (button 3 is preassed) 
                 else if (Keyboard.GetState().IsKeyDown(Keys.D3))
                 {
                     selectedWeaponIndex = 2;
-                    // Makes possible to change weapon only if it is not selected already
-                    if (currentWeaponIndex != selectedWeaponIndex)
-                    {
-                        canChangeWeapon = false;
-                        effect.Play();
-                        PlayAnimation = false;
-                    }
+                    CheckWeaponSelection();
                 }
                 // Checks if player is shooting
                 if (CanStartShoot)
-                CurrentWeapon.UpdateWeaponStatus();
+                    CurrentWeapon.UpdateWeaponStatus();
+
                 // Plays an animation, corresponding to the status of the selected weapon 
                 if (currentWeaponIndex == 0)
                 {
@@ -232,11 +222,24 @@ namespace ShootingGame
                     if (PlayAnimation) animator.PlayAnimation("MachineGunShoot");
                     else animator.PlayAnimation("MachineGunIdle");
                 }
-                
             }
             else ChangeWeapon();
             //Moves the player's gameobject
-            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 30, GameObject.Transform.Position.Y);
+            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 50, GameObject.Transform.Position.Y);
+        }
+
+        /// <summary>
+        /// Checks if selected weapon is not current weapon
+        /// </summary>
+        public void CheckWeaponSelection()
+        {
+            // Makes possible to change weapon only if it is not selected already
+            if (currentWeaponIndex != selectedWeaponIndex)
+            {
+                canChangeWeapon = false;
+                effect.Play();
+                PlayAnimation = false;
+            }
         }
 
         /// <summary>
@@ -255,6 +258,7 @@ namespace ShootingGame
             foreach (Weapon w in weapons)
                 w.RestartWeapon();
             CurrentWeapon = weapons[currentWeaponIndex];
+            GameObject.Transform.Position = new Vector2(Mouse.GetState().Position.X - 50, 470);
         }
 
         /// <summary>
@@ -262,12 +266,12 @@ namespace ShootingGame
         /// </summary>
         public void CreateAnimation()
         {
-            animator.CreateAnimation("GunIdle", new Animation(1, 20, 0, 60, 90, 1, Vector2.Zero));
-            animator.CreateAnimation("GunShoot", new Animation(6, 20, 1, 62, 90, 30, Vector2.Zero));
-            animator.CreateAnimation("RifleIdle", new Animation(1, 132, 0, 67, 70, 1, Vector2.Zero));
-            animator.CreateAnimation("RifleShoot", new Animation(3, 132, 0, 67, 70, 20, Vector2.Zero));
-            animator.CreateAnimation("MachineGunIdle", new Animation(1, 225, 0, 90, 110, 1, Vector2.Zero));
-            animator.CreateAnimation("MachineGunShoot", new Animation(3, 225, 1, 96, 110, 20, Vector2.Zero));
+            animator.CreateAnimation("GunIdle", new Animation(1, 30, 0, 92, 120, 1, Vector2.Zero));
+            animator.CreateAnimation("GunShoot", new Animation(3, 30, 1, 92, 120, 20, Vector2.Zero));
+            animator.CreateAnimation("RifleIdle", new Animation(1, 157, 0, 92, 120, 1, Vector2.Zero));
+            animator.CreateAnimation("RifleShoot", new Animation(3, 157, 1, 92, 120, 20, Vector2.Zero));
+            animator.CreateAnimation("MachineGunIdle", new Animation(1, 295, 0, 92, 120, 1, Vector2.Zero));
+            animator.CreateAnimation("MachineGunShoot", new Animation(3, 295, 1, 92, 120, 20, Vector2.Zero));
             //Plays an aniamtion to make sure that we have an animation to play
             animator.PlayAnimation("GunIdle");
         }
@@ -294,14 +298,14 @@ namespace ShootingGame
                     // Reduces the Player's health by 1
                     Health--;
                     // Stops the Game, when the Player's health = 0
-                    if (health == 0)
+                    if (health <= 0)
                     {
                         GameWorld.Instance.StopGame = true;
                         CanStartShoot = false;
                     }
                 }
                 // Makes sure that EnemyBullet has to be deleted from the game
-                (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsRealesed = true;
+                (other.GameObject.GetComponent("EnemyBullet") as EnemyBullet).IsReleased = true;
             }
         }
 
@@ -311,7 +315,7 @@ namespace ShootingGame
         public void ChangeWeapon()
         {
             // Makes sure that player cannot shoot
-            if(canShoot) canShoot = false;
+            if (canShoot) canShoot = false;
             // Makes sure that animation will not play
             if (PlayAnimation) PlayAnimation = false;
 
@@ -320,7 +324,7 @@ namespace ShootingGame
             if (isChanged)
             {
                 // Stops the weapon changing when the Y-position less than 500
-                if(GameObject.Transform.Position.Y <= 500)
+                if (GameObject.Transform.Position.Y <= 470)
                 {
                     isChanged = false;
                     canChangeWeapon = true;
@@ -336,11 +340,13 @@ namespace ShootingGame
             else
             {
                 // Performs the changing weapon, corresponding to the UI
-                if(GameObject.Transform.Position.Y > 600)
+                if (GameObject.Transform.Position.Y > 600)
                 {
                     currentWeaponIndex = selectedWeaponIndex;
                     CurrentWeapon = weapons[currentWeaponIndex];
+                    CurrentWeapon.CanShoot = false;
                     isChanged = true;
+
                     if (currentWeaponIndex == 0) animator.PlayAnimation("GunIdle");
                     else if (currentWeaponIndex == 1) animator.PlayAnimation("RifleIdle");
                     else if (currentWeaponIndex == 2) animator.PlayAnimation("MachineGunIdle");
