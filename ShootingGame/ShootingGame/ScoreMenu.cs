@@ -205,8 +205,7 @@ namespace ShootingGame
                     if (CheckKey(key))
                     {
                         AddKeyToText(key);
-                        if (canInsertName)
-                            players[insertIndex].Name = text;
+                        players[insertIndex].Name = text;
                         break;
                     }
                 }
