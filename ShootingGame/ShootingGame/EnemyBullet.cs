@@ -37,7 +37,7 @@ namespace ShootingGame
         /// <summary>
         /// Checks if the EnemyBullet has to be deleted
         /// </summary>
-        public bool IsRealesed { get; set; }
+        public bool IsReleased { get; set; }
 
         /// <summary>
         /// The EnemyBullet's constructor
@@ -46,7 +46,7 @@ namespace ShootingGame
         public EnemyBullet(GameObject gameObject) : base(gameObject)
         {
             speed = 10;
-            IsRealesed = false;
+            IsReleased = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, 560);
             translation = aimPosition - GameObject.Transform.Position;
             translation.Normalize();
@@ -70,7 +70,7 @@ namespace ShootingGame
         public void Move()
         {
             // Aborts the thread, so it has to be deleted from the game
-            if (IsRealesed) T.Abort();
+            if (IsReleased) T.Abort();
             // Makes the movement speed faster when the game is over
             if (GameWorld.Instance.StopGame) speed = 50;
 
@@ -80,13 +80,17 @@ namespace ShootingGame
             GameObject.Transform.Position += translation * speed;
             // makes sure that EnemyBullet will not move down, if Y-position is more than 550
             if (GameObject.Transform.Position.Y > 550)
-                IsRealesed = true;
+                IsReleased = true;
         }
 
+        /// <summary>
+        /// Re-uses the bullet and resets its attributes.
+        /// </summary>
+        /// <param name="position"></param>
         public void RestartThread(Vector2 position)
         {
             speed = 10;
-            IsRealesed = false;
+            IsReleased = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, 560);
             GameObject.Transform.Position = position;
             translation = aimPosition - GameObject.Transform.Position;
