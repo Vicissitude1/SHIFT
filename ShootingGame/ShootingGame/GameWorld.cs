@@ -236,7 +236,7 @@ namespace ShootingGame
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new[] { Color.White });
             DataBaseClass.Instance.CreateTables();
-
+            
             // Adds the GameObjects to the game
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(-50, 100)));
@@ -249,7 +249,7 @@ namespace ShootingGame
 
             director = new Director(new EnemyBuilder());
             gameObjects.Add(director.Construct(new Vector2(1350, 400)));
-
+            
             /*
             for (int i = 0; i < 2; i++)
             {

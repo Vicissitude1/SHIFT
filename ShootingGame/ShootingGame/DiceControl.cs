@@ -209,6 +209,11 @@ namespace ShootingGame
         /// </summary>
         public void UpdateDiceTimer()
         {
+            if (GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame)
+            {
+                diceTimer = 0;
+                Reserve = 0;
+            }
             if (diceTimer > 0) diceTimer--;
             else if (!canRollDice) canRollDice = true;
         }

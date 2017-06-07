@@ -85,7 +85,7 @@ namespace ShootingGame
 
         public void RestartThread(Vector2 position)
         {
-            speed = 8;
+            speed = 10;
             IsRealesed = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, 560);
             GameObject.Transform.Position = position;

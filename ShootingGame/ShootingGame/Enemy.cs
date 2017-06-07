@@ -189,7 +189,7 @@ namespace ShootingGame
             animator.CreateAnimation("WalkRight", new Animation(4, 215, 0, 42, 60, 10, Vector2.Zero));
             animator.CreateAnimation("WalkFront", new Animation(4, 0, 0, 35, 60, 12, Vector2.Zero));
             animator.CreateAnimation("Shoot", new Animation(2, 285, 11, 35, 60, 5, Vector2.Zero));
-            animator.CreateAnimation("Die", new Animation(5, 288, 0, 50, 60, 4, Vector2.Zero));
+            animator.CreateAnimation("Die", new Animation(3, 288, 2, 50, 60, 4, Vector2.Zero));
             animator.PlayAnimation("Shoot");
         }
 
@@ -211,7 +211,7 @@ namespace ShootingGame
             {
                 Vector2 bulletPosition = new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y);
 
-                GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(bulletPosition.X + 5, bulletPosition.Y + 10));
+                GameWorld.Instance.EnemyBulletsPositions.Add(new Vector2(bulletPosition.X + 10, bulletPosition.Y + 15));
                 effect.Play();
             }
         }
