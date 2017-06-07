@@ -151,7 +151,7 @@ namespace ShootingGame
             }
 
             //Ammo is added and reserve is emptied
-            if (Current < Result)
+            if (Current <= Result)
             {
                 Player.CurrentWeapon.TotalAmmo += Current + Reserve;
                 if (Reserve > 0)
@@ -188,7 +188,7 @@ namespace ShootingGame
             }
 
             //Ammo is added and reserve is emptied
-            if (Current > Result)
+            if (Current >= Result)
             {
                 Player.CurrentWeapon.TotalAmmo += Current + Reserve;
                 if (Reserve > 0)
