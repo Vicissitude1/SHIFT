@@ -87,7 +87,7 @@ namespace ShootingGame
         public void Move()
         {
             // The PlayerBullet has to be deleted from the game, when the explosion animation is done
-            if (animationDone) T.Abort();
+            if (animationDone || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame) T.Abort();
 
             Thread.Sleep(30);
 
@@ -107,7 +107,6 @@ namespace ShootingGame
                     speed = 0;
                     animationDone = true;
                 }
-                else speed = 20;
             }
 
             // Stops the movement and starts to play explosion animation when the bullet reached to the aim

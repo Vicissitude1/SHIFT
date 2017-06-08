@@ -70,9 +70,7 @@ namespace ShootingGame
         public void Move()
         {
             // Aborts the thread, so it has to be deleted from the game
-            if (IsReleased) T.Abort();
-            // Makes the movement speed faster when the game is over
-            if (GameWorld.Instance.StopGame) speed = 50;
+            if (IsReleased || GameWorld.Instance.StopGame || !GameWorld.Instance.PlayGame) T.Abort();
 
             Thread.Sleep(30);
             // Changes the EnemyBullet size according to the position
@@ -89,7 +87,6 @@ namespace ShootingGame
         /// <param name="position"></param>
         public void RestartThread(Vector2 position)
         {
-            speed = 10;
             IsReleased = false;
             aimPosition = new Vector2(Mouse.GetState().Position.X, 560);
             GameObject.Transform.Position = position;
