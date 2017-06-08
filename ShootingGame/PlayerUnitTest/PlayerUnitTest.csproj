@@ -56,9 +56,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ShootingGame\ShootingGame.csproj">
+    <ProjectReference Include="..\ShootingGame\SHIFT.csproj">
       <Project>{892b46fc-f973-44e2-825e-23faa5dd6337}</Project>
-      <Name>ShootingGame</Name>
+      <Name>SHIFT</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

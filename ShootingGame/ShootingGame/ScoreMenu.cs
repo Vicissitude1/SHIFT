@@ -205,8 +205,7 @@ namespace ShootingGame
                     if (CheckKey(key))
                     {
                         AddKeyToText(key);
-                        if (canInsertName)
-                            players[insertIndex].Name = text;
+                        players[insertIndex].Name = text;
                         break;
                     }
                 }
@@ -348,7 +347,7 @@ namespace ShootingGame
         public void ButtonSavePressed()
         {
             // Makes sure that player has name and some scores
-            if (players[insertIndex].Name != "" && canInsertName)
+            if (canInsertName && players[insertIndex].Name != "")
             {
                 while (players.Count > 10)
                     players.RemoveAt(10);

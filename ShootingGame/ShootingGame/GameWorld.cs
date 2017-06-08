@@ -404,6 +404,7 @@ namespace ShootingGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            Window.Title = "S.H.I.F.T.";
             GraphicsDevice.Clear(Color.LightGray);
 
             // TODO: Add your drawing code here
