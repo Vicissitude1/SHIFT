@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShootingGame", "ShootingGame\ShootingGame.csproj", "{892B46FC-F973-44E2-825E-23FAA5DD6337}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHIFT", "ShootingGame\SHIFT.csproj", "{892B46FC-F973-44E2-825E-23FAA5DD6337}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighNLowTest", "UnitTestProject1\HighNLowTest.csproj", "{C1DF1B69-7A6C-484A-B8BF-0EDEDD84D00C}"
 EndProject
