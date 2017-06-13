@@ -118,7 +118,7 @@ namespace ShootingGame
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            buttonSprite = content.Load<Texture2D>("buttonsprite");
+            buttonSprite = content.Load<Texture2D>("butt");
             buttonSaveRectangle = new Rectangle(1000, 350, buttonSprite.Width, buttonSprite.Height);
             buttonExitRectangle = new Rectangle(1000, 500, buttonSprite.Width, buttonSprite.Height);
             effect = content.Load<SoundEffect>("buttonClick");

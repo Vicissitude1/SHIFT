@@ -108,7 +108,7 @@ namespace ShootingGame
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            buttonSprite = content.Load<Texture2D>("buttonsprite");
+            buttonSprite = content.Load<Texture2D>("butt");
             crosshair = content.Load<Texture2D>("SHIFT Crosshair Shoot");
             shiftSprite = content.Load<Texture2D>("shiftmenu");
             buttonHowRectangle = new Rectangle(1000, 200, buttonSprite.Width, buttonSprite.Height);

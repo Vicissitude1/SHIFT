@@ -77,6 +77,7 @@ namespace ShootingGame
         /// The forest image
         /// </summary>
         Texture2D forest;
+        Texture2D clouds;
 
         /// <summary>
         /// Referance to the Main Menu
@@ -295,8 +296,9 @@ namespace ShootingGame
             BFont = Content.Load<SpriteFont>("BFont"); // 12
             CFont = Content.Load<SpriteFont>("CFont"); // 16
             DFont = Content.Load<SpriteFont>("DFont"); // 24
-            background = Content.Load<Texture2D>("thefield");
-            forest = Content.Load<Texture2D>("forest");
+            background = Content.Load<Texture2D>("thefield1");
+            forest = Content.Load<Texture2D>("forest1");
+            clouds = Content.Load<Texture2D>("clouds");
 
             menu.LoadContent(Content);
             scoreMenu.LoadContent(Content);
@@ -411,9 +413,9 @@ namespace ShootingGame
             spriteBatch.Begin();
             if (PlayGame)
             {
-                spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1300, 100), Color.LightBlue);
+                spriteBatch.Draw(clouds, new Rectangle(0, -20, clouds.Width, clouds.Height), Color.LightBlue);
                 spriteBatch.Draw(background, new Rectangle(0, 100, 1300, 470), Color.White);
-                spriteBatch.Draw(forest, new Rectangle(-10, 50, forest.Width, forest.Height), Color.White);
+                spriteBatch.Draw(forest, new Rectangle(-10, 40, forest.Width, forest.Height), Color.White);
 
                 // Draws the gameObjects
                 foreach (GameObject go in gameObjects)
